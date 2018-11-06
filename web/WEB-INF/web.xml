@@ -2,22 +2,22 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <param-name>dbname</param-name>
-        <param-value>Users</param-value>
+        <param-value>Project</param-value>
     </context-param>
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.UserServlet</servlet-class>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UserServletListener</servlet-name>
+        <servlet-name>LoginServletListener</servlet-name>
         <servlet-class>com.UserServletListener</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
+        <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>UserServletListener</servlet-name>
+        <servlet-name>LoginServletListener</servlet-name>
         <url-pattern>/UserServletListener</url-pattern>
     </servlet-mapping>
     <session-config>

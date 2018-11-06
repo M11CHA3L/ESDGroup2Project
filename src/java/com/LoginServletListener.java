@@ -19,7 +19,7 @@ import javax.servlet.annotation.WebListener;
  * @author michaelcraddock
  */
 @WebListener()
-public class UserServletListener implements ServletContextListener {
+public class LoginServletListener implements ServletContextListener {
 
     private Connection conn = null;
     
