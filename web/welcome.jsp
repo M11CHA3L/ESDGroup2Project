@@ -22,6 +22,9 @@
         <jsp:include page='<%= s + ".jsp"%>' />
         <%}%>
         
+        <form method="POST" action="logout.do">
+            <input type="submit" value ="logout">
+        </form>
        
     </body>
 

@@ -12,6 +12,10 @@
         <servlet-name>LoginServletListener</servlet-name>
         <servlet-class>com.UserServletListener</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.LogoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -19,6 +23,10 @@
     <servlet-mapping>
         <servlet-name>LoginServletListener</servlet-name>
         <url-pattern>/UserServletListener</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
