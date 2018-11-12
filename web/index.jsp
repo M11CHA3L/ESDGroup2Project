@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
         <title>AlphaCab</title>
@@ -13,13 +8,13 @@ and open the template in the editor.
     <body>
         <%String s = "Enter username and password";
         
-        if (request.getAttribute("status") != null) {
-                s = (String)request.getAttribute("status");
+        if (request.getAttribute("errorMessage") != null) {
+                s = (String)request.getAttribute("errorMessage");
             }
             out.print(s);
             %>
         <form method="POST" action="login.do">
-              Enter username : <input type="text" name="uName" value="username"><br> 
+              Enter username : <input type="text" name="uName"><br> 
               Enter password : <input type="password" name="pass"><br> 
               <input type="submit" value="login">
         </form> 

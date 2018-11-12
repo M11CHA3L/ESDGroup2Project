@@ -1,25 +1,28 @@
 <%-- 
-    Document   : loggedin
+    Document   : Welcome
     Created on : 06-Nov-2018, 17:46:56
-    Author     : Jon
+    Authors     : Jon
 --%>
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <% if (session.getAttribute("dbbean") == null) { %>
-    <p> You dont have access to this page! </p>
-<% }else{
-%>
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Logged in!</title>
+        <title>Welcome</title>
     </head>
     <body>
-        <% String s = (String)request.getAttribute("userpage"); %> <jsp:include page='<%= s + ".html" %>' />
+        <% if (session.getAttribute("userRole") == null) {
+                response.sendRedirect("index.jsp");
+            } else {
 
+                String s = (String) session.getAttribute("userRole");%> 
+        <jsp:include page='<%= s + ".jsp"%>' />
+        <%}%>
+        
+       
     </body>
-    <%}%>
+
 </html>

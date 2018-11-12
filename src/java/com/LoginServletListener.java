@@ -31,7 +31,7 @@ public class LoginServletListener implements ServletContextListener {
         try {
             //Class.forName("com.mysql.jdbc.Driver");
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/"+db.trim(),"root","root");
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/"+db.trim(),"alphacab","group2");
             
         }
         catch(ClassNotFoundException | SQLException e){
