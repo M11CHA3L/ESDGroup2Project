@@ -8,6 +8,9 @@
     <body>
         <%String s = "Enter username and password";
         
+        if(session.getAttribute("userRole") != null){
+            request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+        }
         if (request.getAttribute("errorMessage") != null) {
                 s = (String)request.getAttribute("errorMessage");
             }

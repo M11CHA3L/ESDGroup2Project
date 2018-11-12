@@ -73,13 +73,13 @@ public class LoginServlet extends HttpServlet {
                 }
 
                 switch (user) {
-                    case 0:
+                    case 3:
                         session.setAttribute("userRole", "admin");
                         break;
-                    case 1:
+                    case 2:
                         session.setAttribute("userRole", "driver");
                         break;
-                    case 2:
+                    case 1:
                         session.setAttribute("userRole", "customer");
                         break;
                 }
