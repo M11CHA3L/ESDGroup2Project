@@ -62,9 +62,9 @@ public class JDBC {
 
     public int getRole(String user) throws SQLException {
         int id = 0;
-        select("select ROLELEVEL from users where username='" + user + "'");
+        select("select USERROLE from users where username='" + user + "'");
         while (rs.next()) {
-            id = rs.getInt("ROLELEVEL");
+            id = rs.getInt("USERROLE");
         }
 
         return id;
