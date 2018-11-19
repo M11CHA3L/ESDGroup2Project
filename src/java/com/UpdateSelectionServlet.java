@@ -8,8 +8,9 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import model.JDBC;
  *
  * @author patin_000
  */
-public class AdminDriversServlet extends HttpServlet {
+public class UpdateSelectionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,17 +35,20 @@ public class AdminDriversServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                HttpSession session = request.getSession();
+                        HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
         JDBC dbBean = new JDBC();
         dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
         session.setAttribute("dbbean", dbBean);
         
-        String drivers = dbBean.ToEditTable("select NAME, REGISTRATION from Drivers", "Name", "Drivers");
-        session.setAttribute("drivers", drivers);
+        String rowValue = request.getParameter("editChoice");
+        String tableName = request.getParameter("tableName");
+        String columnName = request.getParameter("columnName");
+        HashMap<String, String> columns = dbBean.GetRowByColumnName("Select * from " + tableName + " Where " + columnName + " = '" + rowValue + "'");
+        request.setAttribute("columnNames", columns);
         
-        request.getRequestDispatcher("/adminViewDrivers.jsp").forward(request, response);
+        request.getRequestDispatcher("/updateSelection.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

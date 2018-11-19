@@ -20,6 +20,10 @@
         <servlet-name>AdminDriversServlet</servlet-name>
         <servlet-class>com.AdminDriversServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateSelectionServlet</servlet-name>
+        <servlet-class>com.UpdateSelectionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -35,6 +39,10 @@
     <servlet-mapping>
         <servlet-name>AdminDriversServlet</servlet-name>
         <url-pattern>/AdminDriversServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSelectionServlet</servlet-name>
+        <url-pattern>/UpdateSelectionServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
