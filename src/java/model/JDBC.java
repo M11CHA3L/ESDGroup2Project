@@ -7,6 +7,7 @@ package model;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -31,6 +32,43 @@ public class JDBC {
             System.out.println(ex);
 
         }
+    }
+    
+    public String ToTable(String query)
+    {
+        String output = "";
+        ResultSetMetaData rsmd = null;
+        int columnCount = -1;
+        int rowCount = 0;
+        
+        select(query);
+        
+        output += "<P ALIGN='center'><TABLE BORDER=1>";
+        
+        try {
+            rsmd = rs.getMetaData();
+            columnCount = rsmd.getColumnCount();
+            
+            // table header
+            output +="<TR>";
+            for (int i = 0; i < columnCount; i++) {
+             output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
+              }
+            output += "</TR>";
+            // the data
+            while (rs.next()) {
+             output += "<TR>";
+             for (int i = 0; i < columnCount; i++) {
+               output += "<TD>" + rs.getString(i + 1) + "</TD>";
+               }
+             output += "</TR>";
+             }
+            output += "</TABLE></P>";
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return output;
     }
 
     public boolean userExists(String user) {
