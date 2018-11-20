@@ -64,15 +64,20 @@ public class CreateDemandServlet extends HttpServlet {
 
         } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) || !Pattern.matches(postCodeRegEx, currentAddress) || !Pattern.matches(postCodeRegEx, destinationAddress)) {
 
+            request.setAttribute("customerName", customerName);
+            
             if (!Pattern.matches(dateRegEx, dateRequired)) {
                 errorMessage += "incorrect date format,   ";
             }
+            
             if (!Pattern.matches(timeRegEx, timeRequired)) {
                 errorMessage += "incorrect time format,   ";
-            }            
+            } 
+            
             if (!Pattern.matches(postCodeRegEx, currentAddress)) {
                 errorMessage += "incorrect current postcode format,   ";
             }
+            
             if (!Pattern.matches(postCodeRegEx, destinationAddress)) {
                 errorMessage += "incorrect destination postcode format,   ";
             }
