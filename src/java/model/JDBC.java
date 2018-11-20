@@ -32,19 +32,7 @@ public class JDBC {
             System.out.println(ex);
 
         }
-    }
-    
-        private void insert(String query) {
-        try {
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-         
-
-        } catch (SQLException ex) {
-            System.out.println(ex);
-
-        }
-    }
+    }   
 
     public boolean userExists(String user) {
        
@@ -103,8 +91,7 @@ public class JDBC {
     }
 
     public void createDemand(String customerID, String timeRequired, String dateRequired, String destinationAddress, String currentAddress, String customerName) {
-        int ID = Integer.parseInt(customerID);
-        
+               
         String insertDemandSQL = "INSERT INTO DEMANDS" 
                               + "(CUSTOMER_ID, TIME, DATE, DESTINATION, ADDRESS, NAME, STATUS) VALUES"
                               + "(?,?,?,?,?,?,?)";

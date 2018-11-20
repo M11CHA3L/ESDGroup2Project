@@ -16,7 +16,7 @@ import model.JDBC;
  *
  * @author michaelcraddock
  */
-public class CreateBookingServlet extends HttpServlet {
+public class CreateDemandServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,8 +48,68 @@ public class CreateBookingServlet extends HttpServlet {
         try {
             dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
         } catch (SQLException ex) {
-            Logger.getLogger(CreateBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CreateDemandServlet.class.getName()).log(Level.SEVERE, null, ex);
         } 
+
+
+
+//        String errorMessage;
+//        // Check username was entered
+//        if (username.equals("")) {
+//            errorMessage = "No username Entered";
+//            request.setAttribute("errorMessage", errorMessage);
+//            request.getRequestDispatcher("/index.jsp").forward(request, response);
+//        }
+//
+//        // Check if password was entered
+//        if (password.equals("")) {
+//            errorMessage = "No password entered";
+//            request.setAttribute("errorMessage", errorMessage);
+//            request.getRequestDispatcher("/index.jsp").forward(request, response);
+//        }
+//
+//        // Check user exists
+//        if (dbBean.userExists(username)) {
+//            
+//            // Check password matches
+//            if (dbBean.passwordMatches(username, password)) {
+//                // If password matches send to welcome page
+//
+//                int user = 2;
+//
+//                try {
+//                    user = dbBean.getRole(username);
+//
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//
+//                switch (user) {
+//                    case 3:
+//                        session.setAttribute("userRole", "admin");
+//                        break;
+//                    case 2:
+//                        session.setAttribute("userRole", "driver");
+//                        break;
+//                    case 1:
+//                        session.setAttribute("userRole", "customer");
+//                        break;
+//                }
+//                request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+//
+//            } else {
+//                //password does not match, send to index.jsp with error message
+//                errorMessage = "Invalid password, please try again";
+//                request.setAttribute("errorMessage", errorMessage);
+//                request.getRequestDispatcher("/index.jsp").forward(request, response);
+//            }
+//
+//        } else {
+//            //user does not exist, send to index.jsp with error message
+//            errorMessage = "Invalid username, please try again";
+//            request.setAttribute("errorMessage", errorMessage);
+//            request.getRequestDispatcher("/index.jsp").forward(request, response);
+//        } 
 
 
 
