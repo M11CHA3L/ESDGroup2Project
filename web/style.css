@@ -1,0 +1,14 @@
+body{
+  text-align: left;
+  max-width: 1700px;
+  min-width: 600px;
+  width:70%;
+  padding: 15px;
+  background-color: #70E8F9;
+  color: #2A7690;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1{
+  text-align: center;
+}
