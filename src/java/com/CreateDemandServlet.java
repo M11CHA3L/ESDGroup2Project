@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,6 @@ public class CreateDemandServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -37,141 +37,56 @@ public class CreateDemandServlet extends HttpServlet {
         JDBC dbBean = new JDBC();
         dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
         session.setAttribute("dbbean", dbBean);
-        
+
         String customerName = request.getParameter("customerName");
         String currentAddress = request.getParameter("currentAddress");
         String destinationAddress = request.getParameter("destinationAddress");
         String dateRequired = request.getParameter("dateRequired");
         String timeRequired = request.getParameter("timeRequired");
-        String userName = (String)session.getAttribute("userName");
+        String userName = (String) session.getAttribute("userName");
+        String dateRegEx = "^\\d{4}-\\d{2}-\\d{2}$";
+        String timeRegEx = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
+        String postCodeRegEx = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
 
-        try {
-            dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
-        } catch (SQLException ex) {
-            Logger.getLogger(CreateDemandServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        String errorMessage = "";
+        //check all fields are complete
+        if (userName.equals("")
+                || timeRequired.equals("")
+                || dateRequired.equals("")
+                || destinationAddress.equals("")
+                || currentAddress.equals("")
+                || customerName.equals("")) {
+            
+            errorMessage = "Please complete all fields";            
+            request.setAttribute("errorMessage", errorMessage);
+            request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+            
 
+        } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) || !Pattern.matches(postCodeRegEx, currentAddress) || !Pattern.matches(postCodeRegEx, destinationAddress)) {
 
+            if (!Pattern.matches(dateRegEx, dateRequired)) {
+                errorMessage += "incorrect date format,   ";
+            }
+            if (!Pattern.matches(timeRegEx, timeRequired)) {
+                errorMessage += "incorrect time format,   ";
+            }            
+            if (!Pattern.matches(postCodeRegEx, currentAddress)) {
+                errorMessage += "incorrect current postcode format,   ";
+            }
+            if (!Pattern.matches(postCodeRegEx, destinationAddress)) {
+                errorMessage += "incorrect destination postcode format,   ";
+            }
+            
+            request.setAttribute("errorMessage", errorMessage);
+            request.getRequestDispatcher("/welcome.jsp").forward(request, response);
 
-//        String errorMessage;
-//        // Check username was entered
-//        if (username.equals("")) {
-//            errorMessage = "No username Entered";
-//            request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/index.jsp").forward(request, response);
-//        }
-//
-//        // Check if password was entered
-//        if (password.equals("")) {
-//            errorMessage = "No password entered";
-//            request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/index.jsp").forward(request, response);
-//        }
-//
-//        // Check user exists
-//        if (dbBean.userExists(username)) {
-//            
-//            // Check password matches
-//            if (dbBean.passwordMatches(username, password)) {
-//                // If password matches send to welcome page
-//
-//                int user = 2;
-//
-//                try {
-//                    user = dbBean.getRole(username);
-//
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//
-//                switch (user) {
-//                    case 3:
-//                        session.setAttribute("userRole", "admin");
-//                        break;
-//                    case 2:
-//                        session.setAttribute("userRole", "driver");
-//                        break;
-//                    case 1:
-//                        session.setAttribute("userRole", "customer");
-//                        break;
-//                }
-//                request.getRequestDispatcher("/welcome.jsp").forward(request, response);
-//
-//            } else {
-//                //password does not match, send to index.jsp with error message
-//                errorMessage = "Invalid password, please try again";
-//                request.setAttribute("errorMessage", errorMessage);
-//                request.getRequestDispatcher("/index.jsp").forward(request, response);
-//            }
-//
-//        } else {
-//            //user does not exist, send to index.jsp with error message
-//            errorMessage = "Invalid username, please try again";
-//            request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/index.jsp").forward(request, response);
-//        } 
-
-
-
-//        String errorMessage;
-//        // Check username was entered
-//        if (username.equals("")) {
-//            errorMessage = "No username Entered";
-//            request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/index.jsp").forward(request, response);
-//        }
-//
-//        // Check if password was entered
-//        if (password.equals("")) {
-//            errorMessage = "No password entered";
-//            request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/index.jsp").forward(request, response);
-//        }
-//
-//        // Check user exists
-//        if (dbBean.userExists(username)) {
-//            
-//            // Check password matches
-//            if (dbBean.passwordMatches(username, password)) {
-//                // If password matches send to welcome page
-//
-//                int user = 2;
-//
-//                try {
-//                    user = dbBean.getRole(username);
-//
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//
-//                switch (user) {
-//                    case 3:
-//                        session.setAttribute("userRole", "admin");
-//                        break;
-//                    case 2:
-//                        session.setAttribute("userRole", "driver");
-//                        break;
-//                    case 1:
-//                        session.setAttribute("userRole", "customer");
-//                        break;
-//                }
-//                request.getRequestDispatcher("/welcome.jsp").forward(request, response);
-//
-//            } else {
-//                //password does not match, send to index.jsp with error message
-//                errorMessage = "Invalid password, please try again";
-//                request.setAttribute("errorMessage", errorMessage);
-//                request.getRequestDispatcher("/index.jsp").forward(request, response);
-//            }
-//
-//        } else {
-//            //user does not exist, send to index.jsp with error message
-//            errorMessage = "Invalid username, please try again";
-//            request.setAttribute("errorMessage", errorMessage);
-//            request.getRequestDispatcher("/index.jsp").forward(request, response);
-//        }
-
-
+        } else {
+            try {
+                dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
+            } catch (SQLException ex) {
+                Logger.getLogger(CreateDemandServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
     }
 
