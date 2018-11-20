@@ -6,6 +6,7 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -101,10 +102,27 @@ public class JDBC {
         return id;
     }
 
-    public void createDemand(String customerID, String timeRequired, String dateRequired, String destinationAddress, String currentAddress, String name) {
+    public void createDemand(String customerID, String timeRequired, String dateRequired, String destinationAddress, String currentAddress, String customerName) {
         int ID = Integer.parseInt(customerID);
         
-        insert("INSERT INTO DEMANDS (CUSTOMER_ID, TIME, DATE, DESTINATION, ADDRESS, NAME) VALUES ('" + ID + "','"+ timeRequired + "','" + dateRequired + "','"+ destinationAddress + "','" + currentAddress + "','" + name +"')");
+        String insertDemandSQL = "INSERT INTO DEMANDS" 
+                              + "(CUSTOMER_ID, DESTINATION, ADDRESS, NAME) VALUES"
+                              + "(?,?,?,?)";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(insertDemandSQL);
+            preparedStatement.setString(1, customerID);
+//            preparedStatement.setString(2, timeRequired);
+//            preparedStatement.setString(3, dateRequired);
+            preparedStatement.setString(2, destinationAddress);
+            preparedStatement.setString(3, currentAddress);
+            preparedStatement.setString(4, customerName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         
     }
     
 }
