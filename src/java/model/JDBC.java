@@ -106,17 +106,18 @@ public class JDBC {
         int ID = Integer.parseInt(customerID);
         
         String insertDemandSQL = "INSERT INTO DEMANDS" 
-                              + "(CUSTOMER_ID, DESTINATION, ADDRESS, NAME) VALUES"
-                              + "(?,?,?,?)";
+                              + "(CUSTOMER_ID, TIME, DATE, DESTINATION, ADDRESS, NAME, STATUS) VALUES"
+                              + "(?,?,?,?,?,?,?)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(insertDemandSQL);
             preparedStatement.setString(1, customerID);
-//            preparedStatement.setString(2, timeRequired);
-//            preparedStatement.setString(3, dateRequired);
-            preparedStatement.setString(2, destinationAddress);
-            preparedStatement.setString(3, currentAddress);
-            preparedStatement.setString(4, customerName);
+            preparedStatement.setString(2, timeRequired);
+            preparedStatement.setString(3, dateRequired);
+            preparedStatement.setString(4, destinationAddress);
+            preparedStatement.setString(5, currentAddress);
+            preparedStatement.setString(6, customerName);
+            preparedStatement.setString(7, "outstanding");
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);

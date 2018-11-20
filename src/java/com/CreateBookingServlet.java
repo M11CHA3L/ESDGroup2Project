@@ -44,11 +44,7 @@ public class CreateBookingServlet extends HttpServlet {
         String dateRequired = request.getParameter("dateRequired");
         String timeRequired = request.getParameter("timeRequired");
         String userName = (String)session.getAttribute("userName");
-        try {
-            System.out.println(dbBean.getCustomerID(userName));
-        } catch (SQLException ex) {
-            Logger.getLogger(CreateBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         try {
             dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
         } catch (SQLException ex) {
