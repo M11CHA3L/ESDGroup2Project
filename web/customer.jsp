@@ -17,7 +17,10 @@ Welcome customer<br><br>
       <%
         if (request.getAttribute("errorMessage") != null) {
             out.print((String) request.getAttribute("errorMessage"));
+        }else if(request.getAttribute("message") != null){
+            out.print((String) request.getAttribute("message"));
         }
+        
     %> 
 <br>
    

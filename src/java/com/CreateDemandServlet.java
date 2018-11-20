@@ -34,7 +34,7 @@ public class CreateDemandServlet extends HttpServlet {
         HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
-        JDBC dbBean = new JDBC();
+        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
         dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
         session.setAttribute("dbbean", dbBean);
 
@@ -83,6 +83,8 @@ public class CreateDemandServlet extends HttpServlet {
         } else {
             try {
                 dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
+                request.setAttribute("message", "Request Sent!");
+                request.getRequestDispatcher("/welcome.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(CreateDemandServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
