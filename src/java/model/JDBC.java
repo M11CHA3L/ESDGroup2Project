@@ -32,6 +32,18 @@ public class JDBC {
 
         }
     }
+    
+        private void insert(String query) {
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+         
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+
+        }
+    }
 
     public boolean userExists(String user) {
        
@@ -76,5 +88,23 @@ public class JDBC {
             System.out.println("connection failed");
         }
     }
+    
+    public String getCustomerID(String userName) throws SQLException {
+       
+         String id = "";
 
+        select("select ID from CUSTOMERS where USERNAME='" + userName + "'");
+        while (rs.next()) {
+            id = rs.getString("ID");
+        }
+
+        return id;
+    }
+
+    public void createDemand(String customerID, String timeRequired, String dateRequired, String destinationAddress, String currentAddress, String name) {
+        int ID = Integer.parseInt(customerID);
+        
+        insert("INSERT INTO DEMANDS (CUSTOMER_ID, TIME, DATE, DESTINATION, ADDRESS, NAME) VALUES ('" + ID + "','"+ timeRequired + "','" + dateRequired + "','"+ destinationAddress + "','" + currentAddress + "','" + name +"')");
+    }
+    
 }

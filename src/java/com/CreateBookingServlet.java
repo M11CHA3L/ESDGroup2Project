@@ -34,14 +34,25 @@ public class CreateBookingServlet extends HttpServlet {
         HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
-        JDBC dbBean = (JDBC)session.getAttribute("dbBean");
+        JDBC dbBean = new JDBC();
+        dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
+        session.setAttribute("dbbean", dbBean);
         
+        String customerName = request.getParameter("ustomerName");
         String currentAddress = request.getParameter("currentAddress");
         String destinationAddress = request.getParameter("destinationAddress");
-        
-        System.out.println(currentAddress);
-        System.out.println(destinationAddress);
-        
+        String dateRequired = request.getParameter("dateRequired");
+        String timeRequired = request.getParameter("timeRequired");
+        String userName = (String)session.getAttribute("userName");
+              
+        try {
+            dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
+        } catch (SQLException ex) {
+            Logger.getLogger(CreateBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+
+
+
 //        String errorMessage;
 //        // Check username was entered
 //        if (username.equals("")) {
@@ -99,6 +110,8 @@ public class CreateBookingServlet extends HttpServlet {
 //            request.setAttribute("errorMessage", errorMessage);
 //            request.getRequestDispatcher("/index.jsp").forward(request, response);
 //        }
+
+
 
     }
 
