@@ -6,6 +6,7 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -36,7 +37,10 @@ public class JDBC {
             System.out.println(ex);
 
         }
-    }
+
+    }   
+
+    
     
     public HashMap<String, String> GetRowByColumnName(String query)
     {
@@ -143,6 +147,7 @@ public class JDBC {
         return output;
     }
 
+
     public boolean userExists(String user) {
        
         try {
@@ -186,5 +191,40 @@ public class JDBC {
             System.out.println("connection failed");
         }
     }
+    
+    public String getCustomerID(String userName) throws SQLException {
+       
+         String id = "";
 
+        select("select ID from CUSTOMERS where USERNAME='" + userName + "'");
+        while (rs.next()) {
+            id = rs.getString("ID");
+        }
+
+        return id;
+    }
+
+    public void createDemand(String customerID, String timeRequired, String dateRequired, String destinationAddress, String currentAddress, String customerName) {
+               
+        String insertDemandSQL = "INSERT INTO DEMANDS" 
+                              + "(CUSTOMER_ID, TIME, DATE, DESTINATION, ADDRESS, NAME, STATUS) VALUES"
+                              + "(?,?,?,?,?,?,?)";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(insertDemandSQL);
+            preparedStatement.setString(1, customerID);
+            preparedStatement.setString(2, timeRequired);
+            preparedStatement.setString(3, dateRequired);
+            preparedStatement.setString(4, destinationAddress);
+            preparedStatement.setString(5, currentAddress);
+            preparedStatement.setString(6, customerName);
+            preparedStatement.setString(7, "outstanding");
+            preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         
+    }
 }
+

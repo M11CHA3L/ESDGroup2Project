@@ -82,7 +82,10 @@ public class LoginServlet extends HttpServlet {
                     case 1:
                         session.setAttribute("userRole", "customer");
                         break;
+                        
                 }
+                //set username session attribute
+                session.setAttribute("userName", username);
                 request.getRequestDispatcher("/welcome.jsp").forward(request, response);
 
             } else {
