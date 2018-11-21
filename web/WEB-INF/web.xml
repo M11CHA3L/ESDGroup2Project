@@ -17,18 +17,24 @@
         <servlet-class>com.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>CreateDemandServlet</servlet-name>
         <servlet-class>com.CreateDemandServlet</servlet-class>
-</servlet>
-<servlet>
+    </servlet>
+    <servlet>
         <servlet-name>AdminDriversServlet</servlet-name>
         <servlet-class>com.AdminDriversServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateSelectionServlet</servlet-name>
         <servlet-class>com.UpdateSelectionServlet</servlet-class>
-
+    </servlet>
+    <servlet>
+        <servlet-name>AdminBookingServlet</servlet-name>
+        <servlet-class>com.AdminDriverServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminResultsServlet</servlet-name>
+        <servlet-class>com.AdminResultsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -43,10 +49,9 @@
         <url-pattern>/logout.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
         <servlet-name>CreateDemandServlet</servlet-name>
         <url-pattern>/createDemand.do</url-pattern>
-</servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminDriversServlet</servlet-name>
         <url-pattern>/AdminDriversServlet</url-pattern>
@@ -54,7 +59,14 @@
     <servlet-mapping>
         <servlet-name>UpdateSelectionServlet</servlet-name>
         <url-pattern>/UpdateSelectionServlet.do</url-pattern>
-
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminBookingServlet</servlet-name>
+        <url-pattern>/bookings.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminResultsServlet</servlet-name>
+        <url-pattern>/results.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -6,11 +6,13 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -38,66 +40,60 @@ public class JDBC {
 
         }
 
-    }   
+    }
 
-    
-    
-    public HashMap<String, String> GetRowByColumnName(String query)
-    {
+    public HashMap<String, String> GetRowByColumnName(String query) {
         HashMap<String, String> columns = new HashMap<>();
         select(query);
         ResultSetMetaData rsmd;
-        
+
         try {
             rsmd = rs.getMetaData();
             rs.next();
-            for (int i = 1; i <= rsmd.getColumnCount(); i++)
-            {
+            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                 columns.put(rsmd.getColumnName(i), rs.getString(i));
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
         return columns;
     }
-    
+
     /**
      *
      * @param query
      * @param editable
      * @return
      */
-    public String ToTable(String query)
-    {
+    public String ToTable(String query) {
         String output = "";
         ResultSetMetaData rsmd = null;
         int columnCount = -1;
         int rowCount = 0;
-        
+
         select(query);
-        
+
         output += "<P ALIGN='center'><TABLE BORDER=1>";
-        
+
         try {
             rsmd = rs.getMetaData();
             columnCount = rsmd.getColumnCount();
-            
+
             // table header
-            output +="<TR>";
+            output += "<TR>";
             for (int i = 0; i < columnCount; i++) {
-             output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
-              }
+                output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
+            }
             output += "</TR>";
             // the data
             while (rs.next()) {
-             output += "<TR>";
-             for (int i = 0; i < columnCount; i++) {
-               output += "<TD>" + rs.getString(i + 1) + "</TD>";
-               }
-             output += "</TR>";
-             }
+                output += "<TR>";
+                for (int i = 0; i < columnCount; i++) {
+                    output += "<TD>" + rs.getString(i + 1) + "</TD>";
+                }
+                output += "</TR>";
+            }
             output += "</TABLE></P>";
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,40 +101,39 @@ public class JDBC {
 
         return output;
     }
-    
-        public String ToEditTable(String query, String KeyColumn, String TableName)
-    {
+
+    public String ToEditTable(String query, String KeyColumn, String TableName) {
         String output = "";
         ResultSetMetaData rsmd = null;
         int columnCount = -1;
         int rowCount = 0;
-        
+
         select(query);
-        
+
         output += "<form method=\"POST\" id=\"myForm\" action=\"UpdateSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form><P ALIGN='center'><TABLE BORDER=1>";
-        
+
         try {
             rsmd = rs.getMetaData();
             columnCount = rsmd.getColumnCount();
-            
+
             // table header
-            output +="<TR>";
+            output += "<TR>";
             for (int i = 0; i < columnCount; i++) {
-             output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
-              }
+                output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
+            }
             output += "</TR>";
             // the data
             while (rs.next()) {
-             output += "<TR>";
-             for (int i = 0; i < columnCount; i++) {
-               output += "<TD>" + rs.getString(i + 1) + "</TD>";
-               }
-             output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"myForm\" >EDIT</button></TD>",rs.getString(rs.findColumn(KeyColumn)));
-             output += "</TR>";
-             
-             }
+                output += "<TR>";
+                for (int i = 0; i < columnCount; i++) {
+                    output += "<TD>" + rs.getString(i + 1) + "</TD>";
+                }
+                output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"myForm\" >EDIT</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
+                output += "</TR>";
+
+            }
             output += "</TABLE></P>";
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
@@ -147,9 +142,8 @@ public class JDBC {
         return output;
     }
 
-
     public boolean userExists(String user) {
-       
+
         try {
             select("select username from users where username='" + user + "'");
             if (rs.next()) {
@@ -191,10 +185,10 @@ public class JDBC {
             System.out.println("connection failed");
         }
     }
-    
+
     public String getCustomerID(String userName) throws SQLException {
-       
-         String id = "";
+
+        String id = "";
 
         select("select ID from CUSTOMERS where USERNAME='" + userName + "'");
         while (rs.next()) {
@@ -204,12 +198,103 @@ public class JDBC {
         return id;
     }
 
+    public String getDrivers() {
+        String s = "";
+        ResultSetMetaData rsmd = null;
+
+        select("select * from drivers");
+
+        s += "<form method=\"post\" action=\"results.do\">";
+
+        try {
+            while (rs.next()) {
+
+                s += rs.getString("name") + "<input type='radio' name='driver' value='" + rs.getString("name") + "'><br>";
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        String date = simpleDateFormat.format(new java.util.Date());
+        s += "<input type='date' name='date' value='" + date + "'><br><input type='submit' name='action' value='Get Journeys'>"
+                + "<input type='submit' name='action' value='Get Turnover'></form>";
+
+        return s;
+    }
+
+    public String getJourneys(String name, String date) {
+        String s = "";
+        String registration = null;
+        ResultSetMetaData rsmd = null;
+
+        select("select * from drivers where name='" + name + "'");
+
+        try {
+            while (rs.next()) {
+                registration = rs.getString("registration");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        select("select * from journey where registration='" + registration + "' and date='" + date + "'");
+
+        try {
+            s += "<table border='4'>";
+            s += "<tr>";
+            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                s += "<th>" + rs.getMetaData().getColumnName(i) + "</th>";
+            }
+            s += "</tr>";
+            while (rs.next()) {
+                s += "<tr>";
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    s += "<td>" + rs.getString(i) + "</td>";
+                }
+                s += "</tr>";
+            }
+            s += "</table>";
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return s;
+    }
+
+    public int getTurnover(String name, String date) {
+        String registration = "";
+       int turnover = 0;
+        select("select * from drivers where name='" + name + "'");
+
+        try {
+            while (rs.next()) {
+                registration = rs.getString("registration");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        select("select * from journey where registration='" + registration + "' and date='" + date + "'");
+
+        try {
+            while (rs.next()) {
+                turnover += rs.getInt("distance") * 2;
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return turnover;
+    }
+
     public void createDemand(String customerID, String timeRequired, String dateRequired, String destinationAddress, String currentAddress, String customerName) {
-               
-        String insertDemandSQL = "INSERT INTO DEMANDS" 
-                              + "(CUSTOMER_ID, TIME, DATE, DESTINATION, ADDRESS, NAME, STATUS) VALUES"
-                              + "(?,?,?,?,?,?,?)";
-        
+
+        String insertDemandSQL = "INSERT INTO DEMANDS"
+                + "(CUSTOMER_ID, TIME, DATE, DESTINATION, ADDRESS, NAME, STATUS) VALUES"
+                + "(?,?,?,?,?,?,?)";
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(insertDemandSQL);
             preparedStatement.setString(1, customerID);
@@ -220,11 +305,11 @@ public class JDBC {
             preparedStatement.setString(6, customerName);
             preparedStatement.setString(7, "outstanding");
             preparedStatement.executeUpdate();
+
         } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
-        
-         
+
     }
 }
-
