@@ -38,9 +38,7 @@ public class UpdateSelectionServlet extends HttpServlet {
                         HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
-        JDBC dbBean = new JDBC();
-        dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
-        session.setAttribute("dbbean", dbBean);
+        JDBC dbBean = (JDBC)request.getAttribute("dbbean");
         
         String rowValue = request.getParameter("editChoice");
         String tableName = request.getParameter("tableName");

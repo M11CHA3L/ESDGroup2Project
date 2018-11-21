@@ -41,6 +41,12 @@ public class JDBC {
         }
 
     }
+    
+    public void DeleteRowFromTable(String tableName, String columnName, String columnValue)
+    {
+        String deleteRequest = String.format("DELETE FROM %s WHERE %s = '%s'", tableName, columnName, columnValue);
+        select(deleteRequest);
+    }
 
     public HashMap<String, String> GetRowByColumnName(String query) {
         HashMap<String, String> columns = new HashMap<>();
@@ -110,9 +116,17 @@ public class JDBC {
 
         select(query);
 
-        output += "<form method=\"POST\" id=\"myForm\" action=\"UpdateSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
+        // Form for EDIT a row
+        output += "<form method=\"POST\" id=\"editForm\" action=\"UpdateSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
-                + "\"></form><P ALIGN='center'><TABLE BORDER=1>";
+                + "\"></form>";
+        
+        // Form for DELETE a row
+        output += "<form method=\"POST\" id=\"deleteForm\" action=\"DeleteSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
+                + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
+                + "\"></form>";
+        
+        output += "<P ALIGN='center'><TABLE BORDER=1>";
 
         try {
             rsmd = rs.getMetaData();
@@ -130,7 +144,8 @@ public class JDBC {
                 for (int i = 0; i < columnCount; i++) {
                     output += "<TD>" + rs.getString(i + 1) + "</TD>";
                 }
-                output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"myForm\" >EDIT</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
+                output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"editForm\" >EDIT</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
+                output += String.format("<TD><button name=\"deleteChoice\" value=\"%s\" form=\"deleteForm\" >DELETE</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
                 output += "</TR>";
 
             }
