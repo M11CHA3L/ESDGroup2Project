@@ -1,41 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.JDBC;
 
-/**
- *
- * @author patin_000
- */
-public class AdminDriversServlet extends HttpServlet {
+public class AdminResultsServlet extends HttpServlet {
 
-   
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
+        
+        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
+        
+        String drivername = request.getParameter("driver");
+        String date = request.getParameter("date");
+        
+        if (request.getParameter("action").equals("Get Journeys")) {
+            String journeys = dbBean.getJourneys(drivername, date);
 
-        JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
+            request.setAttribute("result", journeys);
+
+            request.getRequestDispatcher("/results.jsp").forward(request, response);
+
+        }else if (request.getParameter("action").equals("Get Turnover")) {
+            int turnover = dbBean.getTurnover(drivername, date);
+             request.setAttribute("result", turnover);
+
+            request.getRequestDispatcher("/results.jsp").forward(request, response);
+        }
        
-        
-        String drivers = dbBean.ToEditTable("select NAME, REGISTRATION from Drivers", "Name", "Drivers");
-        session.setAttribute("drivers", drivers);
-        
-        request.getRequestDispatcher("/adminViewDrivers.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

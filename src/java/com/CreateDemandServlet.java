@@ -35,9 +35,7 @@ public class CreateDemandServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
-        dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
-        session.setAttribute("dbbean", dbBean);
-
+       
         String customerName = request.getParameter("customerName");
         String currentAddress = request.getParameter("currentAddress");
         String destinationAddress = request.getParameter("destinationAddress");
