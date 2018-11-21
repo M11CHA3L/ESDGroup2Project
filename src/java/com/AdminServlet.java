@@ -37,14 +37,22 @@ public class AdminServlet extends HttpServlet {
         
         String option = request.getParameter("adminOption");
         
+        if(option == null)
+        {
+            option = (String)request.getAttribute("adminOption");
+        }
+        
         switch(option)
         {
             case "View Drivers":
+                request.getSession().setAttribute("driverOrCustomer", "driver");
+                
                 String s = dbBean.ToEditTable("Select * from DRIVERS", "NAME", "DRIVERS");
                 request.setAttribute("drivers", s);
                 request.getRequestDispatcher("/adminViewDrivers.jsp").forward(request, response);
                 break;
             case "View Customers":
+                request.getSession().setAttribute("driverOrCustomer", "customer");
                 
                 break;
             case "View Driver Availability":

@@ -30,11 +30,19 @@
     </servlet>
     <servlet>
         <servlet-name>AdminBookingServlet</servlet-name>
-        <servlet-class>com.AdminDriverServlet</servlet-class>
+        <servlet-class>com.AdminServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminResultsServlet</servlet-name>
         <servlet-class>com.AdminResultsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.AdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSelectionServlet</servlet-name>
+        <servlet-class>com.DeleteSelectionServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -67,6 +75,14 @@
     <servlet-mapping>
         <servlet-name>AdminResultsServlet</servlet-name>
         <url-pattern>/results.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/AdminServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSelectionServlet</servlet-name>
+        <url-pattern>/DeleteSelectionServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

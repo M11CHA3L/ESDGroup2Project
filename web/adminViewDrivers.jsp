@@ -8,9 +8,14 @@
         </head>
         <body>
         <a href="driver.jsp">Back</a><br>
-       View Drivers
+        View Drivers<br>
        <%
-           String drivers = (String)session.getAttribute("drivers");
+           String drivers = (String)request.getAttribute("drivers");
            out.print(drivers);
        %>
+        <br>
+        <form method="POST" action="AddRowServlet">
+            <input type="submit" name="addOption" value="Add Driver"><br>
+        </form>
+       
         </body>
