@@ -2,7 +2,8 @@
                 response.sendRedirect("index.jsp");
             } 
         %>
-        
+             <link rel="stylesheet" type="text/css" href="style.css">
+             
              Welcome Admin<br><br>
              
             <form method="POST" action="AdminServlet">
@@ -12,3 +13,7 @@
                 <input type="submit" name="adminOption" value ="View Turnover"><br>
                 <input type="submit" name="adminOption" value ="View Bookings"><br>
             </form>
+
+             <a href="createCustomer.jsp" class='button'>Create Customer</a>
+             <br><br>
+             <a href="createDriver.jsp" class ='button'>Create Driver</a>
