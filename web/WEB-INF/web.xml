@@ -44,6 +44,10 @@
         <servlet-name>DeleteSelectionServlet</servlet-name>
         <servlet-class>com.DeleteSelectionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>driverServlet</servlet-name>
+        <servlet-class>com.driverServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -83,6 +87,10 @@
     <servlet-mapping>
         <servlet-name>DeleteSelectionServlet</servlet-name>
         <url-pattern>/DeleteSelectionServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>driverServlet</servlet-name>
+        <url-pattern>/driver.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

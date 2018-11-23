@@ -6,17 +6,14 @@
 package model;
 
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,9 +38,38 @@ public class JDBC {
         }
 
     }
-    
-    public void DeleteRowFromTable(String tableName, String columnName, String columnValue)
-    {
+
+    public String getDriverJobs(String username, String date) {
+        String s = "";
+        String registration = "";
+        select("select * from drivers where username='" + username + "'");
+
+        try {
+
+            while (rs.next()) {
+                registration = rs.getString("registration");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        select("select * from journey where registration='" + registration + "' and date='" + date + "'");
+
+        try {
+            while (rs.next()){
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                    s += rs.getString(i+1);
+                }
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return s;
+    }
+
+    public void DeleteRowFromTable(String tableName, String columnName, String columnValue) {
         String deleteRequest = String.format("DELETE FROM %s WHERE %s = '%s'", tableName, columnName, columnValue);
         select(deleteRequest);
     }
@@ -120,12 +146,12 @@ public class JDBC {
         output += "<form method=\"POST\" id=\"editForm\" action=\"UpdateSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form>";
-        
+
         // Form for DELETE a row
         output += "<form method=\"POST\" id=\"deleteForm\" action=\"DeleteSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form>";
-        
+
         output += "<P ALIGN='center'><TABLE BORDER=1>";
 
         try {
@@ -280,7 +306,7 @@ public class JDBC {
 
     public int getTurnover(String name, String date) {
         String registration = "";
-       int turnover = 0;
+        int turnover = 0;
         select("select * from drivers where name='" + name + "'");
 
         try {
@@ -295,7 +321,7 @@ public class JDBC {
         try {
             while (rs.next()) {
                 turnover += rs.getInt("distance") * 2;
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);

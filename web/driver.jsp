@@ -5,5 +5,7 @@
 
         Welcome driver<br><br>
 
-        <a href="">View jobs</a><br>
-
+        <form method="post" action="driver.do">
+            <input type="date" name="date">
+            <input type="submit" name="Get Jobs">
+        </form>
