@@ -19,10 +19,22 @@ public class DriverServlet extends HttpServlet {
         HttpSession session = request.getSession();
         JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
 
+        //if complete button selected update selected job to complete
+        String complete = request.getParameter("complete");
+        if(complete != null){
+            String updated;
+            updated = dbBean.update("UPDATE DEMANDS SET STATUS = 'COMPLETE' WHERE ID = " + request.getParameter("selectedJob"));
+            //if update does nothing (returns empty string) return nothing
+            if (!"".equals(updated)){
+                request.setAttribute("updated", updated);
+            }
+            
+        } 
+        
         String jobs = dbBean.getDriverJobs((String) session.getAttribute("userName"));
-
         request.setAttribute("jobs", jobs);
         request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

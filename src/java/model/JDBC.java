@@ -214,12 +214,12 @@ public class JDBC {
     }
     
     public String getDriverJobs(String username) {
-        String s = "<form method=\"post\" action=\"driver.do\">";
+        String s = "";
         String registration = "";
+        
+        //get registration of logged in user
         select("select * from drivers where username='" + username + "'");
-
         try {
-
             while (rs.next()) {
                 registration = rs.getString("registration");
             }
@@ -228,20 +228,22 @@ public class JDBC {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //select("select * from journey where registration='" + registration + "'");
+        //get driver jobs
         select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME FROM JOURNEY INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID WHERE JOURNEY.REGISTRATION = '" + registration + "' AND DEMANDS.STATUS != 'COMPLETE'");
         try {
+            s = "<form method=\"post\" action=\"driver.do\">";
             while (rs.next()){
-                s += "CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS") 
+                s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS") 
                         + "<br>Customer Destination: " + rs.getString("DESTINATION") 
                         + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
-                        + "<br><input type='submit' value='Complete' name='" + rs.getString("ID") + "'><br>";
+                        + "<br>";
                 
             }
+            s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-            s += "</form><br>";
+            
             return s;
     }
 
@@ -360,14 +362,17 @@ public class JDBC {
 
     }
     
-    public void update(String statement){
+    //update table with statement
+    public String update(String statement){
+        String s = "";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.executeUpdate();
-
+            s = "Updated";
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+        return s;
     }
 }
