@@ -214,7 +214,7 @@ public class JDBC {
     }
     
     public String getDriverJobs(String username) {
-        String s = "";
+        String s = "<form method=\"post\" action=\"driver.do\">";
         String registration = "";
         select("select * from drivers where username='" + username + "'");
 
@@ -229,17 +229,19 @@ public class JDBC {
         }
 
         //select("select * from journey where registration='" + registration + "'");
-        select("SELECT DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME FROM JOURNEY INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID WHERE JOURNEY.REGISTRATION = '" + registration + "' AND DEMANDS.STATUS != 'COMPLETE'");
+        select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME FROM JOURNEY INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID WHERE JOURNEY.REGISTRATION = '" + registration + "' AND DEMANDS.STATUS != 'COMPLETE'");
         try {
             while (rs.next()){
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                    s += rs.getString(i+1);
-                }
+                s += "CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS") 
+                        + "<br>Customer Destination: " + rs.getString("DESTINATION") 
+                        + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
+                        + "<br><input type='submit' value='Complete' name='" + rs.getString("ID") + "'><br>";
                 
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
+            s += "</form><br>";
             return s;
     }
 
@@ -356,5 +358,16 @@ public class JDBC {
                     .getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    public void update(String statement){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
