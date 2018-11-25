@@ -90,7 +90,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DriverServlet</servlet-name>
-        <url-pattern>/DriverServlet.do</url-pattern>
+        <url-pattern>/driver.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

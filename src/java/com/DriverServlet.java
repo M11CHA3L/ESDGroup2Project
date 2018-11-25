@@ -19,10 +19,10 @@ public class DriverServlet extends HttpServlet {
         HttpSession session = request.getSession();
         JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
 
-        String jobs = dbBean.getDriverJobs((String) session.getAttribute("username"), (String) request.getAttribute("date"));
+        String jobs = dbBean.getDriverJobs((String) session.getAttribute("userName"));
 
         request.setAttribute("jobs", jobs);
-        request.getRequestDispatcher("/driver.jsp").forward(request, response);
+        request.getRequestDispatcher("/welcome.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

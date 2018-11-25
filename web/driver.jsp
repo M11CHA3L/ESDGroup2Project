@@ -5,8 +5,12 @@
 
 Welcome driver<br><br>
 
-<form method="post" action="driver.do">
-    <input type="date" name="date">
-    <input type="submit" name="Get Jobs">
-</form>
+<% 
+    if(request.getAttribute("jobs") != null){
+    out.println(request.getAttribute("jobs"));
+    }
+%>
 
+<form method="post" action="driver.do">
+    <input type="submit" value="Get New Jobs" name="Get Jobs">
+</form>

@@ -212,6 +212,36 @@ public class JDBC {
 
         return id;
     }
+    
+    public String getDriverJobs(String username) {
+        String s = "";
+        String registration = "";
+        select("select * from drivers where username='" + username + "'");
+
+        try {
+
+            while (rs.next()) {
+                registration = rs.getString("registration");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //select("select * from journey where registration='" + registration + "'");
+        select("SELECT DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME FROM JOURNEY INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID WHERE JOURNEY.REGISTRATION = '" + registration + "' AND DEMANDS.STATUS != 'COMPLETE'");
+        try {
+            while (rs.next()){
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                    s += rs.getString(i+1);
+                }
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return s;
+    }
 
     public String getDrivers() {
         String s = "";
