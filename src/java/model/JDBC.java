@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,8 +45,26 @@ public class JDBC {
     
     public void DeleteRowFromTable(String tableName, String columnName, String columnValue)
     {
+        if (tableName.equals("DRIVERS"))
+        {
+            update("ALTER TABLE DRIVERS DROP CONSTRAINT DRIVER_FK");
+        }
+        else if (tableName.equals("CUSTOMERS"))
+        {
+            update("ALTER TABLE CUSTOMERS DROP CONSTRAINT CUSTOMER_FK");
+        }
+                
         String deleteRequest = String.format("DELETE FROM %s WHERE %s = '%s'", tableName, columnName, columnValue);
-        select(deleteRequest);
+        update(deleteRequest);
+        
+        if (tableName.equals("DRIVERS"))
+        {
+            update("ALTER TABLE DRIVERS ADD CONSTRAINT DRIVER_FK FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME)");
+        }
+        else if (tableName.equals("CUSTOMERS"))
+        {
+            update("ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_FK FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME)");
+        }
     }
 
     public HashMap<String, String> GetRowByColumnName(String query) {
@@ -64,6 +83,61 @@ public class JDBC {
         }
 
         return columns;
+    }
+    
+    public void UpdateRowByColumnName(HashMap<String, String> newValues, String tableName, String whereColumn, String whereValue) {
+        
+        if (tableName.equals("DRIVERS"))
+        {
+            update("ALTER TABLE DRIVERS DROP CONSTRAINT DRIVER_FK");
+        }
+        else if (tableName.equals("CUSTOMERS"))
+        {
+            update("ALTER TABLE CUSTOMERS DROP CONSTRAINT CUSTOMER_FK");
+        }
+        
+        String query = "UPDATE " + tableName + " SET ";
+        
+        int numberOfColumns = newValues.entrySet().size();
+        
+        int counter = 1;
+        for(Map.Entry<String, String> entry: newValues.entrySet())
+        {
+            String columnName = entry.getKey();
+            String columnValue = entry.getValue();
+            
+            if (counter == numberOfColumns)
+            {
+                if (columnName.equals("ID"))
+                {
+                    query += " WHERE " + whereColumn + " = '" + whereValue + "'";
+                }
+                else
+                {
+                    query += columnName + " = '" + columnValue + "' WHERE " + whereColumn + " = '" + whereValue + "'";
+                }
+            }
+            else if (columnName.equals("ID"))
+            {
+                //DO nothing
+            }
+            else
+            {
+                query += columnName + " = '" + columnValue + "', ";
+            }
+            counter++;
+        }
+        
+        update(query);
+        
+        if (tableName.equals("DRIVERS"))
+        {
+            update("ALTER TABLE DRIVERS ADD CONSTRAINT DRIVER_FK FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME)");
+        }
+        else if (tableName.equals("CUSTOMERS"))
+        {
+            update("ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_FK FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME)");
+        }
     }
 
     /**

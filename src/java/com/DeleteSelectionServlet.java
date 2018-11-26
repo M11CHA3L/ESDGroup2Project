@@ -49,7 +49,7 @@ public class DeleteSelectionServlet extends HttpServlet {
         else if (deleteChoice.equals("YES"))
         {
             
-            dbBean.DeleteRowFromTable(USERS, columnName, columnValue);
+            dbBean.DeleteRowFromTable(tableName, columnName, columnValue);
             
             if(driverOrCustomer == "driver")
             {
@@ -59,7 +59,7 @@ public class DeleteSelectionServlet extends HttpServlet {
             else if(driverOrCustomer == "customer")
             {
                 request.setAttribute("adminOption", "View Customers");
-                request.getRequestDispatcher("/adminViewCustomers.jsp").forward(request, response);
+                request.getRequestDispatcher("/AdminServlet.jsp").forward(request, response);
             }
         }
         else if (deleteChoice.equals("NO"))
@@ -73,7 +73,7 @@ public class DeleteSelectionServlet extends HttpServlet {
             else if(driverOrCustomer == "customer")
             {
                 request.setAttribute("adminOption", "View Customers");
-                request.getRequestDispatcher("/adminViewCustomers.jsp").forward(request, response);
+                request.getRequestDispatcher("/AdminServlet.jsp").forward(request, response);
             }
         }
 
