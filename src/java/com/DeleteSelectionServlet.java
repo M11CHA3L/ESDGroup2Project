@@ -33,14 +33,14 @@ public class DeleteSelectionServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        JDBC dbBean = (JDBC)request.getAttribute("dbbean");
+        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
         
         String driverOrCustomer = (String)request.getSession().getAttribute("driverOrCustomer");
         String deleteChoice = (String)request.getParameter("deleteConfirmation");
         
-        String columnValue = request.getParameter("deleteChoice");
-        String tableName = request.getParameter("tableName");
-        String columnName = request.getParameter("columnName");
+        String columnValue = (String)request.getSession().getAttribute("deleteChoice");
+        String tableName = (String)request.getSession().getAttribute("tableName");
+        String columnName = (String)request.getSession().getAttribute("columnName");
         
         if(deleteChoice == null)
         {
@@ -48,15 +48,18 @@ public class DeleteSelectionServlet extends HttpServlet {
         }
         else if (deleteChoice.equals("YES"))
         {
+            
             dbBean.DeleteRowFromTable(tableName, columnName, columnValue);
             
             if(driverOrCustomer == "driver")
             {
-                request.getRequestDispatcher("/adminViewDrivers.jsp").forward(request, response);
+                request.setAttribute("adminOption", "View Drivers");
+                request.getRequestDispatcher("/AdminServlet").forward(request, response);
             }
             else if(driverOrCustomer == "customer")
             {
-                request.getRequestDispatcher("/adminViewCustomers.jsp").forward(request, response);
+                request.setAttribute("adminOption", "View Customers");
+                request.getRequestDispatcher("/AdminServlet.jsp").forward(request, response);
             }
         }
         else if (deleteChoice.equals("NO"))
@@ -70,7 +73,7 @@ public class DeleteSelectionServlet extends HttpServlet {
             else if(driverOrCustomer == "customer")
             {
                 request.setAttribute("adminOption", "View Customers");
-                request.getRequestDispatcher("/adminViewCustomers.jsp").forward(request, response);
+                request.getRequestDispatcher("/AdminServlet.jsp").forward(request, response);
             }
         }
 

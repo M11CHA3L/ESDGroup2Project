@@ -6,9 +6,9 @@ Update selected row:
             } 
         %>
 <%
-    HashMap<String, String> columns = (HashMap<String, String>)request.getAttribute("columnNames");
+    HashMap<String, String> columns = (HashMap<String, String>)request.getSession().getAttribute("columnNames");
     
-    out.print("<form method=\"POST\">");
+    out.print("<form method=\"POST\" action=\"UpdateSelectionServlet.do\">");
     for(String column : columns.keySet())
     {
         out.print(column + ": " + "<input type=\"text\" name=\"" + column + "\" value=\"" + columns.get(column) + "\" ><br>");

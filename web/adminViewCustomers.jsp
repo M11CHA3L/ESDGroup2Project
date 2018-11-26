@@ -8,10 +8,10 @@
         </head>
         <body>
         <a href="driver.jsp">Back</a><br>
-        View Drivers<br>
+        View Customers<br>
        <%
-           String drivers = (String)request.getAttribute("drivers");
-           out.print(drivers);
+           String customers = (String)request.getAttribute("customers");
+           out.print(customers);
        %>
        
         </body>
