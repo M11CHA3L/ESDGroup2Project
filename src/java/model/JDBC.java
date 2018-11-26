@@ -362,88 +362,6 @@ public class JDBC {
 
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     //update table with statement
     public String update(String statement){
         String s = "";
@@ -451,10 +369,71 @@ public class JDBC {
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.executeUpdate();
             s = "Updated";
+          } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
+          }
+          return s;
+       }
+          
+
+    public void createCustomer(String password, String address, String username, String name) {
+
+        String insertUserSQL = "INSERT INTO USERS"
+                + "(PASSWORD, USERROLE, USERNAME) VALUES"
+                + "(?,?,?)";
+        
+        String insertCustomerSQL = "INSERT INTO CUSTOMERS"
+                + "(ADDRESS, NAME, USERNAME) VALUES"
+                + "(?,?,?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(insertUserSQL);
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, "1"); //1 = customer
+            preparedStatement.setString(3, username);
+            preparedStatement.executeUpdate();
+            
+            PreparedStatement preparedStatement2 = connection.prepareStatement(insertCustomerSQL);
+            preparedStatement2.setString(1, address);
+            preparedStatement2.setString(2, name);
+            preparedStatement2.setString(3, username);
+            preparedStatement2.executeUpdate();
+
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-        return s;
+         
+    }
+    
+        public void createDriver(String password, String registration, String username, String name) {
+
+        String insertUserSQL = "INSERT INTO USERS"
+                + "(PASSWORD, USERROLE, USERNAME) VALUES"
+                + "(?,?,?)";
+        
+        String insertDriverSQL = "INSERT INTO DRIVERS"
+                + "(REGISTRATION, NAME, USERNAME) VALUES"
+                + "(?,?,?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(insertUserSQL);
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, "2"); //2 = Driver
+            preparedStatement.setString(3, username);
+            preparedStatement.executeUpdate();
+            
+            PreparedStatement preparedStatement2 = connection.prepareStatement(insertDriverSQL);
+            preparedStatement2.setString(1, registration);
+            preparedStatement2.setString(2, name);
+            preparedStatement2.setString(3, username);
+            preparedStatement2.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }
