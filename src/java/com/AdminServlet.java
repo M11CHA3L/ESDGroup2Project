@@ -47,8 +47,8 @@ public class AdminServlet extends HttpServlet {
             case "View Drivers":
                 request.getSession().setAttribute("driverOrCustomer", "driver");
                 
-                String d = dbBean.ToEditTable("Select * from DRIVERS", "USERNAME", "DRIVERS");
-                request.setAttribute("drivers", d);
+                String drivers = dbBean.ToEditTable("Select * from DRIVERS", "USERNAME", "DRIVERS");
+                request.setAttribute("drivers", drivers);
                 request.getRequestDispatcher("/adminViewDrivers.jsp").forward(request, response);
                 break;
             case "View Customers":
@@ -65,8 +65,8 @@ public class AdminServlet extends HttpServlet {
                 
                 break;
             case "View Bookings":
-                String drivers = dbBean.getDrivers();
-                request.setAttribute("drivers", drivers);
+                String bookings = dbBean.getDrivers();
+                request.setAttribute("drivers", bookings);
                 request.getRequestDispatcher("/adminviewbooking.jsp").forward(request, response);
                 break;
             case "Create Customer":
