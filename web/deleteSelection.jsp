@@ -11,6 +11,11 @@
     String rowValue = request.getParameter("deleteChoice");
     String tableName = request.getParameter("tableName");
     String columnName = request.getParameter("columnName");
+    
+    request.getSession().setAttribute("deleteChoice", rowValue);
+    request.getSession().setAttribute("tableName", tableName);
+    request.getSession().setAttribute("columnName", columnName);
+
 %>
         
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
