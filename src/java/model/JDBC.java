@@ -212,6 +212,40 @@ public class JDBC {
 
         return id;
     }
+    
+    public String getDriverJobs(String username) {
+        String s = "";
+        String registration = "";
+        
+        //get registration of logged in user
+        select("select * from drivers where username='" + username + "'");
+        try {
+            while (rs.next()) {
+                registration = rs.getString("registration");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //get driver jobs
+        select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME FROM JOURNEY INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID WHERE JOURNEY.REGISTRATION = '" + registration + "' AND DEMANDS.STATUS != 'COMPLETE'");
+        try {
+            s = "<form method=\"post\" action=\"driver.do\">";
+            while (rs.next()){
+                s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS") 
+                        + "<br>Customer Destination: " + rs.getString("DESTINATION") 
+                        + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
+                        + "<br>";
+                
+            }
+            s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            return s;
+    }
 
     public String getDrivers() {
         String s = "";
@@ -328,6 +362,21 @@ public class JDBC {
 
     }
     
+    //update table with statement
+    public String update(String statement){
+        String s = "";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.executeUpdate();
+            s = "Updated";
+          } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
+          }
+          return s;
+       }
+          
+
     public void createCustomer(String password, String address, String username, String name) {
 
         String insertUserSQL = "INSERT INTO USERS"
@@ -385,6 +434,6 @@ public class JDBC {
             Logger.getLogger(JDBC.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-          
+
     }
 }
