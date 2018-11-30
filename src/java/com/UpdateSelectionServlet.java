@@ -53,6 +53,7 @@ public class UpdateSelectionServlet extends HttpServlet {
             request.getSession().setAttribute("columnName", columnName);
             request.getSession().setAttribute("rowValue", rowValue);
 
+            
 
             request.getRequestDispatcher("/updateSelection.jsp").forward(request, response);
         }
