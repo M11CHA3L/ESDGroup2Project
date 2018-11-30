@@ -11,7 +11,14 @@ Update selected row:
     out.print("<form method=\"POST\" action=\"UpdateSelectionServlet.do\">");
     for(String column : columns.keySet())
     {
-        out.print(column + ": " + "<input type=\"text\" name=\"" + column + "\" value=\"" + columns.get(column) + "\" ><br>");
+        if (column.equals("ID") || column.equals("USERNAME"))
+        {
+            
+        }
+        else
+        {
+                    out.print(column + ": " + "<input type=\"text\" name=\"" + column + "\" value=\"" + columns.get(column) + "\" ><br>");
+        }
     }
     out.print("<input type=\"submit\" value=\"submit\">");
     out.print("/<form>");

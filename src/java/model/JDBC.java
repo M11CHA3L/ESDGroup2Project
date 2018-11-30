@@ -42,30 +42,6 @@ public class JDBC {
         }
 
     }
-    
-    public void DeleteRowFromTable(String tableName, String columnName, String columnValue)
-    {
-        if (tableName.equals("DRIVERS"))
-        {
-            update("ALTER TABLE DRIVERS DROP CONSTRAINT DRIVER_FK");
-        }
-        else if (tableName.equals("CUSTOMERS"))
-        {
-            update("ALTER TABLE CUSTOMERS DROP CONSTRAINT CUSTOMER_FK");
-        }
-                
-        String deleteRequest = String.format("DELETE FROM %s WHERE %s = '%s'", tableName, columnName, columnValue);
-        update(deleteRequest);
-        
-        if (tableName.equals("DRIVERS"))
-        {
-            update("ALTER TABLE DRIVERS ADD CONSTRAINT DRIVER_FK FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME)");
-        }
-        else if (tableName.equals("CUSTOMERS"))
-        {
-            update("ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_FK FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME)");
-        }
-    }
 
     public HashMap<String, String> GetRowByColumnName(String query) {
         HashMap<String, String> columns = new HashMap<>();
@@ -87,14 +63,7 @@ public class JDBC {
     
     public void UpdateRowByColumnName(HashMap<String, String> newValues, String tableName, String whereColumn, String whereValue) {
         
-        if (tableName.equals("DRIVERS"))
-        {
-            update("ALTER TABLE DRIVERS DROP CONSTRAINT DRIVER_FK");
-        }
-        else if (tableName.equals("CUSTOMERS"))
-        {
-            update("ALTER TABLE CUSTOMERS DROP CONSTRAINT CUSTOMER_FK");
-        }
+
         
         String query = "UPDATE " + tableName + " SET ";
         
@@ -108,16 +77,9 @@ public class JDBC {
             
             if (counter == numberOfColumns)
             {
-                if (columnName.equals("ID"))
-                {
-                    query += " WHERE " + whereColumn + " = '" + whereValue + "'";
-                }
-                else
-                {
-                    query += columnName + " = '" + columnValue + "' WHERE " + whereColumn + " = '" + whereValue + "'";
-                }
+                query += columnName + " = '" + columnValue + "' WHERE " + whereColumn + " = '" + whereValue + "'";
             }
-            else if (columnName.equals("ID"))
+            else if (columnName.equals("ID") || columnName.equals("USERNAME"))
             {
                 //DO nothing
             }
@@ -129,15 +91,7 @@ public class JDBC {
         }
         
         update(query);
-        
-        if (tableName.equals("DRIVERS"))
-        {
-            update("ALTER TABLE DRIVERS ADD CONSTRAINT DRIVER_FK FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME)");
-        }
-        else if (tableName.equals("CUSTOMERS"))
-        {
-            update("ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_FK FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME)");
-        }
+       
     }
 
     /**
@@ -219,7 +173,6 @@ public class JDBC {
                     output += "<TD>" + rs.getString(i + 1) + "</TD>";
                 }
                 output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"editForm\" >EDIT</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
-                output += String.format("<TD><button name=\"deleteChoice\" value=\"%s\" form=\"deleteForm\" >DELETE</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
                 output += "</TR>";
 
             }
