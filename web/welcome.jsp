@@ -10,13 +10,9 @@
         <title>Welcome</title>
     </head>
     <body>
-        <% if (session.getAttribute("userRole") == null) {
-                response.sendRedirect("index.jsp");
-            } else {
-
-                String s = (String) session.getAttribute("userRole");%> 
+        <% String s = (String) session.getAttribute("userRole");%> 
         <jsp:include page='<%= s + ".jsp"%>' />
-        <%}%>
+
 
         <form method="POST" action="logout.do">
             <input type="submit" value ="logout">
