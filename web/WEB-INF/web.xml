@@ -96,6 +96,14 @@
         <servlet-name>CuNewBookingServlet</servlet-name>
         <servlet-class>com.CuNewBookingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdUpdateCustomerServlet</servlet-name>
+        <servlet-class>com.AdUpdateCustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdUpdateDriverServlet</servlet-name>
+        <servlet-class>com.AdUpdateDriverServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -187,6 +195,14 @@
     <servlet-mapping>
         <servlet-name>CuNewBookingServlet</servlet-name>
         <url-pattern>/CuNewBookingServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdUpdateCustomerServlet</servlet-name>
+        <url-pattern>/AdUpdateCustomerServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdUpdateDriverServlet</servlet-name>
+        <url-pattern>/AdUpdateDriverServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
