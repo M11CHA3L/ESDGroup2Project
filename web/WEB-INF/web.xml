@@ -92,6 +92,10 @@
         <servlet-name>CuServlet</servlet-name>
         <servlet-class>com.CuServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CuNewBookingServlet</servlet-name>
+        <servlet-class>com.CuNewBookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -179,6 +183,10 @@
     <servlet-mapping>
         <servlet-name>CuServlet</servlet-name>
         <url-pattern>/CuServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuNewBookingServlet</servlet-name>
+        <url-pattern>/CuNewBookingServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -33,7 +33,7 @@ public class DrViewJobsServlet extends HttpServlet {
         
         String jobs = dbBean.getDriverJobs((String) session.getAttribute("userName"));
         request.setAttribute("jobs", jobs);
-        request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+        request.getRequestDispatcher("/drViewJobs.jsp").forward(request, response);
         
     }
 

@@ -3,15 +3,18 @@
     Created on : 02-Dec-2018, 18:36:21
     Author     : michaelcraddock
 --%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<link rel="stylesheet" type="text/css" href="style.css">
+<div>
+    <h1>AlphaCab</h1>
+</div>
+<div>
+    <form method="POST" action="CuServlet.do">
+        <table>
+            <tr>
+                <td>
+                    <input type="submit" name="customerOption" value ="New Booking"><br>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
