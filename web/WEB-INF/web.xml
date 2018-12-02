@@ -4,7 +4,6 @@
         <param-name>dbname</param-name>
         <param-value>alphacab</param-value>
     </context-param>
-
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.LoginServlet</servlet-class>
@@ -25,7 +24,7 @@
         <servlet-name>CreateCustomerServlet</servlet-name>
         <servlet-class>com.CreateCustomerServlet</servlet-class>
     </servlet>
-        <servlet>
+    <servlet>
         <servlet-name>CreateDriverServlet</servlet-name>
         <servlet-class>com.CreateDriverServlet</servlet-class>
     </servlet>
@@ -56,6 +55,34 @@
     <servlet>
         <servlet-name>DriverServlet</servlet-name>
         <servlet-class>com.DriverServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdViewDriversServlet</servlet-name>
+        <servlet-class>com.AdViewDriversServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdViewCustomersServlet</servlet-name>
+        <servlet-class>com.AdViewCustomersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdViewDriverBookingsServlet</servlet-name>
+        <servlet-class>com.AdViewDriverBookingsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdCreateNewCustomerServlet</servlet-name>
+        <servlet-class>com.AdCreateNewCustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdCreateNewDriverServlet</servlet-name>
+        <servlet-class>com.AdCreateNewDriverServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdUpdateCustomerDriverServlet</servlet-name>
+        <servlet-class>com.AdUpdateCustomerDriverServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdGetDriverJourneysServlet</servlet-name>
+        <servlet-class>com.AdGetDriverJourneysServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -99,7 +126,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
-        <url-pattern>/AdminServlet</url-pattern>
+        <url-pattern>/AdminServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteSelectionServlet</servlet-name>
@@ -109,10 +136,37 @@
         <servlet-name>DriverServlet</servlet-name>
         <url-pattern>/driver.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdViewDriversServlet</servlet-name>
+        <url-pattern>/AdViewDriversServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdViewCustomersServlet</servlet-name>
+        <url-pattern>/AdViewCustomersServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdViewDriverBookingsServlet</servlet-name>
+        <url-pattern>/AdViewDriverBookingsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdCreateNewCustomerServlet</servlet-name>
+        <url-pattern>/AdCreateNewCustomerServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdCreateNewDriverServlet</servlet-name>
+        <url-pattern>/AdCreateNewDriverServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdUpdateCustomerDriverServlet</servlet-name>
+        <url-pattern>/AdUpdateCustomerDriverServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdGetDriverJourneysServlet</servlet-name>
+        <url-pattern>/AdGetDriverJourneysServlet.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-
 </web-app>

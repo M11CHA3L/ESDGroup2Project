@@ -54,14 +54,14 @@ public class CreateCustomerServlet extends HttpServlet {
             
             errorMessage = "Please complete all fields";            
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/createCustomer.jsp").forward(request, response);
+            request.getRequestDispatcher("/adCreateNewCustomer.jsp").forward(request, response);
             
 
         } else {
 
             dbBean.createCustomer(customerPassword, customerAddress, customerUsername, customerName);
             request.setAttribute("message", "Customer Created!");
-            request.getRequestDispatcher("/createCustomer.jsp").forward(request, response);
+            request.getRequestDispatcher("/adCreateNewCustomer.jsp").forward(request, response);
 
         }
 

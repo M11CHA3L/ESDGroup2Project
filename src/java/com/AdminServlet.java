@@ -8,6 +8,7 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.jms.Session;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,48 +33,71 @@ public class AdminServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       
-        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
-        
-        String option = request.getParameter("adminOption");
-        
-        if(option == null)
-        {
-            option = (String)request.getAttribute("adminOption");
-        }
-        
-        switch(option)
-        {
+
+        //JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
+        //String option = (String)request.getParameter("adminOption");
+        RequestDispatcher rd;
+
+        switch ((String) request.getParameter("adminOption")) {
             case "View Drivers":
-                request.getSession().setAttribute("driverOrCustomer", "driver");
-                
-                String drivers = dbBean.ToEditTable("Select * from DRIVERS", "USERNAME", "DRIVERS");
-                request.setAttribute("drivers", drivers);
-                request.getRequestDispatcher("/adminViewDrivers.jsp").forward(request, response);
+                rd = request.getRequestDispatcher("/AdViewDriversServlet.do");
+                rd.forward(request, response);
+
+                //response.sendRedirect("AdViewDriversServlet.do");
+                //response.sendRedirect(request.getContextPath() + "/adViewDriversServlet");
+//                request.getSession().setAttribute("driverOrCustomer", "driver");
+//                
+//                String drivers = dbBean.ToEditTable("Select * from DRIVERS", "USERNAME", "DRIVERS");
+//                request.setAttribute("drivers", drivers);
+//                request.getRequestDispatcher("/adminViewDrivers.jsp").forward(request, response);
                 break;
             case "View Customers":
-                request.getSession().setAttribute("driverOrCustomer", "customer");
-                
-                String customers = dbBean.ToEditTable("Select * from CUSTOMERS", "USERNAME", "CUSTOMERS");
-                request.setAttribute("customers", customers);
-                request.getRequestDispatcher("/adminViewCustomers.jsp").forward(request, response);
+                rd = request.getRequestDispatcher("/AdViewCustomersServlet.do");
+                rd.forward(request, response);
+
+//                request.getSession().setAttribute("driverOrCustomer", "customer");
+//                
+//                String customers = dbBean.ToEditTable("Select * from CUSTOMERS", "USERNAME", "CUSTOMERS");
+//                request.setAttribute("customers", customers);
+//                request.getRequestDispatcher("/adminViewCustomers.jsp").forward(request, response);
                 break;
-            case "View Driver Availability":
-                
+            case "View New Demands":
+//                rd = request.getRequestDispatcher("/AdViewNewDemandsServlet.do");
+//                rd.forward(request, response);
+                request.getRequestDispatcher("/adViewNewDemands.jsp").forward(request, response);
                 break;
             case "View Turnover":
+//                rd = request.getRequestDispatcher("/AdViewTurnoverServlet.do");
+//                rd.forward(request, response);
+                request.getRequestDispatcher("/adViewTurnover.jsp").forward(request, response);
+                break;
+            case "View Driver Bookings":
+                rd = request.getRequestDispatcher("/AdViewDriverBookingsServlet.do");
+                rd.forward(request, response);
                 
+//                String bookings = dbBean.getDrivers();
+//                request.setAttribute("drivers", bookings);
+//                request.getRequestDispatcher("/adminviewbooking.jsp").forward(request, response);
                 break;
-            case "View Bookings":
-                String bookings = dbBean.getDrivers();
-                request.setAttribute("drivers", bookings);
-                request.getRequestDispatcher("/adminviewbooking.jsp").forward(request, response);
+            case "Get Driver Journeys":
+                rd = request.getRequestDispatcher("/AdGetDriverJourneysServlet.do");
+                rd.forward(request, response);
                 break;
-            case "Create Customer":
-                request.getRequestDispatcher("/createCustomer.jsp").forward(request, response);
+            case "Create New Customer":
+                request.getRequestDispatcher("/adCreateNewCustomer.jsp").forward(request, response);
                 break;
-            case "Create Driver":
-                request.getRequestDispatcher("/createDriver.jsp").forward(request, response);
+            case "Create New Driver":
+                request.getRequestDispatcher("/adCreateNewDriver.jsp").forward(request, response);
+                break;
+            case "Add New Customer":
+                rd = request.getRequestDispatcher("/AdCreateNewCustomerServlet.do");
+                rd.forward(request, response);
+                break;
+            case "Add New Driver":
+                rd = request.getRequestDispatcher("/AdCreateNewDriverServlet.do");
+                rd.forward(request, response);
+                break;
+            default:
                 break;
         }
     }
