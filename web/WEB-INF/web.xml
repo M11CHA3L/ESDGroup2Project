@@ -53,8 +53,8 @@
         <servlet-class>com.DeleteSelectionServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DriverServlet</servlet-name>
-        <servlet-class>com.DriverServlet</servlet-class>
+        <servlet-name>DrViewJobsServlet</servlet-name>
+        <servlet-class>com.DrViewJobsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdViewDriversServlet</servlet-name>
@@ -83,6 +83,14 @@
     <servlet>
         <servlet-name>AdGetDriverJourneysServlet</servlet-name>
         <servlet-class>com.AdGetDriverJourneysServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DrServlet</servlet-name>
+        <servlet-class>com.DrServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CuServlet</servlet-name>
+        <servlet-class>com.CuServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -133,8 +141,8 @@
         <url-pattern>/DeleteSelectionServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>DriverServlet</servlet-name>
-        <url-pattern>/driver.do</url-pattern>
+        <servlet-name>DrViewJobsServlet</servlet-name>
+        <url-pattern>/DrViewJobsServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdViewDriversServlet</servlet-name>
@@ -163,6 +171,14 @@
     <servlet-mapping>
         <servlet-name>AdGetDriverJourneysServlet</servlet-name>
         <url-pattern>/AdGetDriverJourneysServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DrServlet</servlet-name>
+        <url-pattern>/DrServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CuServlet</servlet-name>
+        <url-pattern>/CuServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
