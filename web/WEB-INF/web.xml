@@ -4,6 +4,7 @@
         <param-name>dbname</param-name>
         <param-value>alphacab</param-value>
     </context-param>
+
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.LoginServlet</servlet-class>
@@ -113,4 +114,5 @@
             30
         </session-timeout>
     </session-config>
+
 </web-app>

@@ -40,21 +40,7 @@ public class LoginServlet extends HttpServlet {
 
         String username = request.getParameter("uName");
         String password = request.getParameter("pass");
-        
         String errorMessage;
-        // Check username was entered
-        if (username.equals("")) {
-            errorMessage = "No username Entered";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-        }
-
-        // Check if password was entered
-        if (password.equals("")) {
-            errorMessage = "No password entered";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-        }
 
         // Check user exists
         if (dbBean.userExists(username)) {
