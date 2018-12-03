@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,11 +34,12 @@ public class LoginServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
+        
 
         JDBC dbBean = new JDBC();
         dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
         session.setAttribute("dbbean", dbBean);
-
+        //System.out.println(session.getMaxInactiveInterval());
         String username = request.getParameter("uName");
         String password = request.getParameter("pass");
         String errorMessage;
@@ -62,18 +64,22 @@ public class LoginServlet extends HttpServlet {
                 switch (user) {
                     case 3:
                         session.setAttribute("userRole", "admin");
+                       session.setMaxInactiveInterval(Integer.parseInt(getServletContext().getInitParameter("adminTimeout")));                        
                         request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
                         break;
                     case 2:
                         session.setAttribute("userRole", "driver");
+                        session.setMaxInactiveInterval(Integer.parseInt(getServletContext().getInitParameter("driverTimeout")));
                         request.getRequestDispatcher("/drWelcome.jsp").forward(request, response);
                         break;
                     case 1:
                         session.setAttribute("userRole", "customer");
+                        session.setMaxInactiveInterval(Integer.parseInt(getServletContext().getInitParameter("customerTimeout")));
                         request.getRequestDispatcher("/cuWelcome.jsp").forward(request, response);
                         break;
                         
                 }
+
                 //set username session attribute
                
                 request.getRequestDispatcher("/welcome.jsp").forward(request, response);
