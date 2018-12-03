@@ -7,7 +7,7 @@
             <link rel="stylesheet" type="text/css" href="style.css">
         </head>
         <body>
-        <a href="driver.jsp">Back</a><br>
+        <a href="admin.jsp">Back</a><br>
         View Drivers<br>
        <%
            String drivers = (String)request.getAttribute("drivers");

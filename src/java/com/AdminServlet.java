@@ -7,6 +7,12 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.jms.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -58,8 +64,27 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("customers", customers);
                 request.getRequestDispatcher("/adminViewCustomers.jsp").forward(request, response);
                 break;
-            case "View Driver Availability":
-                
+            case "View Demands":
+//                
+                request.setAttribute("demands", dbBean.getOutstandingDemands());
+                    
+                ResultSet dbResult = dbBean.getOutstandingDemands();
+  
+                 String s ="";
+                 s += "<form method=\"post\" action=\"selectDemand.do\">";
+
+                    try {
+                        while (dbResult.next()) {
+                              s += dbResult.getString("Date") + " at "+  dbResult.getString("Time") + " to " + dbResult.getString("Address") + " " + "<input type='radio' name='demandRadio' value='" + dbResult.getString("ID") + "'><br>";
+                        }                       
+                        s+= "<input type='submit' name='action' value='Assign Driver'>";
+                        request.setAttribute("demand", s);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                                                                    
+                request.getRequestDispatcher("/adminViewDemands.jsp").forward(request, response);
+                               
                 break;
             case "View Turnover":
                 

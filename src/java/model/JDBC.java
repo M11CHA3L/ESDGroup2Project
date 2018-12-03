@@ -31,7 +31,7 @@ public class JDBC {
     Statement statement = null;
     ResultSet rs = null;
 
-    private void select(String query) {
+    private ResultSet select(String query) {
         try {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
@@ -40,7 +40,8 @@ public class JDBC {
             System.out.println(ex);
 
         }
-
+        
+        return rs;
     }
 
     public HashMap<String, String> GetRowByColumnName(String query) {
@@ -379,7 +380,7 @@ public class JDBC {
             preparedStatement.setString(4, destinationAddress);
             preparedStatement.setString(5, currentAddress);
             preparedStatement.setString(6, customerName);
-            preparedStatement.setString(7, "outstanding");
+            preparedStatement.setString(7, "OUTSTANDING");
             preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {
@@ -456,6 +457,56 @@ public class JDBC {
             preparedStatement2.setString(2, name);
             preparedStatement2.setString(3, username);
             preparedStatement2.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+        
+    public ResultSet getOutstandingDemands() {
+    ResultSet dbResult = select("select * from DEMANDS where STATUS = 'COMPLETE'");
+
+    return dbResult;
+    }
+    
+    public ResultSet getDemandByID(String ID) {
+        String temp = "select * from DEMANDS where ID = " + ID;
+        ResultSet dbResult = select(temp);
+        
+        return dbResult;
+    }
+    
+    public ResultSet getAvailableDrivers(String date) {
+
+        ResultSet dbResult = select("SELECT distinct ID, NAME, REGISTRATION FROM Drivers JOIN JOURNEY ON Drivers.ID = DRIVER_ID WHERE DATE != '" + date + "'");       
+
+        
+        return dbResult;
+    }
+    
+    public void createJourney(String customerID, String destination, String distance, String driver_id, String date, String demands_id) {
+
+//        String insertJourneySQL = "INSERT INTO JOURNEY"
+//                + "(CUSTOMER_ID, DESTINATION, DISTANCE, DRIVER_ID, DATE, DEMANDS_ID) VALUES"
+//                + "(?,?,?,?,?,?)";
+        
+                String insertJourneySQL = "INSERT INTO JOURNEY"
+                + "(DESTINATION, DISTANCE, DATE, ) VALUES"
+                + "(?,?,?,?,?,?)";
+        
+        System.out.println(customerID + " " + destination + " " + distance + " " + driver_id + " " + date + " " + demands_id);
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(insertJourneySQL);
+            preparedStatement.setString(1, customerID);
+            preparedStatement.setString(2, destination);
+            preparedStatement.setString(3, distance);
+            preparedStatement.setString(4, driver_id);
+            preparedStatement.setString(5, date);
+            preparedStatement.setString(6, demands_id);
+            preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class

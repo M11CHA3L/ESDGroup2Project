@@ -21,6 +21,10 @@
         <servlet-name>CreateDemandServlet</servlet-name>
         <servlet-class>com.CreateDemandServlet</servlet-class>
     </servlet>
+        <servlet>
+        <servlet-name>SelectDemandServlet</servlet-name>
+        <servlet-class>com.SelectDemandServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>CreateCustomerServlet</servlet-name>
         <servlet-class>com.CreateCustomerServlet</servlet-class>
@@ -32,6 +36,10 @@
     <servlet>
         <servlet-name>AdminDriversServlet</servlet-name>
         <servlet-class>com.AdminDriversServlet</servlet-class>
+    </servlet>
+        <servlet>
+        <servlet-name>AssignDriverServlet</servlet-name>
+        <servlet-class>com.AssignDriverServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateSelectionServlet</servlet-name>
@@ -72,6 +80,14 @@
     <servlet-mapping>
         <servlet-name>CreateDemandServlet</servlet-name>
         <url-pattern>/createDemand.do</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>SelectDemandServlet</servlet-name>
+        <url-pattern>/selectDemand.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AssignDriverServlet</servlet-name>
+        <url-pattern>/assignDriver.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateCustomerServlet</servlet-name>
