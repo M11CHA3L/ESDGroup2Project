@@ -79,12 +79,12 @@ public class UpdateSelectionServlet extends HttpServlet {
             request.getSession().setAttribute("columnName", null);
             request.getSession().setAttribute("rowValue", null);
             
-            if(driverOrCustomer == "driver")
+            if("driver".equals(driverOrCustomer))
             {
                 request.setAttribute("adminOption", "View Drivers");
                 request.getRequestDispatcher("/AdminServlet").forward(request, response);
             }
-            else if(driverOrCustomer == "customer")
+            else if("customer".equals(driverOrCustomer))
             {
                 request.setAttribute("adminOption", "View Customers");
                 request.getRequestDispatcher("/AdminServlet").forward(request, response);
