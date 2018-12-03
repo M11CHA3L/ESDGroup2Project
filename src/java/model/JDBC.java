@@ -150,7 +150,7 @@ public class JDBC {
                 + "\"></form>";
         
         // Form for DELETE a row
-        output += "<form method=\"POST\" id=\"deleteForm\" action=\"DeleteSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
+        output += "<form method=\"POST\" id=\"toggleActiveForm\" action=\"AdToggleActiveSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form>";
         
@@ -173,6 +173,7 @@ public class JDBC {
                     output += "<TD>" + rs.getString(i + 1) + "</TD>";
                 }
                 output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"editForm\" >EDIT</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
+                output += String.format("<TD><button name=\"toggleActiveChoice\" value=\"%s\" form=\"toggleActiveForm\" >TOGGLE ACTIVE</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
                 output += "</TR>";
 
             }
@@ -462,5 +463,29 @@ public class JDBC {
                     .getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+        
+    public void SetDriverActive(String driverID, boolean active)
+    {
+        if (active)
+        {
+            update("UPDATE DRIVERS SET ACTIVE=TRUE WHERE ID=" + driverID);
+        }
+        else
+        {
+            update("UPDATE DRIVERS SET ACTIVE=FALSE WHERE ID=" + driverID);
+        }
+    }
+    
+        public void SetCustomerActive(String customerID, boolean active)
+    {
+        if (active)
+        {
+            update("UPDATE CUSTOMERS SET ACTIVE=TRUE WHERE ID=" + customerID);
+        }
+        else
+        {
+            update("UPDATE CUSTOMERS SET ACTIVE=FALSE WHERE ID=" + customerID);
+        }
     }
 }
