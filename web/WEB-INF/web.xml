@@ -120,6 +120,18 @@
         <servlet-name>AdFilterCustomerServlet</servlet-name>
         <servlet-class>com.AdFilterCustomerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdViewOutstandingJobs</servlet-name>
+        <servlet-class>com.AdViewOutstandingJobs</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdAssignDriverServlet</servlet-name>
+        <servlet-class>com.AdAssignDriverServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdSelectDemandServlet</servlet-name>
+        <servlet-class>com.AdSelectDemandServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -235,6 +247,18 @@
     <servlet-mapping>
         <servlet-name>AdFilterCustomerServlet</servlet-name>
         <url-pattern>/AdFilterCustomerServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdViewOutstandingJobs</servlet-name>
+        <url-pattern>/AdViewOutstandingJobs.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdAssignDriverServlet</servlet-name>
+        <url-pattern>/AdAssignDriverServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdSelectDemandServlet</servlet-name>
+        <url-pattern>/AdSelectDemandServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

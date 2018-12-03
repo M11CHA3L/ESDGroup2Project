@@ -31,7 +31,7 @@ public class JDBC {
     Statement statement = null;
     ResultSet rs = null;
 
-    private void select(String query) {
+    private ResultSet select(String query) {
         try {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
@@ -40,6 +40,7 @@ public class JDBC {
             System.out.println(ex);
 
         }
+        return rs;
 
     }
 
@@ -60,38 +61,30 @@ public class JDBC {
 
         return columns;
     }
-    
-    public void UpdateRowByColumnName(HashMap<String, String> newValues, String tableName, String whereColumn, String whereValue) {
-        
 
-        
+    public void UpdateRowByColumnName(HashMap<String, String> newValues, String tableName, String whereColumn, String whereValue) {
+
         String query = "UPDATE " + tableName + " SET ";
-        
+
         int numberOfColumns = newValues.entrySet().size();
-        
+
         int counter = 1;
-        for(Map.Entry<String, String> entry: newValues.entrySet())
-        {
+        for (Map.Entry<String, String> entry : newValues.entrySet()) {
             String columnName = entry.getKey();
             String columnValue = entry.getValue();
-            
-            if (counter == numberOfColumns)
-            {
+
+            if (counter == numberOfColumns) {
                 query += columnName + " = '" + columnValue + "' WHERE " + whereColumn + " = " + whereValue;
-            }
-            else if (columnName.equals("ID") || columnName.equals("USERNAME"))
-            {
+            } else if (columnName.equals("ID") || columnName.equals("USERNAME")) {
                 //DO nothing
-            }
-            else
-            {
+            } else {
                 query += columnName + " = '" + columnValue + "', ";
             }
             counter++;
         }
-        
+
         update(query);
-       
+
     }
 
     /**
@@ -148,12 +141,12 @@ public class JDBC {
         output += "<form method=\"POST\" id=\"editForm\" action=\"AdUpdateCustomerDriverPopulateServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form>";
-        
+
         // Form for DELETE a row
         output += "<form method=\"POST\" id=\"toggleActiveForm\" action=\"AdToggleActiveSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form>";
-        
+
         output += "<P ALIGN='center'><TABLE BORDER=1>";
 
         try {
@@ -240,13 +233,13 @@ public class JDBC {
 
         return id;
     }
-    
+
     public String getDriverJobs(String username) {
         String s = "";
         String id = "";
-        
+
         //get registration of logged in user
-        select("select * from drivers where username='" + username + "'");
+        select("select * from drivers where username='" + username + "' AND ACTIVE = true");
         try {
             while (rs.next()) {
                 id = rs.getString("id");
@@ -257,29 +250,32 @@ public class JDBC {
         }
 
         //get driver jobs
-        select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME FROM JOURNEY INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
+        select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME "
+                + "FROM JOURNEY "
+                + "INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID "
+                + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
         try {
             s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
-            while (rs.next()){
-                s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS") 
-                        + "<br>Customer Destination: " + rs.getString("DESTINATION") 
+            while (rs.next()) {
+                s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS")
+                        + "<br>Customer Destination: " + rs.getString("DESTINATION")
                         + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
                         + "<br>";
-                
+
             }
             s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-            return s;
+
+        return s;
     }
 
     public String getDrivers() {
         String s = "";
         ResultSetMetaData rsmd = null;
 
-        select("select * from drivers");
+        select("select * from drivers where ACTIVE = true");
 
         s += "<form method=\"post\" action=\"AdminServlet.do\">";
 
@@ -296,27 +292,27 @@ public class JDBC {
 
         String date = simpleDateFormat.format(new java.util.Date());
         s += "<input type='date' name='date' value='" + date + "'><br><input type='submit' name='adminOption' value='Get Driver Journeys'>"
-                + "<input type='submit' name='adminOption' value='Get Turnover'></form>";
+                + "<input type='submit' name='adminOption' value='Get Driver Turnover'></form>";
 
         return s;
     }
 
     public String getJourneys(String name, String date) {
         String s = "";
-        String registration = null;
+        String id = null;
         ResultSetMetaData rsmd = null;
 
         select("select * from drivers where name='" + name + "'");
 
         try {
             while (rs.next()) {
-                registration = rs.getString("registration");
+                id = rs.getString("id");
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        select("select * from journey where registration='" + registration + "' and date='" + date + "'");
+        select("select * from journey where DRIVER_ID=" + id + " and date='" + date + "'");
 
         try {
             s += "<table border='4'>";
@@ -341,23 +337,23 @@ public class JDBC {
     }
 
     public int getTurnover(String name, String date) {
-        String registration = "";
-       int turnover = 0;
+        String id = "";
+        int turnover = 0;
         select("select * from drivers where name='" + name + "'");
 
         try {
             while (rs.next()) {
-                registration = rs.getString("registration");
+                id = rs.getString("id");
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        select("select * from journey where registration='" + registration + "' and date='" + date + "'");
+        select("select * from journey where DRIVER_ID=" + id + " and date='" + date + "'");
 
         try {
             while (rs.next()) {
                 turnover += rs.getInt("distance") * 2;
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
@@ -389,28 +385,27 @@ public class JDBC {
         }
 
     }
-    
+
     //update table with statement
-    public String update(String statement){
+    public String update(String statement) {
         String s = "";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.executeUpdate();
             s = "Updated";
-          } catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(JDBC.class
                     .getName()).log(Level.SEVERE, null, ex);
-          }
-          return s;
-       }
-          
+        }
+        return s;
+    }
 
     public void createCustomer(String password, String address, String username, String name) {
 
         String insertUserSQL = "INSERT INTO USERS"
                 + "(PASSWORD, USERROLE, USERNAME) VALUES"
                 + "(?,?,?)";
-        
+
         String insertCustomerSQL = "INSERT INTO CUSTOMERS"
                 + "(ADDRESS, NAME, USERNAME) VALUES"
                 + "(?,?,?)";
@@ -421,7 +416,7 @@ public class JDBC {
             preparedStatement.setString(2, "1"); //1 = customer
             preparedStatement.setString(3, username);
             preparedStatement.executeUpdate();
-            
+
             PreparedStatement preparedStatement2 = connection.prepareStatement(insertCustomerSQL);
             preparedStatement2.setString(1, address);
             preparedStatement2.setString(2, name);
@@ -432,15 +427,15 @@ public class JDBC {
             Logger.getLogger(JDBC.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-         
+
     }
-    
-        public void createDriver(String password, String registration, String username, String name) {
+
+    public void createDriver(String password, String registration, String username, String name) {
 
         String insertUserSQL = "INSERT INTO USERS"
                 + "(PASSWORD, USERROLE, USERNAME) VALUES"
                 + "(?,?,?)";
-        
+
         String insertDriverSQL = "INSERT INTO DRIVERS"
                 + "(REGISTRATION, NAME, USERNAME) VALUES"
                 + "(?,?,?)";
@@ -451,7 +446,7 @@ public class JDBC {
             preparedStatement.setString(2, "2"); //2 = Driver
             preparedStatement.setString(3, username);
             preparedStatement.executeUpdate();
-            
+
             PreparedStatement preparedStatement2 = connection.prepareStatement(insertDriverSQL);
             preparedStatement2.setString(1, registration);
             preparedStatement2.setString(2, name);
@@ -464,61 +459,111 @@ public class JDBC {
         }
 
     }
-        
-    public void SetDriverActive(String driverID, boolean active)
-    {
-        if (active)
-        {
+
+    public void SetDriverActive(String driverID, boolean active) {
+        if (active) {
             update("UPDATE DRIVERS SET ACTIVE=TRUE WHERE ID=" + driverID);
-        }
-        else
-        {
+        } else {
             update("UPDATE DRIVERS SET ACTIVE=FALSE WHERE ID=" + driverID);
         }
     }
-    
-        public void SetCustomerActive(String customerID, boolean active)
-    {
-        if (active)
-        {
+
+    public void SetCustomerActive(String customerID, boolean active) {
+        if (active) {
             update("UPDATE CUSTOMERS SET ACTIVE=TRUE WHERE ID=" + customerID);
-        }
-        else
-        {
+        } else {
             update("UPDATE CUSTOMERS SET ACTIVE=FALSE WHERE ID=" + customerID);
         }
     }
-        public String[] returnInvoice(String dID){
-            String[] s = new String[2];
-            double price = 10;
-            double pricepermile = 1;
-            double VAT = 1.2;
-            double priceVAT;
- 
-            select("SELECT D.ADDRESS, D.DESTINATION, D.\"DATE\", D.\"TIME\", J.DISTANCE, C.\"NAME\", D.ID\n"
-                    + "FROM JOURNEY AS J \n"
-                    + "INNER JOIN DEMANDS AS D ON D.ID = J.DEMANDS_ID\n"
-                    + "INNER JOIN CUSTOMERS AS C ON C.ID = J.CUSTOMER_ID\n"
-                    + "WHERE D.ID =" + dID);
+
+    public String[] returnInvoice(String dID) {
+        String[] s = new String[2];
+        double price = 10;
+        double pricepermile = 1;
+        double VAT = 1.2;
+        double priceVAT;
+
+        select("SELECT D.ADDRESS, D.DESTINATION, D.\"DATE\", D.\"TIME\", J.DISTANCE, C.\"NAME\", D.ID\n"
+                + "FROM JOURNEY AS J \n"
+                + "INNER JOIN DEMANDS AS D ON D.ID = J.DEMANDS_ID\n"
+                + "INNER JOIN CUSTOMERS AS C ON C.ID = J.CUSTOMER_ID\n"
+                + "WHERE D.ID =" + dID);
 
         try {
             while (rs.next()) {
-                if (Integer.parseInt(rs.getString("DISTANCE")) > 5 ) {
-                   // £10
-                   price = 10 + pricepermile * (Double.parseDouble(rs.getString("DISTANCE"))-5);
+                if (Integer.parseInt(rs.getString("DISTANCE")) > 5) {
+                    // £10
+                    price = 10 + pricepermile * (Double.parseDouble(rs.getString("DISTANCE")) - 5);
                 }
                 priceVAT = price * VAT;
-                s[0] = "Invoice for " + rs.getString("NAME") +"\n\nDate: " + rs.getString("DATE") + "\nTime: " + rs.getString("TIME") + "\nStart: " + rs.getString("ADDRESS") 
-                        + "\nEnd:" + rs.getString("DESTINATION") + "\nPrice without VAT: £" + 
-                        String.format("%.2f", price) + "\nPrice including VAT @ %" + ((VAT * 100) - 100) + ": £" + 
-                        String.format("%.2f", priceVAT);
-                
+                s[0] = "Invoice for " + rs.getString("NAME") + "\n\nDate: " + rs.getString("DATE") + "\nTime: " + rs.getString("TIME") + "\nStart: " + rs.getString("ADDRESS")
+                        + "\nEnd:" + rs.getString("DESTINATION") + "\nPrice without VAT: £"
+                        + String.format("%.2f", price) + "\nPrice including VAT @ %" + ((VAT * 100) - 100) + ": £"
+                        + String.format("%.2f", priceVAT);
+
                 s[1] = rs.getString("DATE") + rs.getString("NAME");
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-            return s;
+
+        return s;
+    }
+
+    public ResultSet getOutstandingDemands() {
+        ResultSet dbResult = select("select * from DEMANDS where STATUS = 'OUTSTANDING'");
+
+        return dbResult;
+    }
+
+    public ResultSet getDemandByID(String ID) {
+        String temp = "select * from DEMANDS where ID = " + ID;
+        ResultSet dbResult = select(temp);
+
+        return dbResult;
+    }
+
+    public void setDemandStatus(String status, String demandID) {
+        String temp = "UPDATE Demands SET STATUS = '" + status + "' WHERE ID =" + demandID;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(temp);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    public ResultSet getAvailableDrivers(String date) {
+
+        ResultSet dbResult = select("SELECT distinct ID, NAME, REGISTRATION FROM Drivers JOIN JOURNEY ON Drivers.ID = DRIVER_ID WHERE DATE != '" + date + "' AND DRIVERS.ACTIVE = true");
+
+        return dbResult;
+    }
+
+    public void createJourney(String customerID, String destination, String distance, String driver_id, String date, String demands_id, String time) {
+
+        String insertJourneySQL = "INSERT INTO JOURNEY"
+                + "(CUSTOMER_ID, DESTINATION, DISTANCE, DRIVER_ID, DATE, DEMANDS_ID, TIME) VALUES"
+                + "(?,?,?,?,?,?,?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(insertJourneySQL);
+            preparedStatement.setInt(1, Integer.parseInt(customerID));
+            preparedStatement.setString(2, destination);
+            preparedStatement.setInt(3, Integer.parseInt(distance));
+            preparedStatement.setInt(4, Integer.parseInt(driver_id));
+            preparedStatement.setString(5, date);
+            preparedStatement.setInt(6, Integer.parseInt(demands_id));
+            preparedStatement.setString(7, time);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }

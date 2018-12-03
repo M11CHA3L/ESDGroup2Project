@@ -16,6 +16,7 @@ public class DrViewJobsServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession();
+        System.out.println(session.getMaxInactiveInterval());
         JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
 
         //if complete button selected update selected job to complete
