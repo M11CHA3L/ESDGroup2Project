@@ -3,15 +3,24 @@
     Created on : 02-Dec-2018, 12:34:01
     Author     : michaelcraddock
 --%>
-
+<link rel="stylesheet" type="text/css" href="style.css">
+<style>
+    input[type=submit] {
+    width:100%;
+    
+    }
+    table{
+        margin: auto;
+    }
+</style>
 <div>
     <h1>AlphaCab</h1>
 </div>
 <div>
-    <form method="POST" action="AdminServlet.do">
+    <form method="POST" id='form' action="AdminServlet.do">
         <table>
             <tr>
-                <td>
+                <td> 
                     <input type="submit" name="adminOption" value ="View Drivers"><br>
                 </td>
                 <td>
@@ -20,9 +29,13 @@
                 <td>
                     <input type="submit" name="adminOption" value ="View New Demands"><br>
                 </td>
+            
+            
                 <td>
                     <input type="submit" name="adminOption" value ="View Turnover"><br>
                 </td>
+               <tr>
+                   </tr>
                 <td>
                     <input type="submit" name="adminOption" value ="View Driver Bookings"><br>
                 </td>
