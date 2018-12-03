@@ -77,8 +77,8 @@
         <servlet-class>com.AdCreateNewDriverServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AdUpdateCustomerDriverServlet</servlet-name>
-        <servlet-class>com.AdUpdateCustomerDriverServlet</servlet-class>
+        <servlet-name>AdUpdateCustomerDriverCommitServlet</servlet-name>
+        <servlet-class>com.AdUpdateCustomerDriverCommitServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdGetDriverJourneysServlet</servlet-name>
@@ -103,6 +103,10 @@
     <servlet>
         <servlet-name>AdUpdateDriverServlet</servlet-name>
         <servlet-class>com.AdUpdateDriverServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdUpdateCustomerDriverPopulateServlet</servlet-name>
+        <servlet-class>com.AdUpdateCustomerDriverPopulateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -177,8 +181,8 @@
         <url-pattern>/AdCreateNewDriverServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdUpdateCustomerDriverServlet</servlet-name>
-        <url-pattern>/AdUpdateCustomerDriverServlet.do</url-pattern>
+        <servlet-name>AdUpdateCustomerDriverCommitServlet</servlet-name>
+        <url-pattern>/AdUpdateCustomerDriverCommitServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdGetDriverJourneysServlet</servlet-name>
@@ -203,6 +207,10 @@
     <servlet-mapping>
         <servlet-name>AdUpdateDriverServlet</servlet-name>
         <url-pattern>/AdUpdateDriverServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdUpdateCustomerDriverPopulateServlet</servlet-name>
+        <url-pattern>/AdUpdateCustomerDriverPopulateServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
