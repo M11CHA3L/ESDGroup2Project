@@ -40,21 +40,7 @@ public class LoginServlet extends HttpServlet {
 
         String username = request.getParameter("uName");
         String password = request.getParameter("pass");
-        
         String errorMessage;
-        // Check username was entered
-        if (username.equals("")) {
-            errorMessage = "No username Entered";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-        }
-
-        // Check if password was entered
-        if (password.equals("")) {
-            errorMessage = "No password entered";
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-        }
 
         // Check user exists
         if (dbBean.userExists(username)) {
@@ -72,20 +58,24 @@ public class LoginServlet extends HttpServlet {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+                session.setAttribute("userName", username);
                 switch (user) {
                     case 3:
                         session.setAttribute("userRole", "admin");
+                        request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
                         break;
                     case 2:
                         session.setAttribute("userRole", "driver");
+                        request.getRequestDispatcher("/drWelcome.jsp").forward(request, response);
                         break;
                     case 1:
                         session.setAttribute("userRole", "customer");
+                        request.getRequestDispatcher("/cuWelcome.jsp").forward(request, response);
                         break;
                         
                 }
                 //set username session attribute
-                session.setAttribute("userName", username);
+               
                 request.getRequestDispatcher("/welcome.jsp").forward(request, response);
 
             } else {

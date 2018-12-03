@@ -1,7 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com;
 
 import java.io.IOException;
-import java.sql.Connection;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +22,7 @@ import model.JDBC;
  *
  * @author michaelcraddock
  */
-public class CreateDemandServlet extends HttpServlet {
+public class CuNewBookingServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,10 +35,9 @@ public class CreateDemandServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
+        HttpSession session = request.getSession();
         JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
        
         String customerName = request.getParameter("customerName");
@@ -82,18 +86,17 @@ public class CreateDemandServlet extends HttpServlet {
             }
             
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+            request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
 
         } else {
             try {
                 dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
                 request.setAttribute("message", "Request Sent!");
-                request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+                request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(CreateDemandServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -1,23 +1,23 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
+import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.JDBC;
 
 /**
  *
  * @author michaelcraddock
  */
-public class CreateDriverServlet extends HttpServlet {
+public class DrServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,38 +30,18 @@ public class CreateDriverServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
-        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
-       
-        String driverName = request.getParameter("driverName");
-        String driverRegistration = request.getParameter("driverRegistration");
-        String driverUsername = request.getParameter("driverUsername");
-        String driverPassword = request.getParameter("driverPassword");
+        RequestDispatcher rd;
 
-
-        String errorMessage = "";
-        //check all fields are complete
-        if (driverUsername.equals("")
-                || driverRegistration.equals("")
-                || driverPassword.equals("")
-                || driverName.equals(""))
-                 {
-            
-            errorMessage = "Please complete all fields";            
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/adCreateNewDriver.jsp").forward(request, response);
-            
-
-        } else {
-         
-                dbBean.createDriver(driverPassword, driverRegistration, driverUsername, driverPassword);
-                request.setAttribute("message", "DriverAdded!");
-                request.getRequestDispatcher("/adCreateNewDriver.jsp").forward(request, response);
+        switch ((String) request.getParameter("driverOption")) {
+            case "View Jobs":
+                rd = request.getRequestDispatcher("/DrViewJobsServlet.do");
+                rd.forward(request, response);
+                break;
+            default:
+                break;
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

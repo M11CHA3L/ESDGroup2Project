@@ -1,40 +1,44 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.jms.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.JDBC;
 
-public class DriverServlet extends HttpServlet {
+/**
+ *
+ * @author michaelcraddock
+ */
+public class AdViewDriversServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        HttpSession session = request.getSession();
-        JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
+        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
+        
+        request.getSession().setAttribute("driverOrCustomer", "driver");
 
-        //if complete button selected update selected job to complete
-        String complete = request.getParameter("complete");
-        if(complete != null){
-            String updated;
-            updated = dbBean.update("UPDATE DEMANDS SET STATUS = 'COMPLETE' WHERE ID = " + request.getParameter("selectedJob"));
-            //if update does nothing (returns empty string) return nothing
-            if (!"".equals(updated)){
-                request.setAttribute("updated", updated);
-            }
-            
-        } 
-        
-        String jobs = dbBean.getDriverJobs((String) session.getAttribute("userName"));
-        request.setAttribute("jobs", jobs);
-        request.getRequestDispatcher("/welcome.jsp").forward(request, response);
-        
+        String drivers = dbBean.ToEditTable("Select * from DRIVERS", "USERNAME", "DRIVERS");
+        request.setAttribute("drivers", drivers);
+        request.getRequestDispatcher("/adViewDrivers.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

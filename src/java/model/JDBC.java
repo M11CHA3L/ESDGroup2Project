@@ -145,7 +145,7 @@ public class JDBC {
         select(query);
 
         // Form for EDIT a row
-        output += "<form method=\"POST\" id=\"editForm\" action=\"UpdateSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
+        output += "<form method=\"POST\" id=\"editForm\" action=\"AdUpdateCustomerDriverServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form>";
         
@@ -280,7 +280,7 @@ public class JDBC {
 
         select("select * from drivers");
 
-        s += "<form method=\"post\" action=\"results.do\">";
+        s += "<form method=\"post\" action=\"AdminServlet.do\">";
 
         try {
             while (rs.next()) {
@@ -294,8 +294,8 @@ public class JDBC {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
         String date = simpleDateFormat.format(new java.util.Date());
-        s += "<input type='date' name='date' value='" + date + "'><br><input type='submit' name='action' value='Get Journeys'>"
-                + "<input type='submit' name='action' value='Get Turnover'></form>";
+        s += "<input type='date' name='date' value='" + date + "'><br><input type='submit' name='adminOption' value='Get Driver Journeys'>"
+                + "<input type='submit' name='adminOption' value='Get Turnover'></form>";
 
         return s;
     }
