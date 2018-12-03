@@ -23,11 +23,6 @@ public class SelectDemandServlet extends HttpServlet {
         JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
         
         String s = "";
-        String demandID  = "";
-        String demandDestination  = "";
-        String customerID  = "";
-        String demandDate  = "";
-        String demandTime = "";
                 
         s += "<form method=\"post\" action=\"assignDriver.do\">";
            

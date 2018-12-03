@@ -21,13 +21,12 @@ public class AssignDriverServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
-
-
+               
         try {
             //fetch demand info using demand ID from previous radio
             ResultSet demand = dbBean.getDemandByID((String) request.getParameter("demandID"));
             demand.next();
-            dbBean.createJourney(demand.getString("CUSTOMER_ID"), demand.getString("DESTINATION"), "5m", request.getParameter("driverRadio"), demand.getString("DATE"), demand.getString("ID"));
+            dbBean.createJourney((String)demand.getString("CUSTOMER_ID"), (String)demand.getString("DESTINATION"), "5", (String)request.getParameter("driverRadio"), (String)demand.getString("DATE"), (String)demand.getString("ID"), (String)demand.getString("TIME"));
         } catch (SQLException ex) {
             Logger.getLogger(AssignDriverServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

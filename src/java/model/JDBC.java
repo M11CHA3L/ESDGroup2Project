@@ -486,26 +486,21 @@ public class JDBC {
         return dbResult;
     }
     
-    public void createJourney(String customerID, String destination, String distance, String driver_id, String date, String demands_id) {
+    public void createJourney(String customerID, String destination, String distance, String driver_id, String date, String demands_id, String time) {
 
-//        String insertJourneySQL = "INSERT INTO JOURNEY"
-//                + "(CUSTOMER_ID, DESTINATION, DISTANCE, DRIVER_ID, DATE, DEMANDS_ID) VALUES"
-//                + "(?,?,?,?,?,?)";
+        String insertJourneySQL = "INSERT INTO JOURNEY"
+                + "(CUSTOMER_ID, DESTINATION, DISTANCE, DRIVER_ID, DATE, DEMANDS_ID, TIME) VALUES"
+                + "(?,?,?,?,?,?,?)";
         
-                String insertJourneySQL = "INSERT INTO JOURNEY"
-                + "(DESTINATION, DISTANCE, DATE, ) VALUES"
-                + "(?,?,?,?,?,?)";
-        
-        System.out.println(customerID + " " + destination + " " + distance + " " + driver_id + " " + date + " " + demands_id);
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(insertJourneySQL);
-            preparedStatement.setString(1, customerID);
+            preparedStatement.setInt(1, Integer.parseInt(customerID));
             preparedStatement.setString(2, destination);
-            preparedStatement.setString(3, distance);
-            preparedStatement.setString(4, driver_id);
+            preparedStatement.setInt(3, Integer.parseInt(distance));
+            preparedStatement.setInt(4, Integer.parseInt(driver_id));
             preparedStatement.setString(5, date);
-            preparedStatement.setString(6, demands_id);
+            preparedStatement.setInt(6, Integer.parseInt(demands_id));
+            preparedStatement.setString(7, time);
             preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {
