@@ -19,12 +19,10 @@
 
             }
                
-
-     
-
-
-
-                    
+            if ((String)request.getAttribute("message") != null){
+                 out.print((String) request.getAttribute("message"));
+            }
+               
 
         %>
         
