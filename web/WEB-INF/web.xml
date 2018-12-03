@@ -108,6 +108,10 @@
         <servlet-name>AdUpdateCustomerDriverPopulateServlet</servlet-name>
         <servlet-class>com.AdUpdateCustomerDriverPopulateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdToggleActiveSelectionServlet</servlet-name>
+        <servlet-class>com.AdToggleActiveSelectionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -211,6 +215,10 @@
     <servlet-mapping>
         <servlet-name>AdUpdateCustomerDriverPopulateServlet</servlet-name>
         <url-pattern>/AdUpdateCustomerDriverPopulateServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdToggleActiveSelectionServlet</servlet-name>
+        <url-pattern>/AdToggleActiveSelectionServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

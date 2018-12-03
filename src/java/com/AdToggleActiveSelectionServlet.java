@@ -8,7 +8,6 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +18,7 @@ import model.JDBC;
  *
  * @author patin
  */
-public class AdUpdateCustomerDriverPopulateServlet extends HttpServlet {
+public class AdToggleActiveSelectionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,28 +36,30 @@ public class AdUpdateCustomerDriverPopulateServlet extends HttpServlet {
         JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
         String driverOrCustomer = (String)request.getSession().getAttribute("driverOrCustomer");
         
-        String rowValue = request.getParameter("editChoice");
+        String rowValue = request.getParameter("toggleActiveChoice");
         String tableName = request.getParameter("tableName");
         String columnName = request.getParameter("columnName");
         HashMap<String, String> columns = dbBean.GetRowByColumnName("Select * from " + tableName + " Where " + columnName + " = " + rowValue);
         
-        for(Entry<String, String> column : columns.entrySet())
-        {
-            if (column.getKey().equals("ACTIVE"))
-            {
-                columns.remove(column.getKey());
-                break;
-            }
-        }
+        Boolean active = Boolean.parseBoolean(columns.get("ACTIVE"));
         
-        request.getSession().setAttribute("columnNames", columns);
-        request.getSession().setAttribute("tableName", tableName);
-        request.getSession().setAttribute("columnName", columnName);
-        request.getSession().setAttribute("rowValue", rowValue);
+        request.getSession().setAttribute("columnNames", null);
+        request.getSession().setAttribute("tableName", null);
+        request.getSession().setAttribute("columnName", null);
+        request.getSession().setAttribute("rowValue", null);
 
-
-
-        request.getRequestDispatcher("/adUpdateSelection.jsp").forward(request, response);
+        if("driver".equals(driverOrCustomer))
+        {
+            dbBean.SetDriverActive(columns.get("ID"), !active);
+            request.setAttribute("adminOption", "View Drivers");
+            request.getRequestDispatcher("/AdminServlet.do").forward(request, response);
+        }
+        else if("customer".equals(driverOrCustomer))
+        {
+            dbBean.SetCustomerActive(columns.get("ID"), !active);
+            request.setAttribute("adminOption", "View Customers");
+            request.getRequestDispatcher("/AdminServlet.do").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
