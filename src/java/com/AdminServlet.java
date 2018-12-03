@@ -60,7 +60,9 @@ public class AdminServlet extends HttpServlet {
             case "View New Demands":
 //                rd = request.getRequestDispatcher("/AdViewNewDemandsServlet.do");
 //                rd.forward(request, response);
-                request.getRequestDispatcher("/adViewNewDemands.jsp").forward(request, response);
+                
+                rd = request.getRequestDispatcher("/AdViewOutstandingJobs.do");
+                rd.forward(request, response);
                 break;
             case "View Turnover":
 //                rd = request.getRequestDispatcher("/AdViewTurnoverServlet.do");
@@ -77,6 +79,10 @@ public class AdminServlet extends HttpServlet {
 //                request.getRequestDispatcher("/adminviewbooking.jsp").forward(request, response);
                 break;
             case "Get Driver Journeys":
+                rd = request.getRequestDispatcher("/AdGetDriverJourneysServlet.do");
+                rd.forward(request, response);
+                break;
+            case "Get Driver Turnover":
                 rd = request.getRequestDispatcher("/AdGetDriverJourneysServlet.do");
                 rd.forward(request, response);
                 break;

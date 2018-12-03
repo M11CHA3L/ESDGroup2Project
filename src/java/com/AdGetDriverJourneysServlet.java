@@ -44,7 +44,7 @@ public class AdGetDriverJourneysServlet extends HttpServlet {
 
             request.getRequestDispatcher("/adGetDriverJourneys.jsp").forward(request, response);
 
-        }else if (request.getParameter("adminOption").equals("Get Turnover")) {
+        }else if (request.getParameter("adminOption").equals("Get Driver Turnover")) {
             int turnover = dbBean.getTurnover(drivername, date);
              request.setAttribute("result", turnover);
 
