@@ -478,6 +478,19 @@ public class JDBC {
         return dbResult;
     }
     
+    public void setDemandStatus(String status, String demandID) {
+        String temp = "UPDATE Demands SET STATUS = '" + status +  "' WHERE ID =" + demandID;
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(temp);
+            preparedStatement.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     public ResultSet getAvailableDrivers(String date) {
 
         ResultSet dbResult = select("SELECT distinct ID, NAME, REGISTRATION FROM Drivers JOIN JOURNEY ON Drivers.ID = DRIVER_ID WHERE DATE != '" + date + "'");       

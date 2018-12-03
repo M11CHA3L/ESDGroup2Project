@@ -27,6 +27,7 @@ public class AssignDriverServlet extends HttpServlet {
             ResultSet demand = dbBean.getDemandByID((String) request.getParameter("demandID"));
             demand.next();
             dbBean.createJourney((String)demand.getString("CUSTOMER_ID"), (String)demand.getString("DESTINATION"), "5", (String)request.getParameter("driverRadio"), (String)demand.getString("DATE"), (String)demand.getString("ID"), (String)demand.getString("TIME"));
+            dbBean.setDemandStatus("ASSIGNED", (String)demand.getString("ID"));
             request.setAttribute("message", "Journey Created || Trip to " + (String)demand.getString("DESTINATION") + " on " + (String)demand.getString("DATE")+  " at " + (String)demand.getString("TIME") + " has been assigned a driver");
         } catch (SQLException ex) {
             Logger.getLogger(AssignDriverServlet.class.getName()).log(Level.SEVERE, null, ex);
