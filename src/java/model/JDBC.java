@@ -466,7 +466,7 @@ public class JDBC {
     }
         
     public ResultSet getOutstandingDemands() {
-    ResultSet dbResult = select("select * from DEMANDS where STATUS = 'COMPLETE'");
+    ResultSet dbResult = select("select * from DEMANDS where STATUS = 'OUTSTANDING'");
 
     return dbResult;
     }
