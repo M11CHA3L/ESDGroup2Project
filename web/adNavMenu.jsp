@@ -3,7 +3,7 @@
     Created on : 02-Dec-2018, 12:34:01
     Author     : michaelcraddock
 --%>
-<link rel="stylesheet" type="text/css" href="style.css">
+
 <div>
     <h1>AlphaCab</h1>
 </div>
