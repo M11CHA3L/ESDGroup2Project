@@ -12,6 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+ 
         <jsp:include page='cuNavMenu.jsp'/>
      <div id='form_wrap'>
     <form method="POST"  action="CuServlet.do">

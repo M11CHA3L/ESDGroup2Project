@@ -9,18 +9,26 @@
     </head>
     <body>
         <h1>AlphaCab</h1>
-        <%String s = "Enter username and password";
+        <%String s = "<h3>Login</h3>";
         
         if (request.getAttribute("errorMessage") != null) {
                 s = (String)request.getAttribute("errorMessage");
             }
             out.print(s);
             %>
+        <div id='form_wrap'>
         <form method="POST" action="login.do">
-              Enter username : <input type="text" name="uName"><br> 
-              Enter password : <input type="password" name="pass"><br> 
-              <input type="submit" value="login">
+            <table  class="tg">
+                <tr>
+                    <td>Username</td><td><input type="text" name="uName"></td> 
+                </tr>
+                <tr>
+                    <td>Password</td><td><input type="password" name="pass"></td> 
+                </tr>
+                <tr>
+                    <td></td><td style='text-align: right'><input type="submit" value="login"></td>
+              </tr>
         </form> 
-        
+        </div>
     </body>
 </html>

@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 <style>
     input[type=submit] {
-    width:100%;
+    min-width: 120px;
     
     }
     table{
@@ -17,36 +17,22 @@
     <h1>AlphaCab</h1>
 </div>
 <div>
-    <form method="POST" id='form' action="AdminServlet.do">
-        <table>
-            <tr>
-                <td> 
-                    <input type="submit" name="adminOption" value ="View Drivers"><br>
-                </td>
-                <td>
-                    <input type="submit" name="adminOption" value ="View Customers"><br>
-                </td>
-                <td>
-                    <input type="submit" name="adminOption" value ="View New Demands"><br>
-                </td>
-            
-            
-                <td>
-                    <input type="submit" name="adminOption" value ="View Turnover"><br>
-                </td>
-               <tr>
-                   </tr>
-                <td>
-                    <input type="submit" name="adminOption" value ="View Driver Bookings"><br>
-                </td>
-                <td>
-                    <input type="submit" name="adminOption" value ="Create New Customer"><br>
-                </td>
-                <td>
-                    <input type="submit" name="adminOption" value ="Create New Driver"><br>
-                </td>
-            </tr>
-        </table>
+    <form method="POST" id='adnavform' action="AdminServlet.do">
+
+
+                    <input class='adnavbtn' type="submit" name="adminOption" value ="View Drivers">
+
+                    <input class='adnavbtn' type="submit" name="adminOption" value ="View Customers">
+
+                    <input class='adnavbtn' type="submit" name="adminOption" value ="View New Demands">
+
+                    <input class='adnavbtn' type="submit" name="adminOption" value ="View Turnover">
+                    <input class='adnavbtn' type="submit" name="adminOption" value ="View Driver Bookings">
+       
+                    <input class='adnavbtn' type="submit" name="adminOption" value ="Create New Customer">
+     
+                    <input class='adnavbtn' type="submit" name="adminOption" value ="Create New Driver">
+ 
     </form>
 </div>
 
