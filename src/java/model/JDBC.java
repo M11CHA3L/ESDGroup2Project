@@ -243,13 +243,13 @@ public class JDBC {
     
     public String getDriverJobs(String username) {
         String s = "";
-        String registration = "";
+        String id = "";
         
         //get registration of logged in user
         select("select * from drivers where username='" + username + "'");
         try {
             while (rs.next()) {
-                registration = rs.getString("registration");
+                id = rs.getString("id");
             }
 
         } catch (SQLException ex) {
@@ -257,9 +257,9 @@ public class JDBC {
         }
 
         //get driver jobs
-        select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME FROM JOURNEY INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID WHERE JOURNEY.REGISTRATION = '" + registration + "' AND DEMANDS.STATUS != 'COMPLETE'");
+        select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME FROM JOURNEY INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
         try {
-            s = "<form method=\"post\" action=\"driver.do\">";
+            s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
             while (rs.next()){
                 s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS") 
                         + "<br>Customer Destination: " + rs.getString("DESTINATION") 
@@ -488,4 +488,37 @@ public class JDBC {
             update("UPDATE CUSTOMERS SET ACTIVE=FALSE WHERE ID=" + customerID);
         }
     }
+        public String[] returnInvoice(String dID){
+            String[] s = new String[2];
+            double price = 10;
+            double pricepermile = 1;
+            double VAT = 1.2;
+            double priceVAT;
+ 
+            select("SELECT D.ADDRESS, D.DESTINATION, D.\"DATE\", D.\"TIME\", J.DISTANCE, C.\"NAME\", D.ID\n"
+                    + "FROM JOURNEY AS J \n"
+                    + "INNER JOIN DEMANDS AS D ON D.ID = J.DEMANDS_ID\n"
+                    + "INNER JOIN CUSTOMERS AS C ON C.ID = J.CUSTOMER_ID\n"
+                    + "WHERE D.ID =" + dID);
+
+        try {
+            while (rs.next()) {
+                if (Integer.parseInt(rs.getString("DISTANCE")) > 5 ) {
+                   // £10
+                   price = 10 + pricepermile * (Double.parseDouble(rs.getString("DISTANCE"))-5);
+                }
+                priceVAT = price * VAT;
+                s[0] = "Invoice for " + rs.getString("NAME") +"\n\nDate: " + rs.getString("DATE") + "\nTime: " + rs.getString("TIME") + "\nStart: " + rs.getString("ADDRESS") 
+                        + "\nEnd:" + rs.getString("DESTINATION") + "\nPrice without VAT: £" + 
+                        String.format("%.2f", price) + "\nPrice including VAT @ %" + ((VAT * 100) - 100) + ": £" + 
+                        String.format("%.2f", priceVAT);
+                
+                s[1] = rs.getString("DATE") + rs.getString("NAME");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            return s;
+        }
 }
