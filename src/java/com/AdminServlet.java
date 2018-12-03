@@ -70,6 +70,7 @@ public class AdminServlet extends HttpServlet {
 //                rd = request.getRequestDispatcher("/AdViewTurnoverServlet.do");
 //                rd.forward(request, response);
                 request.getRequestDispatcher("/adViewTurnover.jsp").forward(request, response);
+                //response.sendRedirect("adViewTurnover.jsp");
                 break;
             case "View Driver Bookings":
                 rd = request.getRequestDispatcher("/AdViewDriverBookingsServlet.do");
