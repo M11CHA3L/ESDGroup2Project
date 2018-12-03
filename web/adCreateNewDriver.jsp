@@ -18,8 +18,8 @@
                 response.sendRedirect("index.jsp");
             }
         %>
-        <p1>Create Driver</p1><br><br>
-        <form method="POST" action="AdminServlet.do">
+        <h3>Create Driver</h3>
+        <form method="POST" style="text-align: right; width:400px; margin: auto;" action="AdminServlet.do">
             Enter full name : <input type="text" name="driverName" ><br> 
             Enter registration : <input type="text" name="driverRegistration" ><br>
             Enter username : <input type="text" name="driverUsername" ><br>
