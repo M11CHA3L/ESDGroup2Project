@@ -36,7 +36,7 @@ public class AdViewCustomersServlet extends HttpServlet {
 
         request.getSession().setAttribute("driverOrCustomer", "customer");
 
-        String customers = dbBean.ToEditTable("Select * from CUSTOMERS", "USERNAME", "CUSTOMERS");
+        String customers = dbBean.ToEditTable("Select * from CUSTOMERS", "ID", "CUSTOMERS");
         request.setAttribute("customers", customers);
         request.getRequestDispatcher("/adViewCustomers.jsp").forward(request, response);
     }

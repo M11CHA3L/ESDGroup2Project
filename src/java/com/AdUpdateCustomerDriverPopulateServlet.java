@@ -1,40 +1,53 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.JDBC;
 
-public class AdminResultsServlet extends HttpServlet {
+/**
+ *
+ * @author patin
+ */
+public class AdUpdateCustomerDriverPopulateServlet extends HttpServlet {
 
-
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
         JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
+        String driverOrCustomer = (String)request.getSession().getAttribute("driverOrCustomer");
         
-        String drivername = request.getParameter("driver");
-        String date = request.getParameter("date");
-        
-        if (request.getParameter("action").equals("Get Journeys")) {
-            String journeys = dbBean.getJourneys(drivername, date);
+        String rowValue = request.getParameter("editChoice");
+        String tableName = request.getParameter("tableName");
+        String columnName = request.getParameter("columnName");
+        HashMap<String, String> columns = dbBean.GetRowByColumnName("Select * from " + tableName + " Where " + columnName + " = " + rowValue);
+        request.getSession().setAttribute("columnNames", columns);
+        request.getSession().setAttribute("tableName", tableName);
+        request.getSession().setAttribute("columnName", columnName);
+        request.getSession().setAttribute("rowValue", rowValue);
 
-            request.setAttribute("result", journeys);
 
-            request.getRequestDispatcher("/results.jsp").forward(request, response);
 
-        }else if (request.getParameter("action").equals("Get Turnover")) {
-            int turnover = dbBean.getTurnover(drivername, date);
-             request.setAttribute("result", turnover);
-
-            request.getRequestDispatcher("/results.jsp").forward(request, response);
-        }
-       
+        request.getRequestDispatcher("/adUpdateSelection.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

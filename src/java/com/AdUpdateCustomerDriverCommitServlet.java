@@ -18,7 +18,7 @@ import model.JDBC;
  *
  * @author michaelcraddock
  */
-public class AdUpdateCustomerDriverServlet extends HttpServlet {
+public class AdUpdateCustomerDriverCommitServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,54 +36,38 @@ public class AdUpdateCustomerDriverServlet extends HttpServlet {
         JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
         String driverOrCustomer = (String)request.getSession().getAttribute("driverOrCustomer");
         
-        // Has the user already filled in the update form?
-        if (request.getSession().getAttribute("columnNames") == null)
-        {
-            String rowValue = request.getParameter("editChoice");
-            String tableName = request.getParameter("tableName");
-            String columnName = request.getParameter("columnName");
-            HashMap<String, String> columns = dbBean.GetRowByColumnName("Select * from " + tableName + " Where " + columnName + " = '" + rowValue + "'");
-            request.getSession().setAttribute("columnNames", columns);
-            request.getSession().setAttribute("tableName", tableName);
-            request.getSession().setAttribute("columnName", columnName);
-            request.getSession().setAttribute("rowValue", rowValue);
-
-            
-
-            request.getRequestDispatcher("/adUpdateSelection.jsp").forward(request, response);
-        }
-        else
+        if (request.getParameter("submit").equals("submit")) // Commit update to database
         {
             String tableName = (String)request.getSession().getAttribute("tableName");
             String columnName = (String)request.getSession().getAttribute("columnName");
             String rowValue = (String)request.getSession().getAttribute("rowValue");
 
             HashMap<String, String> columns = (HashMap<String, String>)request.getSession().getAttribute("columnNames");
-            
+
             HashMap<String, String> newValues = new HashMap<>();
-            
+
             for(String column : columns.keySet())
             {
                 newValues.put(column, request.getParameter(column));
             }
-            
+
             dbBean.UpdateRowByColumnName(newValues, tableName, columnName, rowValue);
-            
-            request.getSession().setAttribute("columnNames", null);
-            request.getSession().setAttribute("tableName", null);
-            request.getSession().setAttribute("columnName", null);
-            request.getSession().setAttribute("rowValue", null);
-            
-            if(driverOrCustomer == "driver")
-            {
-                request.setAttribute("adminOption", "View Drivers");
-                request.getRequestDispatcher("/AdminServlet.do").forward(request, response);
-            }
-            else if(driverOrCustomer == "customer")
-            {
-                request.setAttribute("adminOption", "View Customers");
-                request.getRequestDispatcher("/AdminServlet.do").forward(request, response);
-            }
+        }
+
+        request.getSession().setAttribute("columnNames", null);
+        request.getSession().setAttribute("tableName", null);
+        request.getSession().setAttribute("columnName", null);
+        request.getSession().setAttribute("rowValue", null);
+
+        if("driver".equals(driverOrCustomer))
+        {
+            request.setAttribute("adminOption", "View Drivers");
+            request.getRequestDispatcher("/AdminServlet.do").forward(request, response);
+        }
+        else if("customer".equals(driverOrCustomer))
+        {
+            request.setAttribute("adminOption", "View Customers");
+            request.getRequestDispatcher("/AdminServlet.do").forward(request, response);
         }
     }
 

@@ -77,7 +77,7 @@ public class JDBC {
             
             if (counter == numberOfColumns)
             {
-                query += columnName + " = '" + columnValue + "' WHERE " + whereColumn + " = '" + whereValue + "'";
+                query += columnName + " = '" + columnValue + "' WHERE " + whereColumn + " = " + whereValue;
             }
             else if (columnName.equals("ID") || columnName.equals("USERNAME"))
             {
@@ -145,7 +145,7 @@ public class JDBC {
         select(query);
 
         // Form for EDIT a row
-        output += "<form method=\"POST\" id=\"editForm\" action=\"AdUpdateCustomerDriverServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
+        output += "<form method=\"POST\" id=\"editForm\" action=\"AdUpdateCustomerDriverPopulateServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form>";
         

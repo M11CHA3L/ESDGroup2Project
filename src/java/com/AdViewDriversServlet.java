@@ -36,7 +36,7 @@ public class AdViewDriversServlet extends HttpServlet {
         
         request.getSession().setAttribute("driverOrCustomer", "driver");
 
-        String drivers = dbBean.ToEditTable("Select * from DRIVERS", "USERNAME", "DRIVERS");
+        String drivers = dbBean.ToEditTable("Select * from DRIVERS", "ID", "DRIVERS");
         request.setAttribute("drivers", drivers);
         request.getRequestDispatcher("/adViewDrivers.jsp").forward(request, response);
     }

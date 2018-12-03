@@ -18,7 +18,7 @@
         <%
             HashMap<String, String> columns = (HashMap<String, String>) request.getSession().getAttribute("columnNames");
 
-            out.print("<form method=\"POST\" action=\"AdUpdateCustomerDriverServlet.do\">");
+            out.print("<form method=\"POST\" action=\"AdUpdateCustomerDriverCommitServlet.do\">");
             for (String column : columns.keySet()) {
                 if (column.equals("ID") || column.equals("USERNAME")) {
 
@@ -26,7 +26,8 @@
                     out.print(column + ": " + "<input type=\"text\" name=\"" + column + "\" value=\"" + columns.get(column) + "\" ><br>");
                 }
             }
-            out.print("<input type=\"submit\" value=\"submit\">");
+            out.print("<input type=\"submit\" name=\"submit\" value=\"submit\">");
+            out.print("<input type=\"submit\" name=\"submit\" value=\"cancel\">");
             out.print("/<form>");
         %>
 
