@@ -14,6 +14,10 @@
     </head>
     <body>
         <jsp:include page='adNavMenu.jsp'/>
+        <form action="AdFilterCustomerServlet.do" method="POST">
+            <input type="submit" value="Enable/Disable filtering active customers">
+        </form>
+        
         <%
             String customers = (String)request.getAttribute("customers");
             out.print(customers);

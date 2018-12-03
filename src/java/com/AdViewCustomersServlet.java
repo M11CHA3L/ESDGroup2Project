@@ -35,8 +35,18 @@ public class AdViewCustomersServlet extends HttpServlet {
         JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
 
         request.getSession().setAttribute("driverOrCustomer", "customer");
+        Boolean filterActive = (Boolean)request.getSession().getAttribute("filterActiveCustomer");
 
-        String customers = dbBean.ToEditTable("Select * from CUSTOMERS", "ID", "CUSTOMERS");
+        String customers;
+        if (filterActive == null || filterActive == true)
+        {
+            customers = dbBean.ToEditTable("Select * from CUSTOMERS", "ID", "CUSTOMERS");
+        }
+        else
+        {
+            customers = dbBean.ToEditTable("Select * from CUSTOMERS WHERE ACTIVE=TRUE", "ID", "CUSTOMERS");
+        }
+        
         request.setAttribute("customers", customers);
         request.getRequestDispatcher("/adViewCustomers.jsp").forward(request, response);
     }
