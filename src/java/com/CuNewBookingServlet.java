@@ -1,7 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com;
 
 import java.io.IOException;
-import java.sql.Connection;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +22,7 @@ import model.JDBC;
  *
  * @author michaelcraddock
  */
-public class CreateCustomerServlet extends HttpServlet {
+public class CuNewBookingServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,41 +35,68 @@ public class CreateCustomerServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
+        HttpSession session = request.getSession();
         JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
        
         String customerName = request.getParameter("customerName");
-        String customerAddress = request.getParameter("customerAddress");
-        String customerUsername = request.getParameter("customerUsername");
-        String customerPassword = request.getParameter("customerPassword");
-
+        String currentAddress = request.getParameter("currentAddress");
+        String destinationAddress = request.getParameter("destinationAddress");
+        String dateRequired = request.getParameter("dateRequired");
+        String timeRequired = request.getParameter("timeRequired");
+        String userName = (String) session.getAttribute("userName");
         String dateRegEx = "^\\d{4}-\\d{2}-\\d{2}$";
         String timeRegEx = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
         String postCodeRegEx = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
 
         String errorMessage = "";
+
         //check all fields are complete
-        if (customerPassword.equals("")
-                || customerUsername.equals("")
-                || customerAddress.equals("")
+        if (userName.equals("")
+                || timeRequired.equals("")
+                || dateRequired.equals("")
+                || destinationAddress.equals("")
+                || currentAddress.equals("")
                 || customerName.equals("")) {
             
             errorMessage = "Please complete all fields";            
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/adCreateNewCustomer.jsp").forward(request, response);
+            request.getRequestDispatcher("/welcome.jsp").forward(request, response);
             
 
+        } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) || !Pattern.matches(postCodeRegEx, currentAddress) || !Pattern.matches(postCodeRegEx, destinationAddress)) {
+
+            request.setAttribute("customerName", customerName);
+            
+            if (!Pattern.matches(dateRegEx, dateRequired)) {
+                errorMessage += "incorrect date format,   ";
+            }
+            
+            if (!Pattern.matches(timeRegEx, timeRequired)) {
+                errorMessage += "incorrect time format,   ";
+            } 
+            
+            if (!Pattern.matches(postCodeRegEx, currentAddress)) {
+                errorMessage += "incorrect current postcode format,   ";
+            }
+            
+            if (!Pattern.matches(postCodeRegEx, destinationAddress)) {
+                errorMessage += "incorrect destination postcode format,   ";
+            }
+            
+            request.setAttribute("errorMessage", errorMessage);
+            request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
+
         } else {
-
-            dbBean.createCustomer(customerPassword, customerAddress, customerUsername, customerName);
-            request.setAttribute("message", "Customer Created!");
-            request.getRequestDispatcher("/adCreateNewCustomer.jsp").forward(request, response);
-
+            try {
+                dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
+                request.setAttribute("message", "Request Sent!");
+                request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(CreateDemandServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
