@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : cuNewJob
     Created on : 02-Dec-2018, 19:34:10
     Author     : michaelcraddock
@@ -12,16 +12,38 @@
         <title>JSP Page</title>
     </head>
     <body>
+ 
         <jsp:include page='cuNavMenu.jsp'/>
-    <p1>Book a Ride</p1><br><br>
-    <form method="POST" action="CuServlet.do">
-        Enter full name : <input type="text" name="customerName" ><br> 
-        Enter current post code : <input type="text" name="currentAddress" > (in format: SN139RA)<br>
-        Enter destination post code : <input type="text" name="destinationAddress" > (in format: SN139RA) <br>
-        Enter date required : <input type="text" name="dateRequired" > (in format: YYYY-MM-DD)<br>
-        Enter time required : <input type="text" name="timeRequired" > (in format: HH:MM)<br>
-        <input type="submit" name="customerOption" value="Request Booking">
-    </form> 
+     <div id='form_wrap'>
+    <form method="POST"  action="CuServlet.do">
+      <table id='newjob' class="tg">
+        <tr>
+          <td class="tg-0lax">Full Name<br><br></td>
+          <td class="tg-0lax"><input type="text" name="customerName" ></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax">Current Postcode<br> eg.SN139RA </td>
+          <td class="tg-0lax"><input type="text" name="currentAddress" ></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax">Destination Postcode<br> eg.SN139RA </td>
+          <td class="tg-0lax"><input type="text" name="destinationAddress" ></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax">Date required<br>YYYY-MM-DD</td>
+          <td class="tg-0lax"><input type="text" name="dateRequired" > </td>
+        </tr>
+        <tr>
+          <td class="tg-0lax">Time required<br>HH:MM</td>
+          <td class="tg-0lax"><input type="text" name="timeRequired" > </td>
+        </tr>
+        <tr>
+          <td class="tg-0lax"></td>
+          <td class="tg-0lax"><input type="submit" value="Request Ride"></td>
+        </tr>
+      </table>
+    </form>
+     </div>
     <br>
     <%
         if (request.getAttribute("errorMessage") != null) {
@@ -30,7 +52,7 @@
             out.print((String) request.getAttribute("message"));
         }
 
-    %> 
+    %>
     <br>
     <jsp:include page='zLogout.jsp'/>
 </body>
