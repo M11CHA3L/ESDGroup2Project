@@ -38,28 +38,24 @@ public class AdminServlet extends HttpServlet {
         //String option = (String)request.getParameter("adminOption");
         RequestDispatcher rd;
 
-        switch ((String) request.getParameter("adminOption")) {
+        String adminOption;
+        if (request.getParameter("adminOption") == null)
+        {
+            adminOption = (String)request.getAttribute("adminOption");
+        }
+        else
+        {
+            adminOption = request.getParameter("adminOption");
+        }
+        
+        switch (adminOption) {
             case "View Drivers":
                 rd = request.getRequestDispatcher("/AdViewDriversServlet.do");
                 rd.forward(request, response);
-
-                //response.sendRedirect("AdViewDriversServlet.do");
-                //response.sendRedirect(request.getContextPath() + "/adViewDriversServlet");
-//                request.getSession().setAttribute("driverOrCustomer", "driver");
-//                
-//                String drivers = dbBean.ToEditTable("Select * from DRIVERS", "USERNAME", "DRIVERS");
-//                request.setAttribute("drivers", drivers);
-//                request.getRequestDispatcher("/adminViewDrivers.jsp").forward(request, response);
                 break;
             case "View Customers":
                 rd = request.getRequestDispatcher("/AdViewCustomersServlet.do");
                 rd.forward(request, response);
-
-//                request.getSession().setAttribute("driverOrCustomer", "customer");
-//                
-//                String customers = dbBean.ToEditTable("Select * from CUSTOMERS", "USERNAME", "CUSTOMERS");
-//                request.setAttribute("customers", customers);
-//                request.getRequestDispatcher("/adminViewCustomers.jsp").forward(request, response);
                 break;
             case "View New Demands":
 //                rd = request.getRequestDispatcher("/AdViewNewDemandsServlet.do");
