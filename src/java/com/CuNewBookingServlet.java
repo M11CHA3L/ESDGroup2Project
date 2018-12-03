@@ -94,7 +94,7 @@ public class CuNewBookingServlet extends HttpServlet {
                 request.setAttribute("message", "Request Sent!");
                 request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
             } catch (SQLException ex) {
-                Logger.getLogger(CreateDemandServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CuNewBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
