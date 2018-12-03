@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
+        <param-name>customerTimeout</param-name>
+        <param-value>1200</param-value>
+    </context-param>
+    <context-param>
+        <param-name>driverTimeout</param-name>
+        <param-value>1800</param-value>
+    </context-param>
+    <context-param>
+        <param-name>adminTimeout</param-name>
+        <param-value>3600</param-value>
+    </context-param>
+    <context-param>
         <param-name>dbname</param-name>
         <param-value>alphacab</param-value>
     </context-param>
@@ -262,7 +274,7 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            20
         </session-timeout>
     </session-config>
 </web-app>
