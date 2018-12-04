@@ -9,26 +9,25 @@
     </head>
     <body>
         <jsp:include page='zNavMenu.jsp'/>
-        <%String s = "<h3>Login</h3>";
-        
-        if (request.getAttribute("errorMessage") != null) {
-                s = (String)request.getAttribute("errorMessage");
+        <%String s = "";
+
+            if (request.getAttribute("errorMessage") != null) {
+                s = (String) request.getAttribute("errorMessage");
+
             }
             out.print(s);
-            %>
+        %>
         <div id='form_wrap'>
-        <form method="POST" action="login.do">
-            <table  class="tg">
-                <tr>
-                    <td>Username</td><td><input type="text" name="uName"></td> 
-                </tr>
-                <tr>
-                    <td>Password</td><td><input type="password" name="pass"></td> 
-                </tr>
-                <tr>
-                    <td></td><td style='text-align: right'><input type="submit" value="login"></td>
-              </tr>
-        </form> 
+            <form method="POST" action="login.do">
+             <div class='container'>
+                <label for="uname"><b>Username</b></label>
+                <input type="text" name="uName" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" name="pass" required>
+                <button type="submit">Login</button>
+            </div>
+            </form> 
         </div>
     </body>
 </html>

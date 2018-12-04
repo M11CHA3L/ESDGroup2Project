@@ -47,7 +47,7 @@ public class AdViewOutstandingJobs extends HttpServlet {
         try {
             s += "<form method=\"post\" action=\"AdSelectDemandServlet.do\">";
             while (dbResult.next()) {
-                s += dbResult.getString("Date") + " at " + dbResult.getString("Time") + " to " + dbResult.getString("Address") + " " + "<input type='radio' name='demandRadio' value='" + dbResult.getString("ID") + "'><br>";
+                s += dbResult.getString("Date") + " at " + dbResult.getString("Time") + " to " + dbResult.getString("Destination") + " " + "<input type='radio' name='demandRadio' value='" + dbResult.getString("ID") + "'><br>";
             }
             s += "<input type='submit' name='action' value='Assign Driver'>";
             request.setAttribute("demand", s);
