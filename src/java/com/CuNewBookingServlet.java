@@ -62,7 +62,7 @@ public class CuNewBookingServlet extends HttpServlet {
             
             errorMessage = "Please complete all fields";            
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/welcome.jsp").forward(request, response);
+            request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
             
 
         } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) || !Pattern.matches(postCodeRegEx, currentAddress) || !Pattern.matches(postCodeRegEx, destinationAddress)) {
