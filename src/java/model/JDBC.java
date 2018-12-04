@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,12 +90,6 @@ public class JDBC {
 
     }
 
-    /**
-     *
-     * @param query
-     * @param editable
-     * @return
-     */
     public String ToTable(String query) {
         String output = "";
         ResultSetMetaData rsmd = null;
@@ -255,14 +252,18 @@ public class JDBC {
                 + "INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID "
                 + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
         try {
+
+            s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
             while (rs.next()) {
-                s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
+
                 s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS")
                         + "<br>Customer Destination: " + rs.getString("DESTINATION")
                         + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
-                        + "<br>";
-                s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
+                        + "<br><br>";
+
             }
+            s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
+
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -278,23 +279,22 @@ public class JDBC {
 
         try {
             s += "<form method=\"post\" action=\"AdminServlet.do\">";
-            
+
             while (rs.next()) {
-                
+
                 s += "<input type='radio' name='driver' value='" + rs.getString("name") + "'>  " + rs.getString("name") + "<br>";
             }
-            
+
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            String date = simpleDateFormat.format(new java.util.Date());   
-            
+            String date = simpleDateFormat.format(new java.util.Date());
+
             s += "<br><b>Select Date:</b><br> <input type='date' name='date' value='" + date + "'>  <input type='submit' name='adminOption' value='Get Driver Journeys'>"
-                + "</form>";
-            
+                    + "</form>";
+
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-     
 
         return s;
     }
@@ -330,17 +330,17 @@ public class JDBC {
                 s += "<tr>";
                 c = rs.getMetaData().getColumnCount();
                 for (int i = 1; i <= c; i++) {
-                    if(i == c){
+                    if (i == c) {
                         s += "<td>£" + rs.getString(i) + "</td>";
-                    } else{
-                    s += "<td>" + rs.getString(i) + "</td>";
+                    } else {
+                        s += "<td>" + rs.getString(i) + "</td>";
                     }
                 }
                 s += "</tr>";
             }
             s += "<tr>";
-            for (int i = 0; i < (c-2); i++) {
-                s+= "<td></td>";
+            for (int i = 0; i < (c - 2); i++) {
+                s += "<td></td>";
             }
             s += "<td><b>Total ex. VAT</b></td><td><b>£" + turnover + "</b></td></tr></table>";
         } catch (SQLException ex) {
@@ -353,10 +353,10 @@ public class JDBC {
     public String getTurnover(String date) {
         String s = "";
         int turnover = 0;
-        
+
         select("select C.NAME, D.DESTINATION, J.DISTANCE, J.TIME, J.CHARGE from JOURNEY as J inner join DEMANDS as D on D.ID = J.DEMANDS_ID inner join customers as C on C.ID = J.CUSTOMER_ID where D.STATUS = 'COMPLETE' AND J.DATE = '" + date + "' order by J.TIME");
 
-        try{
+        try {
             s += "<table border='4'>";
             s += "<tr>";
             int c = rs.getMetaData().getColumnCount();
@@ -368,22 +368,22 @@ public class JDBC {
             int count = 1;
             while (rs.next()) {
                 turnover += rs.getInt("CHARGE");
-                s += "<tr>";                
+                s += "<tr>";
                 c = rs.getMetaData().getColumnCount();
                 s += "<td>" + count + "</td>";
                 for (int i = 1; i <= c; i++) {
-                    if(i == c){
+                    if (i == c) {
                         s += "<td>£" + rs.getString(i) + "</td>";
-                    } else{
-                    s += "<td>" + rs.getString(i) + "</td>";
+                    } else {
+                        s += "<td>" + rs.getString(i) + "</td>";
                     }
                 }
                 s += "</tr>";
                 count++;
             }
             s += "<tr>";
-            for (int i = 0; i < (c-1); i++) {
-                s+= "<td></td>";
+            for (int i = 0; i < (c - 1); i++) {
+                s += "<td></td>";
             }
             s += "<td><b>Total ex. VAT</b></td><td><b>£" + turnover + "</b></td></tr></table>";
         } catch (SQLException ex) {
@@ -430,38 +430,48 @@ public class JDBC {
         }
         return s;
     }
-    
-    public String setJourneyComplete(String demandId){
+
+    public String setJourneyComplete(String demandId) throws FileNotFoundException {
         String s;
         s = update("UPDATE DEMANDS SET STATUS = 'COMPLETE' WHERE ID = " + demandId);
-        if(!"".equals(s)){
-            
+        if (!"".equals(s)) {
+
             s = update("UPDATE JOURNEY SET CHARGE = '" + calculateJourneyCost(demandId) + "' WHERE DEMANDS_ID = " + demandId);
         }
-        
-        
+
         return s;
     }
-    
-    private String calculateJourneyCost(String demandID){
+
+    private String calculateJourneyCost(String demandID) throws FileNotFoundException {
         //hardcoded needs to be called from elsewhere
-        int price = 10;
+        int price = 0;
         int distance;
         int pricePerMile = 1;
-        
+
+       
+
+   
+
+        Scanner sc = new Scanner(JDBC.class.getResourceAsStream("properties.txt"));
+
+        while (sc.hasNextLine()) {
+           price = sc.nextInt();
+        }
+
         select("select * from journey where DEMANDS_ID=" + demandID);
         try {
             if (rs.next()) {
                 distance = rs.getInt("DISTANCE");
-                if (distance <= 5){
+                if (distance <= 5) {
                     return String.valueOf(price);
-                } else{
-                    return String.valueOf(price + ((distance-5)*pricePerMile));
+                } else {
+                    return String.valueOf(price + ((distance - 5) * pricePerMile));
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return String.valueOf(0);
     }
 
@@ -567,9 +577,11 @@ public class JDBC {
                         + String.format("%.2f", priceVAT);
 
                 s[1] = rs.getString("DATE") + rs.getString("NAME");
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         return s;
@@ -596,7 +608,8 @@ public class JDBC {
             preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JDBC.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }

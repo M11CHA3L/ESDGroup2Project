@@ -4,7 +4,7 @@ html{
     min-width: 400px;
     width:70%;
     padding: 15px;
-    background-color: #A239CA;
+    background-color: #dedede;
     color: #0E0B16;
     font-family: Helvetica;
 
@@ -24,18 +24,6 @@ body{
 
 h1{
     text-align: center;
-}
-
-.button {
-    font: bold 11px Arial;
-    text-decoration: none;
-    background-color: #EEEEEE;
-    color: #333333;
-    padding: 2px 6px 2px 6px;
-    border-top: 1px solid #CCCCCC;
-    border-right: 1px solid #333333;
-    border-bottom: 1px solid #333333;
-    border-left: 1px solid #CCCCCC;
 }
 
 #form_wrap{
@@ -67,28 +55,8 @@ th{
     text-align: center;
 }
 
-.btn{
-    position: relative;
 
-    display: block;
-    margin: 30px auto;
-    padding: 0;
 
-    overflow: hidden;
-
-    border-width: 0;
-    outline: none;
-    border-radius: 2px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
-
-    color: #ecf0f1;
-
-    transition: background-color .3s;
-}
-
-#btn_logout{
-    max-width: 100px;
-}
 
 .adnavbtn{
     display:inline;
@@ -98,4 +66,54 @@ th{
 
 #adnavform{
     margin:auto;
+}
+
+
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #9400D3;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+.container {
+    padding: 16px;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
 }
