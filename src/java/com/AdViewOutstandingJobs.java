@@ -42,9 +42,10 @@ public class AdViewOutstandingJobs extends HttpServlet {
         ResultSet dbResult = dbBean.getOutstandingDemands();
 
         String s = "";
-        s += "<form method=\"post\" action=\"AdSelectDemandServlet.do\">";
+        
 
         try {
+            s += "<form method=\"post\" action=\"AdSelectDemandServlet.do\">";
             while (dbResult.next()) {
                 s += dbResult.getString("Date") + " at " + dbResult.getString("Time") + " to " + dbResult.getString("Address") + " " + "<input type='radio' name='demandRadio' value='" + dbResult.getString("ID") + "'><br>";
             }

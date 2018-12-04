@@ -35,6 +35,9 @@ public class CuServlet extends HttpServlet {
         RequestDispatcher rd;
 
         switch ((String) request.getParameter("customerOption")) {
+            case "Home":
+                request.getRequestDispatcher("/cuWelcome.jsp").forward(request, response);
+                break;
             case "New Booking":
                 request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);                
                 break;

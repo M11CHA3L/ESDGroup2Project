@@ -12,7 +12,8 @@
         <table>
             <tr>
                 <td>
-                    <input type="submit" name="driverOption" value ="View Jobs"><br>
+                    <input type="submit" name="driverOption" value="Home">
+                    <input type="submit" name="driverOption" value ="View Jobs">
                 </td>
             </tr>
         </table>

@@ -9,13 +9,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Selected Driver Journeys</title>
     </head>
     <body>
         <jsp:include page='adNavMenu.jsp'/>
-                <%
-            out.print(request.getAttribute("result"));
+        <div>
+            <br>
+            <%
+                out.print(request.getAttribute("journey"));
             %>
-            <jsp:include page='zLogout.jsp'/>
+            <br>
+        </div>
+        <jsp:include page='zLogout.jsp'/>
     </body>
 </html>

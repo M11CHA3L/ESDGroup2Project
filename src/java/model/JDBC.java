@@ -255,15 +255,14 @@ public class JDBC {
                 + "INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID "
                 + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
         try {
-            s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
             while (rs.next()) {
+                s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
                 s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS")
                         + "<br>Customer Destination: " + rs.getString("DESTINATION")
                         + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
                         + "<br>";
-
+                s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
             }
-            s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -277,22 +276,25 @@ public class JDBC {
 
         select("select * from drivers where ACTIVE = true");
 
-        s += "<form method=\"post\" action=\"AdminServlet.do\">";
-
         try {
+            s += "<form method=\"post\" action=\"AdminServlet.do\">";
+            
             while (rs.next()) {
-
-                s += rs.getString("name") + "<input type='radio' name='driver' value='" + rs.getString("name") + "'><br>";
+                
+                s += "<input type='radio' name='driver' value='" + rs.getString("name") + "'>  " + rs.getString("name") + "<br>";
             }
+            
+            String pattern = "yyyy-MM-dd";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            String date = simpleDateFormat.format(new java.util.Date());   
+            
+            s += "<br><b>Select Date:</b><br> <input type='date' name='date' value='" + date + "'>  <input type='submit' name='adminOption' value='Get Driver Journeys'>"
+                + "</form>";
+            
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String pattern = "yyyy-MM-dd";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-
-        String date = simpleDateFormat.format(new java.util.Date());
-        s += "<input type='date' name='date' value='" + date + "'><br><input type='submit' name='adminOption' value='Get Driver Journeys'>"
-                + "<input type='submit' name='adminOption' value='Get Driver Turnover'></form>";
+     
 
         return s;
     }
@@ -300,6 +302,7 @@ public class JDBC {
     public String getJourneys(String name, String date) {
         String s = "";
         String id = null;
+        int turnover = 0;
         ResultSetMetaData rsmd = null;
 
         select("select * from drivers where name='" + name + "'");
@@ -317,18 +320,29 @@ public class JDBC {
         try {
             s += "<table border='4'>";
             s += "<tr>";
-            for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+            int c = rs.getMetaData().getColumnCount();
+            for (int i = 1; i <= c; i++) {
                 s += "<th>" + rs.getMetaData().getColumnName(i) + "</th>";
             }
             s += "</tr>";
             while (rs.next()) {
+                turnover += rs.getInt("CHARGE");
                 s += "<tr>";
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                c = rs.getMetaData().getColumnCount();
+                for (int i = 1; i <= c; i++) {
+                    if(i == c){
+                        s += "<td>£" + rs.getString(i) + "</td>";
+                    } else{
                     s += "<td>" + rs.getString(i) + "</td>";
+                    }
                 }
                 s += "</tr>";
             }
-            s += "</table>";
+            s += "<tr>";
+            for (int i = 0; i < (c-2); i++) {
+                s+= "<td></td>";
+            }
+            s += "<td><b>Total ex. VAT</b></td><td><b>£" + turnover + "</b></td></tr></table>";
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -336,30 +350,47 @@ public class JDBC {
         return s;
     }
 
-    public int getTurnover(String name, String date) {
-        String id = "";
+    public String getTurnover(String date) {
+        String s = "";
         int turnover = 0;
-        select("select * from drivers where name='" + name + "'");
+        
+        select("select C.NAME, D.DESTINATION, J.DISTANCE, J.TIME, J.CHARGE from JOURNEY as J inner join DEMANDS as D on D.ID = J.DEMANDS_ID inner join customers as C on C.ID = J.CUSTOMER_ID where D.STATUS = 'COMPLETE' AND J.DATE = '" + date + "' order by J.TIME");
 
-        try {
-            while (rs.next()) {
-                id = rs.getString("id");
+        try{
+            s += "<table border='4'>";
+            s += "<tr>";
+            int c = rs.getMetaData().getColumnCount();
+            s += "<th>Job No.</th>";
+            for (int i = 1; i <= c; i++) {
+                s += "<th>" + rs.getMetaData().getColumnName(i) + "</th>";
             }
+            s += "</tr>";
+            int count = 1;
+            while (rs.next()) {
+                turnover += rs.getInt("CHARGE");
+                s += "<tr>";                
+                c = rs.getMetaData().getColumnCount();
+                s += "<td>" + count + "</td>";
+                for (int i = 1; i <= c; i++) {
+                    if(i == c){
+                        s += "<td>£" + rs.getString(i) + "</td>";
+                    } else{
+                    s += "<td>" + rs.getString(i) + "</td>";
+                    }
+                }
+                s += "</tr>";
+                count++;
+            }
+            s += "<tr>";
+            for (int i = 0; i < (c-1); i++) {
+                s+= "<td></td>";
+            }
+            s += "<td><b>Total ex. VAT</b></td><td><b>£" + turnover + "</b></td></tr></table>";
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        select("select * from journey where DRIVER_ID=" + id + " and date='" + date + "'");
 
-        try {
-            while (rs.next()) {
-                turnover += rs.getInt("distance") * 2;
-
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return turnover;
+        return s;
     }
 
     public void createDemand(String customerID, String timeRequired, String dateRequired, String destinationAddress, String currentAddress, String customerName) {
@@ -398,6 +429,40 @@ public class JDBC {
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return s;
+    }
+    
+    public String setJourneyComplete(String demandId){
+        String s;
+        s = update("UPDATE DEMANDS SET STATUS = 'COMPLETE' WHERE ID = " + demandId);
+        if(!"".equals(s)){
+            
+            s = update("UPDATE JOURNEY SET CHARGE = '" + calculateJourneyCost(demandId) + "' WHERE DEMANDS_ID = " + demandId);
+        }
+        
+        
+        return s;
+    }
+    
+    private String calculateJourneyCost(String demandID){
+        //hardcoded needs to be called from elsewhere
+        int price = 10;
+        int distance;
+        int pricePerMile = 1;
+        
+        select("select * from journey where DEMANDS_ID=" + demandID);
+        try {
+            if (rs.next()) {
+                distance = rs.getInt("DISTANCE");
+                if (distance <= 5){
+                    return String.valueOf(price);
+                } else{
+                    return String.valueOf(price + ((distance-5)*pricePerMile));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return String.valueOf(0);
     }
 
     public void createCustomer(String password, String address, String username, String name) {

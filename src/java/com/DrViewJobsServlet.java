@@ -16,14 +16,13 @@ public class DrViewJobsServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession();
-        System.out.println(session.getMaxInactiveInterval());
         JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
 
         //if complete button selected update selected job to complete
         String complete = request.getParameter("complete");
         if (complete != null) {
             String updated;
-            updated = dbBean.update("UPDATE DEMANDS SET STATUS = 'COMPLETE' WHERE ID = " + request.getParameter("selectedJob"));
+            updated = dbBean.setJourneyComplete(request.getParameter("selectedJob"));
             //if update does nothing (returns empty string) return nothing
             if (!"".equals(updated)) {
                 request.setAttribute("updated", updated);
