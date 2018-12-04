@@ -39,7 +39,7 @@
         </tr>
         <tr>
           <td class="tg-0lax"></td>
-          <td class="tg-0lax"><input type="submit" value="Request Ride"></td>
+          <td class="tg-0lax"><input type="submit" name="customerOption" value="Request Booking"></td>
         </tr>
       </table>
     </form>
