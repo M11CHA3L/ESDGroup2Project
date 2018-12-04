@@ -24,7 +24,7 @@
             Enter registration : <input type="text" name="driverRegistration" ><br>
             Enter username : <input type="text" name="driverUsername" ><br>
             Enter password: <input type="text" name="driverPassword" ><br>
-            <input type="submit" name="adminOption" value="Create New Driver">
+            <input type="submit" name="adminOption" value="Add New Driver">
         </form> 
         <br>
         <%

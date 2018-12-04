@@ -407,7 +407,7 @@ public class JDBC {
             preparedStatement.setString(4, destinationAddress);
             preparedStatement.setString(5, currentAddress);
             preparedStatement.setString(6, customerName);
-            preparedStatement.setString(7, "outstanding");
+            preparedStatement.setString(7, "OUTSTANDING");
             preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {
