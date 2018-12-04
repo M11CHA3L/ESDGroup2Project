@@ -6,7 +6,6 @@
 package com;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +47,7 @@ public class CuNewBookingServlet extends HttpServlet {
         String userName = (String) session.getAttribute("userName");
         String dateRegEx = "^\\d{4}-\\d{2}-\\d{2}$";
         String timeRegEx = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
-        String postCodeRegEx = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
+      //  String postCodeRegEx = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
 
         String errorMessage = "";
 
@@ -65,7 +64,7 @@ public class CuNewBookingServlet extends HttpServlet {
             request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
             
 
-        } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) || !Pattern.matches(postCodeRegEx, currentAddress) || !Pattern.matches(postCodeRegEx, destinationAddress)) {
+        } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) ) {
 
             request.setAttribute("customerName", customerName);
             
@@ -76,15 +75,7 @@ public class CuNewBookingServlet extends HttpServlet {
             if (!Pattern.matches(timeRegEx, timeRequired)) {
                 errorMessage += "incorrect time format,   ";
             } 
-            
-            if (!Pattern.matches(postCodeRegEx, currentAddress)) {
-                errorMessage += "incorrect current postcode format,   ";
-            }
-            
-            if (!Pattern.matches(postCodeRegEx, destinationAddress)) {
-                errorMessage += "incorrect destination postcode format,   ";
-            }
-            
+                
             request.setAttribute("errorMessage", errorMessage);
             request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
 
