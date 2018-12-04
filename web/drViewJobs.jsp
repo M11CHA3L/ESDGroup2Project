@@ -13,19 +13,25 @@
     </head>
     <body>
         <jsp:include page='drNavMenu.jsp'/>
-        <%
-            if (request.getAttribute("updated") != null) {
-                out.println(request.getAttribute("updated")); %>
-        <br><br>
-        <%
-            }
-        %>
+        <div>
+            <br>
+            <%
+                if (request.getAttribute("updated") != null) {
+                    out.println(request.getAttribute("updated")); %>
+            <br><br>
+            <%
+                }
+            %>
 
-        <%
-            if (request.getAttribute("jobs") != null) {
-                out.println(request.getAttribute("jobs"));
-            }
-        %>
+            <%
+                if (request.getAttribute("jobs") != null) {
+                    out.println(request.getAttribute("jobs"));%>
+            <br>
+            <%
+                }
+            %>
+            
+        </div>
         <jsp:include page='zLogout.jsp'/>
     </body>
 </html>

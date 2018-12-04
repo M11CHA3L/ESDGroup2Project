@@ -144,6 +144,10 @@
         <servlet-name>AdSelectDemandServlet</servlet-name>
         <servlet-class>com.AdSelectDemandServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdViewTurnoverServlet</servlet-name>
+        <servlet-class>com.AdViewTurnoverServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -271,6 +275,10 @@
     <servlet-mapping>
         <servlet-name>AdSelectDemandServlet</servlet-name>
         <url-pattern>/AdSelectDemandServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdViewTurnoverServlet</servlet-name>
+        <url-pattern>/AdViewTurnoverServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

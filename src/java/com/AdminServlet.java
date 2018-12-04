@@ -49,6 +49,9 @@ public class AdminServlet extends HttpServlet {
         }
         
         switch (adminOption) {
+            case "Home":
+                request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
+                break;
             case "View Drivers":
                 rd = request.getRequestDispatcher("/AdViewDriversServlet.do");
                 rd.forward(request, response);
@@ -57,26 +60,20 @@ public class AdminServlet extends HttpServlet {
                 rd = request.getRequestDispatcher("/AdViewCustomersServlet.do");
                 rd.forward(request, response);
                 break;
-            case "View New Demands":
-//                rd = request.getRequestDispatcher("/AdViewNewDemandsServlet.do");
-//                rd.forward(request, response);
-                
+            case "View New Demands":    
                 rd = request.getRequestDispatcher("/AdViewOutstandingJobs.do");
                 rd.forward(request, response);
                 break;
             case "View Turnover":
-//                rd = request.getRequestDispatcher("/AdViewTurnoverServlet.do");
-//                rd.forward(request, response);
                 request.getRequestDispatcher("/adViewTurnover.jsp").forward(request, response);
-                //response.sendRedirect("adViewTurnover.jsp");
+                break;
+            case "Get Daily Turnover":
+                rd = request.getRequestDispatcher("/AdViewTurnoverServlet.do");
+                rd.forward(request, response);
                 break;
             case "View Driver Bookings":
                 rd = request.getRequestDispatcher("/AdViewDriverBookingsServlet.do");
                 rd.forward(request, response);
-                
-//                String bookings = dbBean.getDrivers();
-//                request.setAttribute("drivers", bookings);
-//                request.getRequestDispatcher("/adminviewbooking.jsp").forward(request, response);
                 break;
             case "Get Driver Journeys":
                 rd = request.getRequestDispatcher("/AdGetDriverJourneysServlet.do");
