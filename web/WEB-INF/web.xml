@@ -148,6 +148,14 @@
         <servlet-name>AdViewTurnoverServlet</servlet-name>
         <servlet-class>com.AdViewTurnoverServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>zServlet</servlet-name>
+        <servlet-class>com.zServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ZNewBookingGuestServlet</servlet-name>
+        <servlet-class>com.ZNewBookingGuestServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
@@ -279,6 +287,14 @@
     <servlet-mapping>
         <servlet-name>AdViewTurnoverServlet</servlet-name>
         <url-pattern>/AdViewTurnoverServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>zServlet</servlet-name>
+        <url-pattern>/zServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ZNewBookingGuestServlet</servlet-name>
+        <url-pattern>/ZNewBookingGuestServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

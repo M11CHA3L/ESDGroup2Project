@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>AlphaCab</h1>
+        <jsp:include page='zNavMenu.jsp'/>
         <%String s = "";
 
             if (request.getAttribute("errorMessage") != null) {
                 s = (String) request.getAttribute("errorMessage");
+
             }
             out.print(s);
         %>
