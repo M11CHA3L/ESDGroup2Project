@@ -7,6 +7,7 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,11 +38,11 @@ public class ZNewBookingGuestServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        HttpSession session = request.getSession();
-        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
+        JDBC dbBean = new JDBC();
+        dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
        
         String customerName = request.getParameter("customerName");
-        String customerAddress = request.getParameter("customerHomeHouse") + "," + request.getParameter("customerHomeCity") + "," + request.getParameter("customerHomePostcode");
+        //String customerAddress = request.getParameter("customerHomeHouse") + "," + request.getParameter("customerHomeCity") + "," + request.getParameter("customerHomePostcode");
 
         String currentAddress = request.getParameter("customerStartHouse") + "," + request.getParameter("customerStartCity") + "," + request.getParameter("customerStartPostcode");
         String destinationAddress = request.getParameter("customerDestHouse") + "," + request.getParameter("customerDestCity") + "," + request.getParameter("customerDestPostcode");
@@ -54,8 +55,7 @@ public class ZNewBookingGuestServlet extends HttpServlet {
         String errorMessage = "";
 
         //check all fields are complete
-        if (customerAddress.equals("")
-                || timeRequired.equals("")
+        if (timeRequired.equals("")
                 || dateRequired.equals("")
                 || destinationAddress.equals("")
                 || currentAddress.equals("")
@@ -63,10 +63,11 @@ public class ZNewBookingGuestServlet extends HttpServlet {
             
             errorMessage = "Please complete all fields";            
             request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("name", customerName);
             request.getRequestDispatcher("/zNewBookingGuest.jsp").forward(request, response);
             
 
-        } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) || !Pattern.matches(postCodeRegEx, request.getParameter("customerHomePostcode")) || !Pattern.matches(postCodeRegEx, request.getParameter("customerStartPostcode")) || !Pattern.matches(postCodeRegEx, request.getParameter("customerDestPostcode"))) {
+        } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) || !Pattern.matches(postCodeRegEx, request.getParameter("customerStartPostcode")) || !Pattern.matches(postCodeRegEx, request.getParameter("customerDestPostcode"))) {
 
             request.setAttribute("customerName", customerName);
             
@@ -77,10 +78,7 @@ public class ZNewBookingGuestServlet extends HttpServlet {
             if (!Pattern.matches(timeRegEx, timeRequired)) {
                 errorMessage += "Incorrect time format,   ";
             } 
-            
-            if (!Pattern.matches(postCodeRegEx, request.getParameter("customerHomePostcode"))) {
-                errorMessage += "Incorrect Home postcode format,   ";
-            }
+           
             
             if (!Pattern.matches(postCodeRegEx, request.getParameter("customerStartPostcode"))) {
                 errorMessage += "Incorrect journey start postcode format,   ";
@@ -94,13 +92,20 @@ public class ZNewBookingGuestServlet extends HttpServlet {
             request.getRequestDispatcher("/zNewBookingGuest.jsp").forward(request, response);
 
         } else {
-//            try {
-//                dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
-//                request.setAttribute("message", "Request Sent!");
-//                request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
-//            } catch (SQLException ex) {
-//                Logger.getLogger(ZNewBookingGuestServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            try{
+                boolean test = dbBean.createGuestBooking("Guest", customerName, timeRequired, dateRequired, destinationAddress, currentAddress);
+                if (test) {
+                    request.setAttribute("message", "Request Sent!");
+                } else {
+                    request.setAttribute("message", "Request Not Sent!");
+                }
+                request.getRequestDispatcher("/zNewBookingGuest.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(CuNewBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("message", "Request Not Sent!");
+            }
+            
+
         }
         
     }

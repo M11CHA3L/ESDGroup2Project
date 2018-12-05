@@ -25,12 +25,8 @@
         </div>
         <div>
             <form method="POST" style="text-align: right; width:400px; margin: auto;" action="zServlet.do">
-                <H3 style="text-align: center"><b>Customer Details</b></h3>
-                Full Name : <input type="text" name="customerName" ><br>
-                Home - House No./Street : <input type="text" name="customerHomeHouse" ><br>               
-                Home - City : <input type="text" name="customerHomeCity" ><br>               
-                Home - Postcode : <input type="text" name="customerHomePostcode" ><br>
                 <h3 style="text-align: center"><b>Journey Details</b></h3>
+                Full Name : <input type="text" name="customerName"><br>
                 Start - House No./Street : <input type="text" name="customerStartHouse" ><br>
                 Start - City : <input type="text" name="customerStartCity" ><br>
                 Start - Postcode: <input type="text" name="customerStartPostcode" ><br>

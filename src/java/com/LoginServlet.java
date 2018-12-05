@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
                 switch (user) {
                     case 3:
                         session.setAttribute("userRole", "admin");
-                       session.setMaxInactiveInterval(Integer.parseInt(getServletContext().getInitParameter("adminTimeout")));                        
+                        session.setMaxInactiveInterval(Integer.parseInt(getServletContext().getInitParameter("adminTimeout")));                        
                         request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
                         break;
                     case 2:

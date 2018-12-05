@@ -19,7 +19,7 @@
             <form method="post" action="AdminServlet.do">
                 <b>Select Date:</b><br>
                 <input type="date" name="date" placeholder="YYYY-MM-DD">
-                <input type="submit" name="adminOption" value="Get Turnover">
+                <input type="submit" name="adminOption" value="Get Daily Turnover">
             </form>
             <%
                 if (request.getAttribute("turnover") != null) {
