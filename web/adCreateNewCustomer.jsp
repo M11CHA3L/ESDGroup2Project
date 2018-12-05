@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="style.css">
-        <title>JSP Page</title>
+        <title>Create New Customer</title>
     </head>
     <body>
         <jsp:include page='adNavMenu.jsp'/>
@@ -18,8 +18,8 @@
                 response.sendRedirect("index.jsp");
             } 
         %>
-        <p1>Create Customer</p1><br><br>
-        <form method="POST" action="AdminServlet.do">
+        <h3>Create Customer</h3><br>
+        <form method="POST" style="text-align: right; width:400px; margin: auto;" action="AdminServlet.do">
             Enter full name : <input type="text" name="customerName" ><br> 
             Enter address : <input type="text" name="customerAddress" ><br>
             Enter username : <input type="text" name="customerUsername" ><br>

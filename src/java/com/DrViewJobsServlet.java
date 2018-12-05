@@ -2,7 +2,6 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.jms.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,20 +20,29 @@ public class DrViewJobsServlet extends HttpServlet {
 
         //if complete button selected update selected job to complete
         String complete = request.getParameter("complete");
-        if(complete != null){
+        if (complete != null) {
             String updated;
-            updated = dbBean.update("UPDATE DEMANDS SET STATUS = 'COMPLETE' WHERE ID = " + request.getParameter("selectedJob"));
+            updated = dbBean.setJourneyComplete(request.getParameter("selectedJob"));
             //if update does nothing (returns empty string) return nothing
-            if (!"".equals(updated)){
+            if (!"".equals(updated)) {
                 request.setAttribute("updated", updated);
+
+                //   Print Invoice - start location, desitination, distance, time, date, customer name
+                String[] s = dbBean.returnInvoice(request.getParameter("selectedJob"));
+                // <date><time> customer name
+
+                //add these to print invoice
+                //PrintWriter out = new PrintWriter("H:\\Personal\\"+ s[1] + ".txt");
+                //out.println(s[0]);             
+                //out.close();
             }
-            
-        } 
-        
+
+        }
+
         String jobs = dbBean.getDriverJobs((String) session.getAttribute("userName"));
         request.setAttribute("jobs", jobs);
         request.getRequestDispatcher("/drViewJobs.jsp").forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -7,17 +7,18 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.JDBC;
 
 /**
  *
  * @author michaelcraddock
  */
-public class DrServlet extends HttpServlet {
+public class AdViewTurnoverServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,19 +33,14 @@ public class DrServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        RequestDispatcher rd;
+        HttpSession session = request.getSession();
+        JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
+        
+        String turnover = dbBean.getTurnover((String)request.getParameter("date"));
+        request.setAttribute("turnover", turnover);
+        request.getRequestDispatcher("/adViewTurnover.jsp").forward(request, response);
 
-        switch ((String) request.getParameter("driverOption")) {
-            case "Home":
-                request.getRequestDispatcher("/drWelcome.jsp").forward(request, response);
-                break;
-            case "View Jobs":
-                rd = request.getRequestDispatcher("/DrViewJobsServlet.do");
-                rd.forward(request, response);
-                break;
-            default:
-                break;
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -8,18 +8,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <%String s = "Enter username and password";
-        
-        if (request.getAttribute("errorMessage") != null) {
-                s = (String)request.getAttribute("errorMessage");
+        <jsp:include page='zNavMenu.jsp'/>
+        <%String s = "";
+
+            if (request.getAttribute("errorMessage") != null) {
+                s = (String) request.getAttribute("errorMessage");
+
             }
             out.print(s);
-            %>
-        <form method="POST" action="login.do">
-              Enter username : <input type="text" name="uName"><br> 
-              Enter password : <input type="password" name="pass"><br> 
-              <input type="submit" value="login">
-        </form> 
-        
+        %>
+        <div id='form_wrap'>
+            <form method="POST" action="login.do">
+             <div class='container'>
+                <label for="uname"><b>Username</b></label>
+                <input type="text" name="uName" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" name="pass" required>
+                <button type="submit">Login</button>
+            </div>
+            </form> 
+        </div>
     </body>
 </html>

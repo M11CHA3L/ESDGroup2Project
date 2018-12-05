@@ -1,6 +1,6 @@
 # ESDGroup2Project
 Group 2
-Run alphacab.sql and then users.sql to establish DB
+Run AlphaCabDB.sql to establish DB
 
 RolesLevels for users are as follows:
 1: Customer

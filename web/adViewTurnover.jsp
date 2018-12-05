@@ -10,11 +10,27 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="style.css">
-        <title>JSP Page</title>
+        <title>View Daily Turnover</title>
     </head>
     <body>
-        <jsp:include page='adNavMenu.jsp'/>
-        <h3>Welcome Admin<h3/>
+        <div>
+            <jsp:include page='adNavMenu.jsp'/>
+            <H3>View Daily Turnover</H3>
+            <form method="post" action="AdminServlet.do">
+                <b>Select Date:</b><br>
+                <input type="date" name="date" placeholder="YYYY-MM-DD">
+                <input type="submit" name="adminOption" value="Get Daily Turnover">
+            </form>
+            <%
+                if (request.getAttribute("turnover") != null) {
+            %>
+            <br>
+            <%
+                    out.print(request.getAttribute("turnover"));
+                }
+            %>
+            <br>
+        </div>
         <jsp:include page='zLogout.jsp'/>
     </body>
 </html>

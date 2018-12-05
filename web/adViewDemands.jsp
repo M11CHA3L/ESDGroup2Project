@@ -1,7 +1,7 @@
 <%-- 
-    Document   : adViewNewDemands
-    Created on : 02-Dec-2018, 12:38:33
-    Author     : michaelcraddock
+    Document   : adViewDemands
+    Created on : 03-Dec-2018, 16:34:07
+    Author     : jl2-miles
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,12 +9,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <title>JSP Page</title>
+        <title>View New Demands</title>
     </head>
     <body>
         <jsp:include page='adNavMenu.jsp'/>
-        <h3>Welcome Admin<h3/>
+        Outstanding Demands<br><br>
+
+        <%
+
+            String demand = (String) request.getAttribute("demand");
+            out.print(demand);
+
+        %>
         <jsp:include page='zLogout.jsp'/>
     </body>
 </html>

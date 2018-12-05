@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author michaelcraddock
  */
-public class DrServlet extends HttpServlet {
+public class zServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,17 +34,21 @@ public class DrServlet extends HttpServlet {
 
         RequestDispatcher rd;
 
-        switch ((String) request.getParameter("driverOption")) {
+        switch ((String) request.getParameter("zOption")) {
             case "Home":
-                request.getRequestDispatcher("/drWelcome.jsp").forward(request, response);
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
                 break;
-            case "View Jobs":
-                rd = request.getRequestDispatcher("/DrViewJobsServlet.do");
+            case "Request Booking":
+                request.getRequestDispatcher("/zNewBookingGuest.jsp").forward(request, response);
+                break;
+            case "Create Booking":
+                rd = request.getRequestDispatcher("/ZNewBookingGuestServlet.do");
                 rd.forward(request, response);
                 break;
             default:
                 break;
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

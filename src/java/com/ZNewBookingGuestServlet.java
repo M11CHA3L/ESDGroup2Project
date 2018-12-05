@@ -6,6 +6,8 @@
 package com;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +23,7 @@ import model.JDBC;
  *
  * @author michaelcraddock
  */
-public class CuNewBookingServlet extends HttpServlet {
+public class ZNewBookingGuestServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,24 +38,24 @@ public class CuNewBookingServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        HttpSession session = request.getSession();
-        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
+        JDBC dbBean = new JDBC();
+        dbBean.connect((Connection) request.getServletContext().getAttribute("connection"));
        
         String customerName = request.getParameter("customerName");
-        String currentAddress = request.getParameter("currentAddress");
-        String destinationAddress = request.getParameter("destinationAddress");
-        String dateRequired = request.getParameter("dateRequired");
-        String timeRequired = request.getParameter("timeRequired");
-        String userName = (String) session.getAttribute("userName");
+        //String customerAddress = request.getParameter("customerHomeHouse") + "," + request.getParameter("customerHomeCity") + "," + request.getParameter("customerHomePostcode");
+
+        String currentAddress = request.getParameter("customerStartHouse") + "," + request.getParameter("customerStartCity") + "," + request.getParameter("customerStartPostcode");
+        String destinationAddress = request.getParameter("customerDestHouse") + "," + request.getParameter("customerDestCity") + "," + request.getParameter("customerDestPostcode");
+        String dateRequired = request.getParameter("customerJournDate");
+        String timeRequired = request.getParameter("customerJournTime");
         String dateRegEx = "^\\d{4}-\\d{2}-\\d{2}$";
-        String timeRegEx = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
-      //  String postCodeRegEx = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
+        String timeRegEx = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$";
+        String postCodeRegEx = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
 
         String errorMessage = "";
 
         //check all fields are complete
-        if (userName.equals("")
-                || timeRequired.equals("")
+        if (timeRequired.equals("")
                 || dateRequired.equals("")
                 || destinationAddress.equals("")
                 || currentAddress.equals("")
@@ -61,33 +63,51 @@ public class CuNewBookingServlet extends HttpServlet {
             
             errorMessage = "Please complete all fields";            
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
+            request.setAttribute("name", customerName);
+            request.getRequestDispatcher("/zNewBookingGuest.jsp").forward(request, response);
             
 
-        } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) ) {
+        } else if (!Pattern.matches(dateRegEx, dateRequired) || !Pattern.matches(timeRegEx, timeRequired) || !Pattern.matches(postCodeRegEx, request.getParameter("customerStartPostcode")) || !Pattern.matches(postCodeRegEx, request.getParameter("customerDestPostcode"))) {
 
             request.setAttribute("customerName", customerName);
             
             if (!Pattern.matches(dateRegEx, dateRequired)) {
-                errorMessage += "incorrect date format,   ";
+                errorMessage += "Incorrect date format,   ";
             }
             
             if (!Pattern.matches(timeRegEx, timeRequired)) {
-                errorMessage += "incorrect time format,   ";
+                errorMessage += "Incorrect time format,   ";
             } 
-                
+           
+            
+            if (!Pattern.matches(postCodeRegEx, request.getParameter("customerStartPostcode"))) {
+                errorMessage += "Incorrect journey start postcode format,   ";
+            }
+            
+            if (!Pattern.matches(postCodeRegEx, request.getParameter("customerDestPostcode"))) {
+                errorMessage += "Incorrect journey end postcode format,   ";
+            }
+            
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
+            request.getRequestDispatcher("/zNewBookingGuest.jsp").forward(request, response);
 
         } else {
-            try {
-                dbBean.createDemand(dbBean.getCustomerID(userName), timeRequired, dateRequired, destinationAddress, currentAddress, customerName);
-                request.setAttribute("message", "Request Sent!");
-                request.getRequestDispatcher("/cuNewJob.jsp").forward(request, response);
-            } catch (SQLException ex) {
+            try{
+                boolean test = dbBean.createGuestBooking("Guest", customerName, timeRequired, dateRequired, destinationAddress, currentAddress);
+                if (test) {
+                    request.setAttribute("message", "Request Sent!");
+                } else {
+                    request.setAttribute("message", "Request Not Sent!");
+                }
+                request.getRequestDispatcher("/zNewBookingGuest.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
                 Logger.getLogger(CuNewBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("message", "Request Not Sent!");
             }
+            
+
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -12,7 +12,8 @@
         <table>
             <tr>
                 <td>
-                    <input type="submit" name="customerOption" value ="New Booking"><br>
+                    <input type="submit" name="customerOption" value ="Home">
+                    <input type="submit" name="customerOption" value ="New Booking">
                 </td>
             </tr>
         </table>

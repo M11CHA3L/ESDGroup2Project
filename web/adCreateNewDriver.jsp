@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="style.css">
-        <title>JSP Page</title>
+        <title>Create New Driver</title>
     </head>
     <body>
         <jsp:include page='adNavMenu.jsp'/>
@@ -18,13 +18,13 @@
                 response.sendRedirect("index.jsp");
             }
         %>
-        <p1>Create Driver</p1><br><br>
-        <form method="POST" action="AdminServlet.do">
+        <h3>Create Driver</h3>
+        <form method="POST" style="text-align: right; width:400px; margin: auto;" action="AdminServlet.do">
             Enter full name : <input type="text" name="driverName" ><br> 
             Enter registration : <input type="text" name="driverRegistration" ><br>
             Enter username : <input type="text" name="driverUsername" ><br>
             Enter password: <input type="text" name="driverPassword" ><br>
-            <input type="submit" name="adminOption" value="Create New Driver">
+            <input type="submit" name="adminOption" value="Add New Driver">
         </form> 
         <br>
         <%

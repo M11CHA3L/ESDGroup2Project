@@ -10,13 +10,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="style.css">
-        <title>JSP Page</title>
+        <title>View Driver Bookings</title>
     </head>
     <body>
         <jsp:include page='adNavMenu.jsp'/>
-        <%
-            out.print(request.getAttribute("drivers"));
-        %>
+        <div>
+            <br>
+            <%
+                out.print(request.getAttribute("drivers"));
+            %>
+            <br>
+        </div>
         <jsp:include page='zLogout.jsp'/>
     </body>
 </html>

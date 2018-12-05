@@ -37,19 +37,10 @@ public class AdGetDriverJourneysServlet extends HttpServlet {
         String drivername = request.getParameter("driver");
         String date = request.getParameter("date");
         
-        if (request.getParameter("adminOption").equals("Get Driver Journeys")) {
-            String journeys = dbBean.getJourneys(drivername, date);
-
-            request.setAttribute("result", journeys);
-
+            String journeys = dbBean.getJourneys(drivername, date);                     
+            request.setAttribute("journey", journeys);
             request.getRequestDispatcher("/adGetDriverJourneys.jsp").forward(request, response);
 
-        }else if (request.getParameter("adminOption").equals("Get Turnover")) {
-            int turnover = dbBean.getTurnover(drivername, date);
-             request.setAttribute("result", turnover);
-
-            request.getRequestDispatcher("/adGetDriverJourneys.jsp").forward(request, response);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
