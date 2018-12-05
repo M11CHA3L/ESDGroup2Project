@@ -4,6 +4,7 @@
     Author     : michaelcraddock
 --%>
 
+<%@page import="javax.persistence.metamodel.SetAttribute"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -27,8 +28,15 @@
             <br>
             <%
                     out.print(request.getAttribute("turnover"));
+                   
                 }
             %>
+            
+            <form method="post" action="AdminServlet.do">
+                
+                <input type="text" name="newPrice" placeholder="Enter Price">
+                <input type="submit" name="adminOption" value="Set new base price">
+            </form>
             <br>
         </div>
         <jsp:include page='zLogout.jsp'/>
