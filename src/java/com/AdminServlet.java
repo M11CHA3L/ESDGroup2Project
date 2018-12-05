@@ -64,7 +64,7 @@ public class AdminServlet extends HttpServlet {
                 rd = request.getRequestDispatcher("/AdViewOutstandingJobs.do");
                 rd.forward(request, response);
                 break;
-            case "View Turnover":
+            case "View Daily Turnover":
                 request.getRequestDispatcher("/adViewTurnover.jsp").forward(request, response);
                 break;
             case "Get Daily Turnover":

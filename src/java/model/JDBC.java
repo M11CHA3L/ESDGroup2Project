@@ -504,6 +504,46 @@ public class JDBC {
         }
 
     }
+    
+    public boolean createCustomer(String address, String name){
+        
+        String insertCustomerSQL = "INSERT INTO CUSTOMERS"
+                + "(ADDRESS, NAME) VALUES"
+                + "(?,?)";       
+        try{
+            PreparedStatement preparedStatement2 = connection.prepareStatement(insertCustomerSQL);
+            preparedStatement2.setString(1, address);
+            preparedStatement2.setString(2, name);
+            preparedStatement2.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    public boolean createGuestBooking(String address, String name, String timeReq, String dateReq, String destAddress, String curAddress){
+        String ID = null;
+        
+        boolean test = createCustomer(address, name);
+        
+        if (test){
+            select("select * from customers");
+            try {
+                while (rs.next()) {
+                    ID = rs.getString("ID");
+                }
+                if (ID != null) {
+                    createDemand(ID, timeReq, dateReq, destAddress, curAddress, name);
+                    return true;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        return false;
+    }
 
     public void createDriver(String password, String registration, String username, String name) {
 
