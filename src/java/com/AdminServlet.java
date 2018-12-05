@@ -92,17 +92,12 @@ public class AdminServlet extends HttpServlet {
                 rd = request.getRequestDispatcher("/AdCreateNewDriverServlet.do");
                 rd.forward(request, response);
                 break;
-            case "Increase Price":
+            case "Set new base price":
+                int price = Integer.parseInt(request.getParameter("newPrice"));
                 Price p = new Price();
-                p.increaseBasePrice();
-                request.setAttribute("button", p.createButton());
+                p.setNewPrice(price);         
                 request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
                 break;
-            case "Decrease Price":
-                rd = request.getRequestDispatcher("/AdCreateNewDriverServlet.do");
-                rd.forward(request, response);
-                break;
-
             default:
                 break;
         }
