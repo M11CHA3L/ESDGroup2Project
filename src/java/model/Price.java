@@ -23,11 +23,11 @@ public class Price {
         return basePrice;
     }
     
-    public void increaseBasePrice() throws FileNotFoundException{
-        this.basePrice += 2;
+    public void setNewPrice(int price) throws FileNotFoundException{
+       this.basePrice = price;
          PrintWriter p = null;
         
-        String file = "src/Test/properties.txt";
+        String file = "C:\\Users\\Jon\\Documents\\NetBeansProjects\\ESDGroup2Project\\src\\java\\model\\properties.txt";
         
         try {      
             p = new PrintWriter(file);            
@@ -38,41 +38,5 @@ public class Price {
         p.println(basePrice);
         p.close();  
     
-    }
-    
-     public void decreaseBasePrice() throws FileNotFoundException{
-        this.basePrice -= 2;
-        PrintWriter p = null;
-        
-        String file = "src/Test/properties.txt";
-        
-        try {      
-            p = new PrintWriter(file);            
-          
-        } catch (IOException ex) {
-            Logger.getLogger(Price.class.getName()).log(Level.SEVERE, null, ex);
-        }  
-        p.println(basePrice);
-        p.close();
-    }
-    
-     public String createButton(){
-         String s = "";
-         
-         if (basePrice == 10) {
-             // increase price
-             s+= "<form method='post' action='AdminServlet.do'>";
-             s+= "<input type='submit' name='adminOption' value='Increase Price'>";
-             s+= "</form>";
-         }
-         if (basePrice == 12) {
-             // decrease price
-              s+= "<form method='post' action='AdminServlet.do'>";
-             s+= "<input type='submit' name='adminOption' value='Decrease Price'>";
-             s+= "</form>";
-             
-         }
-         return s;
-     }
-    
+    }   
 }
