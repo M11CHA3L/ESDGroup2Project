@@ -44,8 +44,8 @@ public class ZNewBookingGuestServlet extends HttpServlet {
         String customerName = request.getParameter("customerName");
         //String customerAddress = request.getParameter("customerHomeHouse") + "," + request.getParameter("customerHomeCity") + "," + request.getParameter("customerHomePostcode");
 
-        String currentAddress = request.getParameter("customerStartHouse") + "," + request.getParameter("customerStartCity") + "," + request.getParameter("customerStartPostcode");
-        String destinationAddress = request.getParameter("customerDestHouse") + "," + request.getParameter("customerDestCity") + "," + request.getParameter("customerDestPostcode");
+        String currentAddress = request.getParameter("customerStartHouse") + ", " + request.getParameter("customerStartCity") + ", " + request.getParameter("customerStartPostcode");
+        String destinationAddress = request.getParameter("customerDestHouse") + ", " + request.getParameter("customerDestCity") + ", " + request.getParameter("customerDestPostcode");
         String dateRequired = request.getParameter("customerJournDate");
         String timeRequired = request.getParameter("customerJournTime");
         String dateRegEx = "^\\d{4}-\\d{2}-\\d{2}$";

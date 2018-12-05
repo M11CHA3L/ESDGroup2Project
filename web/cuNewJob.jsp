@@ -22,20 +22,36 @@
           <td class="tg-0lax"><input type="text" name="customerName" ></td>
         </tr>
         <tr>
+          <td class="tg-0lax">Current House No/Street<br> eg.SN139RA </td>
+          <td class="tg-0lax"><input type="text" name="currentHouse" ></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax">Current City<br> eg.SN139RA </td>
+          <td class="tg-0lax"><input type="text" name="currentCity" ></td>
+        </tr>
+        <tr>
           <td class="tg-0lax">Current Postcode<br> eg.SN139RA </td>
-          <td class="tg-0lax"><input type="text" name="currentAddress" ></td>
+          <td class="tg-0lax"><input type="text" name="currentPost" ></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax">Destination House No/Street<br> eg.SN139RA </td>
+          <td class="tg-0lax"><input type="text" name="destinationHouse" ></td>
+        </tr>
+        <tr>
+          <td class="tg-0lax">Destination City<br> eg.SN139RA </td>
+          <td class="tg-0lax"><input type="text" name="destinationCity" ></td>
         </tr>
         <tr>
           <td class="tg-0lax">Destination Postcode<br> eg.SN139RA </td>
-          <td class="tg-0lax"><input type="text" name="destinationAddress" ></td>
+          <td class="tg-0lax"><input type="text" name="destinationPost" ></td>
         </tr>
         <tr>
           <td class="tg-0lax">Date required<br>YYYY-MM-DD</td>
-          <td class="tg-0lax"><input type="text" name="dateRequired" > </td>
+          <td class="tg-0lax"><input type="text" name="dateRequired" placeholder="YYYY-MM-DD"> </td>
         </tr>
         <tr>
-          <td class="tg-0lax">Time required<br>HH:MM</td>
-          <td class="tg-0lax"><input type="text" name="timeRequired" > </td>
+          <td class="tg-0lax">Time required<br>HH:MM (24Hr)</td>
+          <td class="tg-0lax"><input type="text" name="timeRequired" placeholder="HH-MM"> </td>
         </tr>
         <tr>
           <td class="tg-0lax"></td>
