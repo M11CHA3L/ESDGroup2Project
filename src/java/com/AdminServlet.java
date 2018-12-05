@@ -6,14 +6,12 @@
 package com;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.jms.Session;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.JDBC;
+import model.Price;
 
 /**
  *
@@ -39,15 +37,12 @@ public class AdminServlet extends HttpServlet {
         RequestDispatcher rd;
 
         String adminOption;
-        if (request.getParameter("adminOption") == null)
-        {
-            adminOption = (String)request.getAttribute("adminOption");
-        }
-        else
-        {
+        if (request.getParameter("adminOption") == null) {
+            adminOption = (String) request.getAttribute("adminOption");
+        } else {
             adminOption = request.getParameter("adminOption");
         }
-        
+
         switch (adminOption) {
             case "Home":
                 request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
@@ -60,7 +55,7 @@ public class AdminServlet extends HttpServlet {
                 rd = request.getRequestDispatcher("/AdViewCustomersServlet.do");
                 rd.forward(request, response);
                 break;
-            case "View New Demands":    
+            case "View New Demands":
                 rd = request.getRequestDispatcher("/AdViewOutstandingJobs.do");
                 rd.forward(request, response);
                 break;
@@ -97,6 +92,17 @@ public class AdminServlet extends HttpServlet {
                 rd = request.getRequestDispatcher("/AdCreateNewDriverServlet.do");
                 rd.forward(request, response);
                 break;
+            case "Increase Price":
+                Price p = new Price();
+                p.increaseBasePrice();
+                request.setAttribute("button", p.createButton());
+                request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
+                break;
+            case "Decrease Price":
+                rd = request.getRequestDispatcher("/AdCreateNewDriverServlet.do");
+                rd.forward(request, response);
+                break;
+
             default:
                 break;
         }
