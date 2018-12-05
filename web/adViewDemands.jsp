@@ -12,8 +12,12 @@
         <title>View New Demands</title>
     </head>
     <body>
-        <jsp:include page='adNavMenu.jsp'/>
-        Outstanding Demands<br><br>
+                <% if (session.getAttribute("userRole") != "admin") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
+        <jsp:include page='adNavMenu.jsp'/><br>
+        <b>Outstanding Demands</b><br><br>
 
         <%
 

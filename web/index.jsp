@@ -8,6 +8,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <% if (session.getAttribute("userRole") == "admin") {
+                response.sendRedirect("adWelcome.jsp");
+            } else if(session.getAttribute("userRole") == "driver"){
+                response.sendRedirect("drWelcome.jsp");
+            } else if(session.getAttribute("userRole") == "customer"){
+                response.sendRedirect("cuWelcome.jsp");
+            }
+        %>
         <jsp:include page='zNavMenu.jsp'/>
         <%String s = "";
 

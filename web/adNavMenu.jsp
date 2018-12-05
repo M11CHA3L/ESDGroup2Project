@@ -5,6 +5,11 @@
 --%>
 <link rel="stylesheet" type="text/css" href="style.css">
 
+        <% if ((session.getAttribute("userRole") == "") || (session.getAttribute("userRole") != "")) {
+                response.sendRedirect("adWelcome.jsp");
+            }
+        %>
+
 <div>
     <h1>AlphaCab</h1>
 </div>

@@ -12,7 +12,10 @@
         <title>JSP Page</title>
     </head>
     <body>
- 
+        <% if (session.getAttribute("userRole") != "customer") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <jsp:include page='cuNavMenu.jsp'/>
      <div id='form_wrap'>
     <form method="POST"  action="CuServlet.do">
@@ -22,11 +25,11 @@
           <td class="tg-0lax"><input type="text" name="customerName" ></td>
         </tr>
         <tr>
-          <td class="tg-0lax">Current House No/Street<br> eg.SN139RA </td>
+          <td class="tg-0lax">Current House No/Street</td>
           <td class="tg-0lax"><input type="text" name="currentHouse" ></td>
         </tr>
         <tr>
-          <td class="tg-0lax">Current City<br> eg.SN139RA </td>
+          <td class="tg-0lax">Current City</td>
           <td class="tg-0lax"><input type="text" name="currentCity" ></td>
         </tr>
         <tr>
@@ -34,11 +37,11 @@
           <td class="tg-0lax"><input type="text" name="currentPost" ></td>
         </tr>
         <tr>
-          <td class="tg-0lax">Destination House No/Street<br> eg.SN139RA </td>
+          <td class="tg-0lax">Destination House No/Street</td>
           <td class="tg-0lax"><input type="text" name="destinationHouse" ></td>
         </tr>
         <tr>
-          <td class="tg-0lax">Destination City<br> eg.SN139RA </td>
+          <td class="tg-0lax">Destination City</td>
           <td class="tg-0lax"><input type="text" name="destinationCity" ></td>
         </tr>
         <tr>

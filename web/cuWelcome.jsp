@@ -14,6 +14,10 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body>
+        <% if (session.getAttribute("userRole") != "customer") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <jsp:include page='cuNavMenu.jsp'/>
         <h3>Welcome Customer<h3/>
         <jsp:include page='zLogout.jsp'/>

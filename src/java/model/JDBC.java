@@ -14,7 +14,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -242,25 +244,29 @@ public class JDBC {
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+
 
         //get driver jobs
         select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME "
                 + "FROM JOURNEY "
                 + "INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID "
-                + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
+                + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE' AND DEMANDS.DATE = '" + (String)dateFormat.format(date) + "'");
         try {
 
-            s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
-            while (rs.next()) {
+                s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
+                while (rs.next()) {
 
-                s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS")
-                        + "<br>Customer Destination: " + rs.getString("DESTINATION")
-                        + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
-                        + "<br><br>";
+                    s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS")
+                            + "<br>Customer Destination: " + rs.getString("DESTINATION")
+                            + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
+                            + "<br><br>";
 
+                
+                s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
             }
-            s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
-
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -444,10 +450,6 @@ public class JDBC {
         int price = 0;
         int distance;
         int pricePerMile = 1;
-
-       
-
-   
 
         Scanner sc = new Scanner(JDBC.class.getResourceAsStream("properties.txt"));
 

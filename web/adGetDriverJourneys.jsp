@@ -12,6 +12,10 @@
         <title>Selected Driver Journeys</title>
     </head>
     <body>
+                <% if (session.getAttribute("userRole") != "admin") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <jsp:include page='adNavMenu.jsp'/>
         <div>
             <br>
