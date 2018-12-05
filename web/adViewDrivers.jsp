@@ -13,6 +13,10 @@
         <title>View Drivers</title>
     </head>
     <body>
+                <% if (session.getAttribute("userRole") != "admin") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <jsp:include page='adNavMenu.jsp'/>
         <form action="AdFilterDriverServlet.do" method="POST">
             <input type="submit" value="Enable/Disable filtering active drivers">

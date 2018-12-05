@@ -3,6 +3,11 @@
     Created on : 02-Dec-2018, 18:36:21
     Author     : michaelcraddock
 --%>
+        <% if ((session.getAttribute("userRole") == "") || (session.getAttribute("userRole") != "")) {
+                response.sendRedirect("cuWelcome.jsp");
+            }
+        %>
+
 <link rel="stylesheet" type="text/css" href="style.css">
 <div>
     <h1>AlphaCab</h1>

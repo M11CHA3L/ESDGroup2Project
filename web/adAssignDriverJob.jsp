@@ -12,6 +12,10 @@
         <title>Assign Driver To Demand</title>
     </head>
     <body>
+                <% if (session.getAttribute("userRole") != "admin") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <jsp:include page='adNavMenu.jsp'/>
         Assign Driver<br><br>
        

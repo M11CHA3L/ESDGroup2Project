@@ -12,6 +12,10 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <% if (session.getAttribute("userRole") != "driver") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <jsp:include page='drNavMenu.jsp'/>
         <div>
             <br>

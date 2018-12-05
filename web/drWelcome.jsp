@@ -12,6 +12,10 @@
         <title>Welcome Driver</title>
     </head>
     <body>
+        <% if (session.getAttribute("userRole") != "driver") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <jsp:include page='drNavMenu.jsp'/>
         <h3>Welcome Driver<h3/>
         <jsp:include page='zLogout.jsp'/>

@@ -14,6 +14,10 @@
         <title>View Daily Turnover</title>
     </head>
     <body>
+                <% if (session.getAttribute("userRole") != "admin") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <div>
             <jsp:include page='adNavMenu.jsp'/>
             <H3>View Daily Turnover</H3>

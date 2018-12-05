@@ -13,6 +13,10 @@
         <title>Welcome Admin</title>
     </head>
     <body>
+                <% if (session.getAttribute("userRole") != "admin") {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <jsp:include page='adNavMenu.jsp'/>
         <h3>Welcome Admin<h3/>
       

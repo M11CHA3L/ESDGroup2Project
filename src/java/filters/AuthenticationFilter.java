@@ -48,8 +48,8 @@ public class AuthenticationFilter implements Filter {
 		
 		if(session == null && !(uri.endsWith("index.jsp"))){
 			this.context.log("Unauthorized access request");
-			res.sendRedirect("index.jsp");
-		}else{
+			res.sendRedirect("index.jsp");		
+                } else{
 //			 pass the request along the filter chain
 			chain.doFilter(request, response);
 		}
