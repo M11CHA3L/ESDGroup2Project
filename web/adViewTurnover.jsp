@@ -14,8 +14,8 @@
     </head>
     <body>
         <div>
-            <br>
             <jsp:include page='adNavMenu.jsp'/>
+            <H3>View Daily Turnover</H3>
             <form method="post" action="AdminServlet.do">
                 <b>Select Date:</b><br>
                 <input type="date" name="date" placeholder="YYYY-MM-DD">

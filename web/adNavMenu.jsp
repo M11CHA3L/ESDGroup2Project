@@ -26,7 +26,7 @@
         </div>
 
         <div style='width:205px;' class="two">
-            <button class='btnSize' type="submit" name="adminOption" value="View Turnover">View Daily Turnover</button>
+            <button class='btnSize' type="submit" name="adminOption" value="View Daily Turnover">View Daily Turnover</button>
         </div>
         <div style='width:205px;' class="two">
             <button class='btnSize' type="submit" name="adminOption" value="View Driver Bookings" >View Driver Bookings</button>
