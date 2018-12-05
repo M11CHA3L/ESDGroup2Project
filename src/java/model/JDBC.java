@@ -5,20 +5,17 @@
  */
 package model;
 
-import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -144,7 +141,7 @@ public class JDBC {
                 + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
                 + "\"></form>";
 
-        output += "<P ALIGN='center'><TABLE BORDER=1>";
+        output += "<P ALIGN='center'><TABLE style=\"text-align:center;\" style=\"border:none\">";
 
         try {
             rsmd = rs.getMetaData();
@@ -160,7 +157,7 @@ public class JDBC {
             while (rs.next()) {
                 output += "<TR>";
                 for (int i = 0; i < columnCount; i++) {
-                    output += "<TD>" + rs.getString(i + 1) + "</TD>";
+                    output += "<TD style=\"padding:20px\">" + rs.getString(i + 1) + "</TD>";
                 }
                 output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"editForm\" >EDIT</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
                 output += String.format("<TD><button name=\"toggleActiveChoice\" value=\"%s\" form=\"toggleActiveForm\" >TOGGLE ACTIVE</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
