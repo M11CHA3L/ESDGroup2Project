@@ -315,7 +315,7 @@ public class JDBC {
         select("select * from journey where DRIVER_ID=" + id + " and date='" + date + "'");
 
         try {
-            s += "<table border='4'>";
+            s += "<table style=\"border:none\">";
             s += "<tr>";
             int c = rs.getMetaData().getColumnCount();
             for (int i = 1; i <= c; i++) {

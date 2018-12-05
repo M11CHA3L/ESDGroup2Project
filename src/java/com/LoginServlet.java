@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.JDBC;
+import model.Price;
 
 /**
  *
@@ -63,8 +64,10 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("userName", username);
                 switch (user) {
                     case 3:
-                        session.setAttribute("userRole", "admin");
-                        session.setMaxInactiveInterval(Integer.parseInt(getServletContext().getInitParameter("adminTimeout")));                        
+                        session.setAttribute("userRole", "admin");                     
+                        session.setMaxInactiveInterval(Integer.parseInt(getServletContext().getInitParameter("adminTimeout")));   
+                        Price p = new Price();
+                        request.setAttribute("button", p.createButton());
                         request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
                         break;
                     case 2:

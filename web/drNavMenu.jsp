@@ -9,13 +9,14 @@
 </div>
 <div>
     <form method="POST" action="DrServlet.do">
-        <table>
-            <tr>
-                <td>
-                    <input type="submit" name="driverOption" value="Home">
-                    <input type="submit" name="driverOption" value ="View Jobs">
-                </td>
-            </tr>
-        </table>
+       
+            <div style='width:205px;' class="one">
+            <button class='btnSize' type="submit" name="driverOption" value="Home">Home</button>
+        </div>
+                    <div style='width:205px;' class="one">
+            <button class='btnSize' type="submit" name="driverOption" value="View Jobs">View Jobs</button>
+        </div>
+        <br><br><br>
+           
     </form>
 </div>
