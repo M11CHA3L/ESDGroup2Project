@@ -15,6 +15,9 @@
     <body>
         <jsp:include page='adNavMenu.jsp'/>
         <h3>Welcome Admin<h3/>
+            <%
+                out.println(request.getAttribute("button"));
+                %>
         <jsp:include page='zLogout.jsp'/>
     </body>
 </html>
