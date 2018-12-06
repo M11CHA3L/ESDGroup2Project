@@ -14,6 +14,7 @@
     <body>
         <jsp:include page='zNavMenu.jsp'/>
         <div>
+            <br>
             <%
                 if (request.getAttribute("errorMessage") != null) {
                     out.print((String) request.getAttribute("errorMessage"));
@@ -24,6 +25,7 @@
             %>
         </div>
         <div>
+            
             <form method="POST" style="text-align: right; width:400px; margin: auto;" action="zServlet.do">
                 <h3 style="text-align: center"><b>Journey Details</b></h3>
                 Full Name : <input type="text" name="customerName"><br>
@@ -32,9 +34,9 @@
                 Start - Postcode: <input type="text" name="customerStartPostcode" ><br>
                 End - House No./Street : <input type="text" name="customerDestHouse" ><br>
                 End - City : <input type="text" name="customerDestCity" ><br>
-                End - Postcode: <input type="text" name="customerDestPostcode" ><br><br>
-                Date Required: <input type="text" name="customerJournDate" placeholder="YYYY-MM-DD"><br>
-                Time Required: <input type="text" name="customerJournTime" placeholder="HH:MM"><br><br>
+                End - Postcode: <input type="text" name="customerDestPostcode" ><br>
+                Date Required: <input type="date" name="customerJournDate" placeholder="YYYY-MM-DD" style="width:100%;"><br>
+                Time Required: <input type="time" name="customerJournTime" placeholder="HH:MM"><br><br>
                 <input type="submit" name="zOption" value="Create Booking">
             </form> 
         </div>

@@ -2,6 +2,9 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +34,13 @@ public class DrViewJobsServlet extends HttpServlet {
                 String[] s = dbBean.returnInvoice(request.getParameter("selectedJob"));
                 // <date><time> customer name
 
+                DateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+                Date date = new Date();
+                System.out.println(dateFormat.format(date));
                 //add these to print invoice
-                //PrintWriter out = new PrintWriter("H:\\Personal\\"+ s[1] + ".txt");
-                //out.println(s[0]);             
-                //out.close();
+                PrintWriter out = new PrintWriter("H:\\Personal\\"+ s[1] + (String)dateFormat.format(date) + ".txt");
+                out.println(s[0]);             
+                out.close();
             }
 
         }

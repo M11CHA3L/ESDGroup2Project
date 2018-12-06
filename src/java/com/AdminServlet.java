@@ -95,8 +95,9 @@ public class AdminServlet extends HttpServlet {
             case "Set new base price":
                 int price = Integer.parseInt(request.getParameter("newPrice"));
                 Price p = new Price();
-                p.setNewPrice(price);         
-                request.getRequestDispatcher("/adWelcome.jsp").forward(request, response);
+                p.setNewPrice(price);  
+                request.setAttribute("message", "Base price is now: " + p.getBasePrice());
+                request.getRequestDispatcher("/adViewTurnover.jsp").forward(request, response);
                 break;
             default:
                 break;

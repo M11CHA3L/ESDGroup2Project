@@ -10,14 +10,14 @@
 </div>
 <div>
     <form method="POST" action="zServlet.do">
-        <table>
-            <tr>
-                <td>
-                    <input type="submit" name="zOption" value="Home">
-                    <input type="submit" name="zOption" value ="Request Booking">
-                </td>
-            </tr>
-        </table>
+        
+        <div style='width:205px;' class="one">
+            <button class="btnSize" type="submit" name="zOption" value="Home">Home</button>
+        </div>
+        <div style='width:205px;' class="one">
+            <button class="btnSize" type="submit" name="zOption" value ="Request Booking">Request Booking</button>
+        </div>
+        <br><br>
     </form>
 </div>
 

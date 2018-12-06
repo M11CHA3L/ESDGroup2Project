@@ -17,6 +17,8 @@
             }
         %>
         <jsp:include page='zNavMenu.jsp'/>
+        <br>
+        <br>
         <%String s = "";
 
             if (request.getAttribute("errorMessage") != null) {

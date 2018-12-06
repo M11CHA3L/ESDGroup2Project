@@ -49,12 +49,12 @@
           <td class="tg-0lax"><input type="text" name="destinationPost" ></td>
         </tr>
         <tr>
-          <td class="tg-0lax">Date required<br>YYYY-MM-DD</td>
-          <td class="tg-0lax"><input type="text" name="dateRequired" placeholder="YYYY-MM-DD"> </td>
+          <td class="tg-0lax">Date required</td>
+          <td class="tg-0lax"><input type="date" name="dateRequired" placeholder="YYYY-MM-DD"> </td>
         </tr>
         <tr>
-          <td class="tg-0lax">Time required<br>HH:MM (24Hr)</td>
-          <td class="tg-0lax"><input type="text" name="timeRequired" placeholder="HH-MM"> </td>
+          <td class="tg-0lax">Time required</td>
+          <td class="tg-0lax"><input type="time" name="timeRequired" placeholder="HH-MM"> </td>
         </tr>
         <tr>
           <td class="tg-0lax"></td>
