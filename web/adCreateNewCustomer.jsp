@@ -18,12 +18,12 @@
                 response.sendRedirect("index.jsp");
             } 
         %>
-        <h3>Create Customer</h3><br>
+        <h3>Create Customer</h3>
         <form method="POST" style="text-align: right; width:400px; margin: auto;" action="AdminServlet.do">
             Enter full name : <input type="text" name="customerName" ><br> 
             Enter address : <input type="text" name="customerAddress" ><br>
             Enter username : <input type="text" name="customerUsername" ><br>
-            Enter password: <input type="text" name="customerPassword" ><br>
+            Enter password: <input type="password" name="customerPassword" ><br>
         <input type="submit" name="adminOption" value="Add New Customer">
         </form> 
         <br>

@@ -245,15 +245,15 @@ public class JDBC {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = new Date();
 
 
         //get driver jobs
         select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME "
                 + "FROM JOURNEY "
                 + "INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID "
-                + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE' AND DEMANDS.DATE = '" + (String)dateFormat.format(date) + "'");
+                + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
         try {
 
                 s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
@@ -265,8 +265,11 @@ public class JDBC {
                             + "<br><br>";
 
                 
-                s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
+                
             }
+            
+                s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
+
         } catch (SQLException ex) {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -451,12 +454,9 @@ public class JDBC {
         int distance;
         int pricePerMile = 1;
 
-        Scanner sc = new Scanner(JDBC.class.getResourceAsStream("properties.txt"));
-
-        while (sc.hasNextLine()) {
-           price = sc.nextInt();
-        }
-
+        Price p = new Price();
+        price = p.getBasePrice();
+        
         select("select * from journey where DEMANDS_ID=" + demandID);
         try {
             if (rs.next()) {
@@ -655,7 +655,8 @@ public class JDBC {
 
     public ResultSet getAvailableDrivers(String date) {
 
-        ResultSet dbResult = select("SELECT distinct ID, NAME, REGISTRATION FROM Drivers JOIN JOURNEY ON Drivers.ID = DRIVER_ID WHERE DATE != '" + date + "' AND DRIVERS.ACTIVE = true");
+        ResultSet dbResult = select("SELECT DRIVERS.ID, DRIVERS.NAME, DRIVERS.REGISTRATION FROM Drivers where id NOT IN (SELECT distinct DRIVERS.ID FROM DRIVERS JOIN JOURNEY ON DRIVERS.ID = JOURNEY.DRIVER_ID WHERE DRIVERS.ACTIVE = true AND JOURNEY.DATE = '" + date + "')");
+
 
         return dbResult;
     }

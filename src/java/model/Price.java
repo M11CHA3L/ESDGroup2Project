@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Price {
-    int basePrice = 0;
+    private int basePrice = 0;
     
     public Price(){
          int price = 0;
@@ -27,7 +27,7 @@ public class Price {
        this.basePrice = price;
          PrintWriter p = null;
         
-        String file = "C:\\Users\\Jon\\Documents\\NetBeansProjects\\ESDGroup2Project\\src\\java\\model\\properties.txt";
+        String file = "H:\\Personal\\NetBeansProjects\\ESDGroup2Project\\src\\java\\model\\properties.txt";
         
         try {      
             p = new PrintWriter(file);            
@@ -39,4 +39,5 @@ public class Price {
         p.close();  
     
     }   
+    
 }

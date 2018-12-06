@@ -59,7 +59,7 @@ public class AdCreateNewDriverServlet extends HttpServlet {
 
         } else {
          
-                dbBean.createDriver(driverPassword, driverRegistration, driverUsername, driverPassword);
+                dbBean.createDriver(driverPassword, driverRegistration, driverUsername, driverName);
                 request.setAttribute("message", "DriverAdded!");
                 request.getRequestDispatcher("/adCreateNewDriver.jsp").forward(request, response);
         }

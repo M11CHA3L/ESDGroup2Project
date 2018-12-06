@@ -31,7 +31,6 @@ public class AdViewTurnoverServlet extends HttpServlet {
         String turnover = dbBean.getTurnover((String)request.getParameter("date"));
         request.setAttribute("turnover", turnover);
         request.getRequestDispatcher("/adViewTurnover.jsp").forward(request, response);
-
         
         
     }

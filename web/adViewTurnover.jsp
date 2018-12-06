@@ -35,6 +35,15 @@
                    
                 }
             %>
+            <%
+                if (request.getAttribute("message") != null) {
+            %>
+            <br>
+            <%
+                    out.print(request.getAttribute("message"));
+                   
+                }
+            %>
             
             <form method="post" action="AdminServlet.do">
                 
