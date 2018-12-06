@@ -20,7 +20,7 @@ CREATE TABLE USERS (
 
 INSERT INTO USERS (USERNAME, PASSWORD, USERROLE) VALUES
   ('admin', '1234', 3),
-  ('driver1', '1234', 2),
+  ('AK52VZV', 'JohnSmith', 2),
   ('driver2', '1234', 2),
   ('driver3', '1234', 2),
   ('customer1', '1234', 1),
