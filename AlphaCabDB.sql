@@ -39,7 +39,7 @@ CREATE TABLE DRIVERS (
 );
 
 INSERT INTO DRIVERS (REGISTRATION, NAME, USERNAME) VALUES
-  ('AK52VZV', 'John Smith', 'driver1'),
+  ('AK52VZV', 'John Smith', 'AK52VZV'),
   ('BN60WKA', 'Mehmet Aydin', 'driver2'),
   ('R34AKP', 'Mark Johnson', 'driver3');
 
