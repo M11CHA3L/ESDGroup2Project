@@ -55,7 +55,7 @@ CREATE TABLE CUSTOMERS (
 );
 
 INSERT INTO CUSTOMERS (NAME, ADDRESS, USERNAME) VALUES
-  ('Eva Smith', '129 Station Rd, London, N3 2AS', 'customer1'),
+  ('Eva Smith', '129 Station Rd, London, N3 2AS', 'AK52VZV'),
   ('Rob Manton', '23 Bow Lane, London, N3', 'customer2'),
   ('Bob Currie', '54 Teignmouth Rd, London, NW2', 'customer3'),
   ('Jim Hunter', '765 High Road, London, N12', null),
