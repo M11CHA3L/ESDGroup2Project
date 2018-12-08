@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.JDBC;
+import model.WebServiceMethods;
 
 public class AdAssignDriverServlet extends HttpServlet {
 
@@ -28,24 +29,36 @@ public class AdAssignDriverServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-                JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
+        JDBC dbBean = (JDBC)request.getSession().getAttribute("dbbean");
                
         try {
-            //fetch demand info using demand ID from previous radio
+            //fetch demand info from db using demand ID from previous radio
             ResultSet demand = dbBean.getDemandByID((String) request.getParameter("demandID"));
+            
+            //move cursor to first index of demand
             demand.next();
+            
+            //set start and end based on db output
             String start = demand.getString("address").replaceAll("\\s", "+");
             String end = demand.getString("destination").replaceAll("\\s", "+");
             
+            //calc distace using google api
+            WebServiceMethods ws = new WebServiceMethods();
+            int distance = ws.calcDistance(start, end);
             
-            int distance = calcDistance(start, end);
+            //create a new journey based on demand info
             dbBean.createJourney((String)demand.getString("CUSTOMER_ID"), (String)demand.getString("DESTINATION"), Integer.toString(distance), (String)request.getParameter("driverRadio"), (String)demand.getString("DATE"), (String)demand.getString("ID"), (String)demand.getString("TIME"));
+            
+            //set demand as assigned
             dbBean.setDemandStatus("ASSIGNED", (String)demand.getString("ID"));
+            
+            //set output message and pass to jsp
             request.setAttribute("message", "Journey Created || Trip to " + (String)demand.getString("DESTINATION") + " on " + (String)demand.getString("DATE")+  " at " + (String)demand.getString("TIME") + " has been assigned a driver");
         } catch (SQLException ex) {
             Logger.getLogger(AdAssignDriverServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        //forward to jsp
         request.getRequestDispatcher("/adAssignDriverJob.jsp").forward(request, response);
         
     }
@@ -91,30 +104,7 @@ public class AdAssignDriverServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private int calcDistance(String start, String end) throws MalformedURLException, IOException{
-       
-        final String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
-        final String key = "AIzaSyAjXON-EKXSwBEk2bqnwj9Nc7nBPcYqD8I";
-        
-        URL u = new URL(url + start + "&destinations=" + end + "&departure_time=now&key=" + key);
-        HttpURLConnection con = (HttpURLConnection) u.openConnection();
-        con.setRequestMethod("GET");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        ArrayList<String> list = new ArrayList<>();
-        while ((inputLine = in.readLine()) != null) {
-            list.add(inputLine);
-        }
-        in.close();
-
-        String[] a = list.get(9).split(" ");
-        double distance = Integer.parseInt(a[a.length - 1]) / 1609.344;
-
-        int d = (int) Math.round(distance);
-
-        return d;
-    }
     
 
 }

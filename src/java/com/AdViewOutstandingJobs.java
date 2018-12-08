@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.FormCreator;
 import model.JDBC;
 
 /**
@@ -34,27 +35,18 @@ public class AdViewOutstandingJobs extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
         response.setContentType("text/html;charset=UTF-8");
 
+        //set jdbc
         JDBC dbBean = (JDBC) request.getSession().getAttribute("dbbean");
-        request.setAttribute("demands", dbBean.getOutstandingDemands());
-
-        ResultSet dbResult = dbBean.getOutstandingDemands();
-
-        String s = "";
         
+        //create list of outstanding jobs & set attribute
+        FormCreator formCreator = new FormCreator();
+        request.setAttribute("demand", formCreator.createOutstandingJobsList(dbBean));
 
-        try {
-            s += "<form method=\"post\" action=\"AdSelectDemandServlet.do\">";
-            while (dbResult.next()) {
-                s += dbResult.getString("Date") + " at " + dbResult.getString("Time") + " to " + dbResult.getString("Destination") + " " + "<input type='radio' name='demandRadio' value='" + dbResult.getString("ID") + "'><br>";
-            }
-            s += "<input type='submit' name='action' value='Assign Driver'>";
-            request.setAttribute("demand", s);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        //forward to jsp
         request.getRequestDispatcher("/adViewDemands.jsp").forward(request, response);
 
     }

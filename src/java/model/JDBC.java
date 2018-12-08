@@ -91,37 +91,12 @@ public class JDBC {
 
     public String ToTable(String query) {
         String output = "";
-        ResultSetMetaData rsmd = null;
-        int columnCount = -1;
-        int rowCount = 0;
 
         select(query);
 
-        output += "<P ALIGN='center'><TABLE BORDER=1>";
-
-        try {
-            rsmd = rs.getMetaData();
-            columnCount = rsmd.getColumnCount();
-
-            // table header
-            output += "<TR>";
-            for (int i = 0; i < columnCount; i++) {
-                output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
-            }
-            output += "</TR>";
-            // the data
-            while (rs.next()) {
-                output += "<TR>";
-                for (int i = 0; i < columnCount; i++) {
-                    output += "<TD>" + rs.getString(i + 1) + "</TD>";
-                }
-                output += "</TR>";
-            }
-            output += "</TABLE></P>";
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        FormCreator formCreator = new FormCreator();
+         output = formCreator.CraeteTableAsForm(rs);
+        
         return output;
     }
 
@@ -245,62 +220,26 @@ public class JDBC {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date = new Date();
-
-
         //get driver jobs
         select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME "
                 + "FROM JOURNEY "
                 + "INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID "
                 + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
-        try {
 
-                s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
-                while (rs.next()) {
-
-                    s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS")
-                            + "<br>Customer Destination: " + rs.getString("DESTINATION")
-                            + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
-                            + "<br><br>";
-
-                
-                
-            }
-            
-                s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
-
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //create driver jobs list
+        FormCreator formCreator = new FormCreator();      
+        formCreator.createDriverJobsList(rs);
 
         return s;
     }
 
     public String getDrivers() {
         String s = "";
-        ResultSetMetaData rsmd = null;
 
         select("select * from drivers where ACTIVE = true");
-
-        try {
-            s += "<form method=\"post\" action=\"AdminServlet.do\">";
-
-            while (rs.next()) {
-
-                s += "<input type='radio' name='driver' value='" + rs.getString("name") + "'>  " + rs.getString("name") + "<br>";
-            }
-
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            String date = simpleDateFormat.format(new java.util.Date());
-
-            s += "<br><b>Select Date:</b><br> <input type='date' name='date' value='" + date + "'>  <input type='submit' name='adminOption' value='Get Driver Journeys'>"
-                    + "</form>";
-
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        FormCreator formCreator = new FormCreator();
+        formCreator.createDriversList(this.rs);
 
         return s;
     }
@@ -407,7 +346,7 @@ public class JDBC {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(insertDemandSQL);
-            preparedStatement.setString(1, customerID);
+            preparedStatement.setInt(1, Integer.parseInt(customerID));
             preparedStatement.setString(2, timeRequired);
             preparedStatement.setString(3, dateRequired);
             preparedStatement.setString(4, destinationAddress);
