@@ -32,6 +32,7 @@ public class JDBC {
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
+    FormCreator formCreator = new FormCreator();
 
     private ResultSet select(String query) {
         try {
@@ -91,85 +92,20 @@ public class JDBC {
 
     public String ToTable(String query) {
         String output = "";
-        ResultSetMetaData rsmd = null;
-        int columnCount = -1;
-        int rowCount = 0;
 
         select(query);
 
-        output += "<P ALIGN='center'><TABLE BORDER=1>";
-
-        try {
-            rsmd = rs.getMetaData();
-            columnCount = rsmd.getColumnCount();
-
-            // table header
-            output += "<TR>";
-            for (int i = 0; i < columnCount; i++) {
-                output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
-            }
-            output += "</TR>";
-            // the data
-            while (rs.next()) {
-                output += "<TR>";
-                for (int i = 0; i < columnCount; i++) {
-                    output += "<TD>" + rs.getString(i + 1) + "</TD>";
-                }
-                output += "</TR>";
-            }
-            output += "</TABLE></P>";
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
+         output = formCreator.CreateTableAsForm(rs);
+        
         return output;
     }
 
     public String ToEditTable(String query, String KeyColumn, String TableName) {
         String output = "";
-        ResultSetMetaData rsmd = null;
-        int columnCount = -1;
-        int rowCount = 0;
 
         select(query);
-
-        // Form for EDIT a row
-        output += "<form method=\"POST\" id=\"editForm\" action=\"AdUpdateCustomerDriverPopulateServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
-                + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
-                + "\"></form>";
-
-        // Form for DELETE a row
-        output += "<form method=\"POST\" id=\"toggleActiveForm\" action=\"AdToggleActiveSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
-                + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
-                + "\"></form>";
-
-        output += "<P ALIGN='center'><TABLE style=\"text-align:center;\" style=\"border:none\">";
-
-        try {
-            rsmd = rs.getMetaData();
-            columnCount = rsmd.getColumnCount();
-
-            // table header
-            output += "<TR>";
-            for (int i = 0; i < columnCount; i++) {
-                output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
-            }
-            output += "</TR>";
-            // the data
-            while (rs.next()) {
-                output += "<TR>";
-                for (int i = 0; i < columnCount; i++) {
-                    output += "<TD style=\"padding:20px\">" + rs.getString(i + 1) + "</TD>";
-                }
-                output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"editForm\" >EDIT</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
-                output += String.format("<TD><button name=\"toggleActiveChoice\" value=\"%s\" form=\"toggleActiveForm\" >TOGGLE ACTIVE</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
-                output += "</TR>";
-
-            }
-            output += "</TABLE></P>";
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        output = formCreator.CreateEditTableAsForm(rs, KeyColumn, TableName);
 
         return output;
     }
@@ -245,62 +181,24 @@ public class JDBC {
             Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date = new Date();
-
-
         //get driver jobs
         select("SELECT DEMANDS.ID, DEMANDS.NAME, DEMANDS.ADDRESS, DEMANDS.DESTINATION, DEMANDS.DATE, DEMANDS.TIME "
                 + "FROM JOURNEY "
                 + "INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID "
                 + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
-        try {
 
-                s = "<form method=\"post\" action=\"DrViewJobsServlet.do\">";
-                while (rs.next()) {
-
-                    s += "<input type='radio' name='selectedJob' value='" + rs.getString("ID") + "'>  CustomerName: " + rs.getString("NAME") + "<br>Customer Address: " + rs.getString("ADDRESS")
-                            + "<br>Customer Destination: " + rs.getString("DESTINATION")
-                            + "<br>Date: " + rs.getString("DATE") + "<br>Time: : " + rs.getString("Time")
-                            + "<br><br>";
-
-                
-                
-            }
-            
-                s += "<br><input type='submit' name='complete' value='Complete'></form><br>";
-
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //create driver jobs list      
+        formCreator.CreateDriverJobsList(rs);
 
         return s;
     }
 
     public String getDrivers() {
         String s = "";
-        ResultSetMetaData rsmd = null;
 
         select("select * from drivers where ACTIVE = true");
-
-        try {
-            s += "<form method=\"post\" action=\"AdminServlet.do\">";
-
-            while (rs.next()) {
-
-                s += "<input type='radio' name='driver' value='" + rs.getString("name") + "'>  " + rs.getString("name") + "<br>";
-            }
-
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            String date = simpleDateFormat.format(new java.util.Date());
-
-            s += "<br><b>Select Date:</b><br> <input type='date' name='date' value='" + date + "'>  <input type='submit' name='adminOption' value='Get Driver Journeys'>"
-                    + "</form>";
-
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        formCreator.CreateDriversList(this.rs);
 
         return s;
     }
@@ -357,44 +255,10 @@ public class JDBC {
     }
 
     public String getTurnover(String date) {
-        String s = "";
-        int turnover = 0;
 
         select("select C.NAME, D.DESTINATION, J.DISTANCE, J.TIME, J.CHARGE from JOURNEY as J inner join DEMANDS as D on D.ID = J.DEMANDS_ID inner join customers as C on C.ID = J.CUSTOMER_ID where D.STATUS = 'COMPLETE' AND J.DATE = '" + date + "' order by J.TIME");
 
-        try {
-            s += "<table border='4'>";
-            s += "<tr>";
-            int c = rs.getMetaData().getColumnCount();
-            s += "<th>Job No.</th>";
-            for (int i = 1; i <= c; i++) {
-                s += "<th>" + rs.getMetaData().getColumnName(i) + "</th>";
-            }
-            s += "</tr>";
-            int count = 1;
-            while (rs.next()) {
-                turnover += rs.getInt("CHARGE");
-                s += "<tr>";
-                c = rs.getMetaData().getColumnCount();
-                s += "<td>" + count + "</td>";
-                for (int i = 1; i <= c; i++) {
-                    if (i == c) {
-                        s += "<td>£" + rs.getString(i) + "</td>";
-                    } else {
-                        s += "<td>" + rs.getString(i) + "</td>";
-                    }
-                }
-                s += "</tr>";
-                count++;
-            }
-            s += "<tr>";
-            for (int i = 0; i < (c - 1); i++) {
-                s += "<td></td>";
-            }
-            s += "<td><b>Total ex. VAT</b></td><td><b>£" + turnover + "</b></td></tr></table>";
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String s = formCreator.CreateTurnoverTable(rs);
 
         return s;
     }
@@ -407,7 +271,7 @@ public class JDBC {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(insertDemandSQL);
-            preparedStatement.setString(1, customerID);
+            preparedStatement.setInt(1, Integer.parseInt(customerID));
             preparedStatement.setString(2, timeRequired);
             preparedStatement.setString(3, dateRequired);
             preparedStatement.setString(4, destinationAddress);

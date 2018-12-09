@@ -44,7 +44,7 @@ public class CuNewBookingServlet extends HttpServlet {
         String destinationAddress = request.getParameter("destinationHouse") + ", " + request.getParameter("destinationCity") + ", " + request.getParameter("destinationPost");
         String dateRequired = request.getParameter("dateRequired");
         String timeRequired = request.getParameter("timeRequired");
-        String userName = (String) session.getAttribute("userName");
+        String userName = (String)session.getAttribute("userName");
         String dateRegEx = "^\\d{4}-\\d{2}-\\d{2}$";
         String timeRegEx = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
         String postCodeRegEx = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$";
