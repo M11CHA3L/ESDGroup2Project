@@ -32,6 +32,7 @@ public class JDBC {
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
+    FormCreator formCreator = new FormCreator();
 
     private ResultSet select(String query) {
         try {
@@ -94,7 +95,7 @@ public class JDBC {
 
         select(query);
 
-        FormCreator formCreator = new FormCreator();
+        
          output = formCreator.CraeteTableAsForm(rs);
         
         return output;
@@ -226,8 +227,7 @@ public class JDBC {
                 + "INNER JOIN DEMANDS ON JOURNEY.DEMANDS_ID = DEMANDS.ID "
                 + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
 
-        //create driver jobs list
-        FormCreator formCreator = new FormCreator();      
+        //create driver jobs list      
         formCreator.createDriverJobsList(rs);
 
         return s;
@@ -238,7 +238,6 @@ public class JDBC {
 
         select("select * from drivers where ACTIVE = true");
         
-        FormCreator formCreator = new FormCreator();
         formCreator.createDriversList(this.rs);
 
         return s;
