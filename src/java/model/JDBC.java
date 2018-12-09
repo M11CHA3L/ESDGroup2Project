@@ -96,56 +96,16 @@ public class JDBC {
         select(query);
 
         
-         output = formCreator.CraeteTableAsForm(rs);
+         output = formCreator.CreateTableAsForm(rs);
         
         return output;
     }
 
     public String ToEditTable(String query, String KeyColumn, String TableName) {
         String output = "";
-        ResultSetMetaData rsmd = null;
-        int columnCount = -1;
-        int rowCount = 0;
 
         select(query);
-
-        // Form for EDIT a row
-        output += "<form method=\"POST\" id=\"editForm\" action=\"AdUpdateCustomerDriverPopulateServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
-                + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
-                + "\"></form>";
-
-        // Form for DELETE a row
-        output += "<form method=\"POST\" id=\"toggleActiveForm\" action=\"AdToggleActiveSelectionServlet.do\"><input type=\"hidden\" name=\"tableName\" value=\"" + TableName
-                + "\"><input type=\"hidden\" name=\"columnName\" value=\"" + KeyColumn
-                + "\"></form>";
-
-        output += "<P ALIGN='center'><TABLE style=\"text-align:center;\" style=\"border:none\">";
-
-        try {
-            rsmd = rs.getMetaData();
-            columnCount = rsmd.getColumnCount();
-
-            // table header
-            output += "<TR>";
-            for (int i = 0; i < columnCount; i++) {
-                output += "<TH>" + rsmd.getColumnLabel(i + 1) + "</TH>";
-            }
-            output += "</TR>";
-            // the data
-            while (rs.next()) {
-                output += "<TR>";
-                for (int i = 0; i < columnCount; i++) {
-                    output += "<TD style=\"padding:20px\">" + rs.getString(i + 1) + "</TD>";
-                }
-                output += String.format("<TD><button name=\"editChoice\" value=\"%s\" form=\"editForm\" >EDIT</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
-                output += String.format("<TD><button name=\"toggleActiveChoice\" value=\"%s\" form=\"toggleActiveForm\" >TOGGLE ACTIVE</button></TD>", rs.getString(rs.findColumn(KeyColumn)));
-                output += "</TR>";
-
-            }
-            output += "</TABLE></P>";
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        output = formCreator.CreateEditTableAsForm(rs, KeyColumn, TableName);
 
         return output;
     }
@@ -228,7 +188,7 @@ public class JDBC {
                 + "WHERE JOURNEY.DRIVER_ID = " + id + " AND DEMANDS.STATUS != 'COMPLETE'");
 
         //create driver jobs list      
-        formCreator.createDriverJobsList(rs);
+        formCreator.CreateDriverJobsList(rs);
 
         return s;
     }
@@ -238,7 +198,7 @@ public class JDBC {
 
         select("select * from drivers where ACTIVE = true");
         
-        formCreator.createDriversList(this.rs);
+        formCreator.CreateDriversList(this.rs);
 
         return s;
     }
@@ -295,44 +255,10 @@ public class JDBC {
     }
 
     public String getTurnover(String date) {
-        String s = "";
-        int turnover = 0;
 
         select("select C.NAME, D.DESTINATION, J.DISTANCE, J.TIME, J.CHARGE from JOURNEY as J inner join DEMANDS as D on D.ID = J.DEMANDS_ID inner join customers as C on C.ID = J.CUSTOMER_ID where D.STATUS = 'COMPLETE' AND J.DATE = '" + date + "' order by J.TIME");
 
-        try {
-            s += "<table border='4'>";
-            s += "<tr>";
-            int c = rs.getMetaData().getColumnCount();
-            s += "<th>Job No.</th>";
-            for (int i = 1; i <= c; i++) {
-                s += "<th>" + rs.getMetaData().getColumnName(i) + "</th>";
-            }
-            s += "</tr>";
-            int count = 1;
-            while (rs.next()) {
-                turnover += rs.getInt("CHARGE");
-                s += "<tr>";
-                c = rs.getMetaData().getColumnCount();
-                s += "<td>" + count + "</td>";
-                for (int i = 1; i <= c; i++) {
-                    if (i == c) {
-                        s += "<td>£" + rs.getString(i) + "</td>";
-                    } else {
-                        s += "<td>" + rs.getString(i) + "</td>";
-                    }
-                }
-                s += "</tr>";
-                count++;
-            }
-            s += "<tr>";
-            for (int i = 0; i < (c - 1); i++) {
-                s += "<td></td>";
-            }
-            s += "<td><b>Total ex. VAT</b></td><td><b>£" + turnover + "</b></td></tr></table>";
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String s = formCreator.CreateTurnoverTable(rs);
 
         return s;
     }

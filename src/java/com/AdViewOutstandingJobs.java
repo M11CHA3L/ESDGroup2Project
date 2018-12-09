@@ -44,7 +44,7 @@ public class AdViewOutstandingJobs extends HttpServlet {
         
         //create list of outstanding jobs & set attribute
         FormCreator formCreator = new FormCreator();
-        request.setAttribute("demand", formCreator.createOutstandingJobsList(dbBean));
+        request.setAttribute("demand", formCreator.CreateOutstandingJobsList(dbBean));
 
         //forward to jsp
         request.getRequestDispatcher("/adViewDemands.jsp").forward(request, response);
